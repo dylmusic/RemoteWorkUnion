@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Remote Work Union — Find Remote Work Jobs</title>
-  <meta name="description" content="Join the free Remote Work Union newsletter. Remote jobs, resume tips & hiring insights." />
+  <meta name="description" content="Join Remote Work Union For Free Remote jobs, resume tips & hiring insights." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@RemoteWorkUnion" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -255,6 +255,39 @@
       .checklist { align-items: center; }
       .checklist li { text-align: left; }
     }
+
+    /* X Badge */
+    .x-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.2s, box-shadow 0.2s, filter 0.2s;
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .x-badge:hover {
+      background: rgba(255,255,255,0.17);
+      box-shadow: 0 0 18px rgba(255,255,255,0.15);
+      filter: brightness(1.08);
+    }
+
+    /* Tagline */
+    .tagline {
+      margin-top: 36px;
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -265,13 +298,21 @@
 
     <p class="by-line"><a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer">by @RemoteWorkUnion</a></p>
 
+
+    <div class="spacer-sm"></div>
+
+    <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-badge" aria-label="Follow @RemoteWorkUnion on X">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Follow @RemoteWorkUnion
+    </a>
+
     <div class="spacer-lg"></div>
 
     <!-- 3. Headline -->
     <h1 class="headline">Find Remote Work Jobs</h1>
 
     <!-- 4. Subline -->
-    <p class="sub">Join the free Remote Work Union newsletter.</p>
+    <p class="sub">Join Remote Work Union For Free</p>
 
     <div class="spacer-md"></div>
 
@@ -318,6 +359,9 @@
         <span>Remote Work News</span>
       </li>
     </ul>
+
+    <!-- Tagline -->
+    <p class="tagline">Built for remote workers. By remote workers.</p>
 
     <!-- 10. Footer -->
     <footer>
