@@ -34,6 +34,7 @@
       width: 100%;
       max-width: 520px;
       animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: opacity 0.6s ease;
     }
 
     /* Logo */
@@ -288,6 +289,176 @@
       color: rgba(255,255,255,0.45);
       text-align: center;
     }
+
+    /* Step 2 post-signup overlay */
+    .page-2 {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      background: linear-gradient(180deg, #003BB5 0%, #1A84FF 60%, #40A0FF 100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    .page-2.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .checkmark-svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 28px;
+    }
+    .checkmark-circle {
+      stroke: #4ade80;
+      stroke-width: 2;
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      stroke-linecap: round;
+    }
+    .checkmark-check {
+      stroke: #4ade80;
+      stroke-width: 2.5;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .page-2.animate .checkmark-circle {
+      animation: drawCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.2s forwards;
+    }
+    .page-2.animate .checkmark-check {
+      animation: drawCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+    @keyframes drawCircle { to { stroke-dashoffset: 0; } }
+    @keyframes drawCheck  { to { stroke-dashoffset: 0; } }
+    .s2-headline {
+      font-size: clamp(26px, 5.5vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      max-width: 420px;
+    }
+    .s2-sub {
+      margin-top: 14px;
+      font-size: clamp(14px, 2.5vw, 16px);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.65;
+      max-width: 400px;
+    }
+    .s2-apply-btn {
+      margin-top: 32px;
+      display: inline-block;
+      padding: 16px 36px;
+      border-radius: 100px;
+      background: #fff;
+      color: #003BB5;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .s2-apply-btn:hover { opacity: 0.88; transform: scale(1.02); }
+    .s2-apply-btn:active { transform: scale(1); }
+    .s2-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+    .s2-skip {
+      margin-top: 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .s2-skip:hover { color: rgba(255,255,255,0.85); }
+    .s2-thanks {
+      display: none;
+      margin-top: 20px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* Disclaimer bar */
+    .disclaimer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+    }
+    .disclaimer-bar a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .disclaimer-bar a:hover { color: rgba(255,255,255,0.75); }
+
+    /* Disclaimer modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 24px;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      position: relative;
+      background: #fff;
+      color: #1a1a2e;
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 480px;
+      width: 100%;
+      font-size: 15px;
+      line-height: 1.7;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #999;
+      font-family: inherit;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+    .modal-close:hover { color: #333; }
+    .modal-title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #003BB5;
+    }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 </head>
@@ -372,18 +543,96 @@
 
   </div>
 
+  <!-- Step 2: post-signup overlay -->
+  <div class="page-2" id="page-2">
+    <svg class="checkmark-svg" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+      <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
+      <path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+    </svg>
+    <h2 class="s2-headline">You&rsquo;re in! One more thing&hellip;</h2>
+    <p class="s2-sub">Have you applied to Handshake AI&rsquo;s remote work program yet? It&rsquo;s free and connects you with top remote employers.</p>
+    <a class="s2-apply-btn" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Apply via My Link &rarr;</a>
+    <p class="s2-note">Opens in a new tab. Takes 2 minutes.</p>
+    <button class="s2-skip" id="s2-skip">Skip for now &rarr;</button>
+    <p class="s2-thanks" id="s2-thanks">Thanks for joining! Check your inbox.</p>
+  </div>
+
+  <!-- Disclaimer bar -->
+  <div class="disclaimer-bar">
+    Not an official labor union. Remote Work Union is an independent newsletter.
+    <a href="#" id="disclaimer-link">Learn more</a>
+  </div>
+
+  <!-- Disclaimer modal -->
+  <div class="modal-overlay" id="disclaimer-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      <p class="modal-title" id="modal-title-text">About Remote Work Union</p>
+      <p>Remote Work Union is an independent newsletter and resource platform for remote workers. We are not a certified or registered labor union, do not provide collective bargaining services, and are not affiliated with any official union organization. We do not offer legal, financial, or employment advice. Our goal is to help remote and independent workers find opportunities and resources. All content is informational only.</p>
+    </div>
+  </div>
+
   <script>
     const form = document.getElementById('form');
     const input = document.getElementById('email');
-    const success = document.getElementById('success');
+    const page1 = document.querySelector('.page');
+    const page2 = document.getElementById('page-2');
+    const s2Skip = document.getElementById('s2-skip');
+    const s2Thanks = document.getElementById('s2-thanks');
+    const disclaimerLink = document.getElementById('disclaimer-link');
+    const disclaimerModal = document.getElementById('disclaimer-modal');
+    const modalClose = document.getElementById('modal-close');
 
-    form.addEventListener('submit', (e) => {
+    function showStep2() {
+      page1.style.opacity = '0';
+      page1.style.pointerEvents = 'none';
+      setTimeout(() => {
+        page1.style.display = 'none';
+        page2.classList.add('visible');
+        setTimeout(() => page2.classList.add('animate'), 50);
+      }, 600);
+    }
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const val = input.value.trim();
       if (!val || !val.includes('@')) return;
-      console.log('Subscriber:', val);
-      form.style.display = 'none';
-      success.classList.add('show');
+
+      const btn = form.querySelector('.join-btn');
+      btn.textContent = '...';
+      btn.disabled = true;
+
+      try {
+        await fetch('https://app.kit.com/forms/9465424/subscriptions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email_address: val })
+        });
+      } catch (_) {}
+
+      showStep2();
+    });
+
+    s2Skip.addEventListener('click', () => {
+      s2Skip.style.display = 'none';
+      s2Thanks.style.display = 'block';
+    });
+
+    disclaimerLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      disclaimerModal.classList.add('open');
+    });
+
+    modalClose.addEventListener('click', () => {
+      disclaimerModal.classList.remove('open');
+    });
+
+    disclaimerModal.addEventListener('click', (e) => {
+      if (e.target === disclaimerModal) disclaimerModal.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') disclaimerModal.classList.remove('open');
     });
   </script>
 
