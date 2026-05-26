@@ -139,10 +139,13 @@
       justify-content: center;
       gap: 8px;
       font-size: 15px;
-      color: rgba(255,255,255,0.9);
+      color: #4ade80;
       padding: 14px 0;
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
     .success-msg.show { display: flex; }
+    .success-msg.fade-in { opacity: 1; }
 
     /* Checklist */
     .checklist {
@@ -290,91 +293,71 @@
       text-align: center;
     }
 
-    /* Step 2 post-signup overlay */
-    .page-2 {
-      position: fixed;
-      inset: 0;
-      display: flex;
+    /* Inline Handshake card */
+    .hs-card {
+      display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
-      padding: 40px 24px;
-      background: linear-gradient(180deg, #003BB5 0%, #1A84FF 60%, #40A0FF 100%);
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 20px;
+      padding: 24px 28px;
+      width: 100%;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .page-2.visible {
-      opacity: 1;
-      pointer-events: auto;
+    .hs-card.show { display: flex; }
+    .hs-card.animate { opacity: 1; transform: translateY(0); }
+    .hs-tag {
+      font-size: 12px;
+      color: #4ade80;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
-    .checkmark-svg {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 28px;
-    }
-    .checkmark-circle {
-      stroke: #4ade80;
-      stroke-width: 2;
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      stroke-linecap: round;
-    }
-    .checkmark-check {
-      stroke: #4ade80;
-      stroke-width: 2.5;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .page-2.animate .checkmark-circle {
-      animation: drawCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.2s forwards;
-    }
-    .page-2.animate .checkmark-check {
-      animation: drawCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-    }
-    @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-    @keyframes drawCheck  { to { stroke-dashoffset: 0; } }
-    .s2-headline {
-      font-size: clamp(26px, 5.5vw, 36px);
+    .hs-headline {
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
       line-height: 1.2;
-      max-width: 420px;
     }
-    .s2-sub {
-      margin-top: 14px;
-      font-size: clamp(14px, 2.5vw, 16px);
-      color: rgba(255,255,255,0.75);
-      line-height: 1.65;
-      max-width: 400px;
+    .hs-subline {
+      margin-top: 6px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
     }
-    .s2-apply-btn {
-      margin-top: 32px;
+    .hs-salary {
+      margin-top: 12px;
       display: inline-block;
-      padding: 16px 36px;
+      padding: 4px 14px;
+      border-radius: 100px;
+      background: rgba(74,222,128,0.15);
+      border: 1px solid rgba(74,222,128,0.3);
+      color: #4ade80;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .hs-cta {
+      margin-top: 18px;
+      display: block;
+      padding: 13px 28px;
       border-radius: 100px;
       background: #fff;
       color: #003BB5;
       font-family: inherit;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       text-decoration: none;
+      text-align: center;
       transition: opacity 0.2s, transform 0.15s;
     }
-    .s2-apply-btn:hover { opacity: 0.88; transform: scale(1.02); }
-    .s2-apply-btn:active { transform: scale(1); }
-    .s2-note {
+    .hs-cta:hover { opacity: 0.88; transform: scale(1.02); }
+    .hs-cta:active { transform: scale(1); }
+    .hs-skip {
       margin-top: 12px;
       font-size: 12px;
       color: rgba(255,255,255,0.45);
-    }
-    .s2-skip {
-      margin-top: 20px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.5);
       cursor: pointer;
       background: none;
       border: none;
@@ -382,20 +365,13 @@
       padding: 0;
       transition: color 0.2s;
     }
-    .s2-skip:hover { color: rgba(255,255,255,0.85); }
-    .s2-thanks {
-      display: none;
-      margin-top: 20px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.8);
-    }
+    .hs-skip:hover { color: rgba(255,255,255,0.75); }
 
     /* Disclaimer bar */
     .disclaimer-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      margin-top: 32px;
+      width: 100%;
+      max-width: 520px;
       text-align: center;
       padding: 10px 20px;
       font-size: 11px;
@@ -507,7 +483,15 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
-        You&rsquo;re in &mdash; check your inbox!
+        Success!
+      </div>
+      <div class="hs-card" id="hs-card">
+        <p class="hs-tag">&#10003; You&rsquo;re in!</p>
+        <p class="hs-headline">Apply for Handshake AI</p>
+        <p class="hs-subline">Work Remote For Top AI Companies</p>
+        <span class="hs-salary">Earn $50&ndash;$200/hr</span>
+        <a class="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get My Referral &rarr;</a>
+        <button class="hs-skip" id="hs-skip">Skip for now &rarr;</button>
       </div>
     </div>
 
@@ -543,20 +527,6 @@
 
   </div>
 
-  <!-- Step 2: post-signup overlay -->
-  <div class="page-2" id="page-2">
-    <svg class="checkmark-svg" viewBox="0 0 52 52" fill="none" aria-hidden="true">
-      <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
-      <path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-    </svg>
-    <h2 class="s2-headline">You&rsquo;re in! One more thing&hellip;</h2>
-    <p class="s2-sub">Have you applied to Handshake AI&rsquo;s remote work program yet? It&rsquo;s free and connects you with top remote employers.</p>
-    <a class="s2-apply-btn" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Apply via My Link &rarr;</a>
-    <p class="s2-note">Opens in a new tab. Takes 2 minutes.</p>
-    <button class="s2-skip" id="s2-skip">Skip for now &rarr;</button>
-    <p class="s2-thanks" id="s2-thanks">Thanks for joining! Check your inbox.</p>
-  </div>
-
   <!-- Disclaimer bar -->
   <div class="disclaimer-bar">
     Not an official labor union. Remote Work Union is an independent newsletter.
@@ -575,23 +545,12 @@
   <script>
     const form = document.getElementById('form');
     const input = document.getElementById('email');
-    const page1 = document.querySelector('.page');
-    const page2 = document.getElementById('page-2');
-    const s2Skip = document.getElementById('s2-skip');
-    const s2Thanks = document.getElementById('s2-thanks');
+    const success = document.getElementById('success');
+    const hsCard = document.getElementById('hs-card');
+    const hsSkip = document.getElementById('hs-skip');
     const disclaimerLink = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
     const modalClose = document.getElementById('modal-close');
-
-    function showStep2() {
-      page1.style.opacity = '0';
-      page1.style.pointerEvents = 'none';
-      setTimeout(() => {
-        page1.style.display = 'none';
-        page2.classList.add('visible');
-        setTimeout(() => page2.classList.add('animate'), 50);
-      }, 600);
-    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -610,12 +569,32 @@
         });
       } catch (_) {}
 
-      showStep2();
+      // Fade out form
+      form.style.transition = 'opacity 0.3s ease';
+      form.style.opacity = '0';
+      setTimeout(() => {
+        form.style.display = 'none';
+        // Show success flash
+        success.classList.add('show');
+        requestAnimationFrame(() => requestAnimationFrame(() => success.classList.add('fade-in')));
+        // After 900ms, cross-fade to Handshake card
+        setTimeout(() => {
+          success.style.transition = 'opacity 0.3s ease';
+          success.style.opacity = '0';
+          setTimeout(() => {
+            success.classList.remove('show', 'fade-in');
+            success.style.cssText = '';
+            hsCard.classList.add('show');
+            requestAnimationFrame(() => requestAnimationFrame(() => hsCard.classList.add('animate')));
+          }, 300);
+        }, 900);
+      }, 300);
     });
 
-    s2Skip.addEventListener('click', () => {
-      s2Skip.style.display = 'none';
-      s2Thanks.style.display = 'block';
+    hsSkip.addEventListener('click', () => {
+      hsCard.style.transition = 'opacity 0.3s ease';
+      hsCard.style.opacity = '0';
+      setTimeout(() => { hsCard.style.display = 'none'; }, 300);
     });
 
     disclaimerLink.addEventListener('click', (e) => {
