@@ -863,6 +863,13 @@
       transition: background 0.2s;
     }
     .prog-email-submit:hover { background: rgba(255,255,255,0.26); }
+    .prog-nudge {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      margin: 4px 0 0 32px;
+      display: none;
+    }
+    .prog-nudge.show { display: block; }
     .prog-email-ok {
       display: none;
       font-size: 12px;
@@ -1138,6 +1145,7 @@
                 </div>
               </div>
               <p class="prog-email-ok" id="prog-email-ok">&#10003; Updated!</p>
+              <p class="prog-nudge" id="prog-newsletter-nudge">Sign up to unlock your full member profile</p>
             </li>
             <li class="prog-item done anim-in clickable" id="prog-hs">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
@@ -1303,6 +1311,7 @@
     const progEmailInput  = document.getElementById('prog-email-input');
     const progEmailSubmit = document.getElementById('prog-email-submit');
     const progEmailOk     = document.getElementById('prog-email-ok');
+    const progNudge       = document.getElementById('prog-newsletter-nudge');
 
     // ── helpers ──────────────────────────────────────────────
     function revealCard() {
@@ -1393,7 +1402,8 @@
       ];
       const visible   = stepMap.filter(s => !hidden.includes(s.key));
       const total     = visible.length + 1;
-      const completed = 1 + visible.filter(s => !skipped.includes(s.key) && step >= s.minStep).length;
+      const newsletterDone = (localStorage.getItem('rwu_email') && step >= 1) ? 1 : 0;
+      const completed = newsletterDone + visible.filter(s => !skipped.includes(s.key) && step >= s.minStep).length;
       const pct = total ? Math.round((completed / total) * 100) : 0;
       progPct.textContent = pct + '% Complete';
       requestAnimationFrame(() => requestAnimationFrame(() => { progBarFill.style.width = pct + '%'; }));
@@ -1401,8 +1411,16 @@
 
     function refreshDashboard() {
       const step    = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      const email   = localStorage.getItem('rwu_email');
       const hidden  = getHidden();
       const skipped = getSkipped();
+      if (email && step >= 1) {
+        progNewsletter.classList.add('done');
+        progNudge.classList.remove('show');
+      } else {
+        progNewsletter.classList.remove('done');
+        progNudge.classList.add('show');
+      }
       const items = [
         { el: progHs, key: 'handshake',  minStep: 2 },
         { el: progOt, key: 'outlier',    minStep: 3 },
@@ -1448,6 +1466,19 @@
         el.classList.add('show');                   // display:flex
         requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('animate')));
       }
+    }
+
+    function goToForm() {
+      hsProgress.classList.add('fade-out');
+      setTimeout(() => {
+        hsProgress.classList.remove('show', 'animate', 'fade-out');
+        hsCard.classList.remove('show', 'animate');
+        form.style.removeProperty('display');
+        form.style.opacity = '1';
+        form.style.transition = '';
+        setTimeout(() => { input.focus(); }, 50);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 400);
     }
 
     function goToDashboard() {
@@ -1628,6 +1659,9 @@
     // ── newsletter re-entry ────────────────────────────────────
     progNewsletter.addEventListener('click', (e) => {
       if (e.target.closest('.prog-email-wrap')) return;
+      const email = localStorage.getItem('rwu_email');
+      const step  = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      if (!email || step < 1) { goToForm(); return; }
       progEmailWrap.classList.toggle('open');
       if (progEmailWrap.classList.contains('open')) {
         setTimeout(() => progEmailInput.focus(), 350);
@@ -1670,8 +1704,24 @@
     rhSkip.addEventListener('click', () => { skipStep('rentahuman'); goToDashboard(); });
     rhHide.addEventListener('click', () => { hideStep('rentahuman'); goToDashboard(); });
     applyNowBtn.addEventListener('click', () => {
-      if (form.style.display !== 'none') { input.focus(); }
-      else { hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      if (step >= 1) { hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      localStorage.setItem('rwu_step', '0');
+      localStorage.removeItem('rwu_email');
+      form.style.transition = 'opacity 0.3s ease';
+      form.style.opacity = '0';
+      setTimeout(() => {
+        form.style.display = 'none';
+        hsApply.style.display = 'none';
+        progBarFill.style.width = '0%';
+        hsProgress.classList.add('show');
+        hsCard.classList.add('show');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          hsCard.classList.add('animate');
+          hsProgress.classList.add('animate');
+          setTimeout(refreshDashboard, 50);
+        }));
+      }, 300);
     });
 
         // ── dashboard nav ─────────────────────────────────────────
