@@ -721,6 +721,78 @@
     }
     .prog-item.done.clickable:hover .prog-item-arrow { color: rgba(255,255,255,0.65); }
 
+    /* Column layout for prog-item with sub-form */
+    .prog-item.prog-item-col { flex-direction: column; align-items: stretch; gap: 0; }
+    .prog-newsletter-row { display: flex; align-items: center; gap: 10px; width: 100%; }
+
+    /* Undo checkbox link */
+    .undo-link {
+      display: none;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      background: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 6px;
+      align-self: flex-start;
+      transition: color 0.2s;
+    }
+    .undo-link:hover { color: rgba(255,255,255,0.65); }
+    .undo-link.show { display: block; }
+
+    /* Newsletter re-entry inline form */
+    .prog-email-wrap {
+      width: 100%;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+    }
+    .prog-email-wrap.open { max-height: 50px; opacity: 1; }
+    .prog-email-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-top: 10px;
+    }
+    .prog-email-input {
+      flex: 1;
+      min-width: 0;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 7px 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+    }
+    .prog-email-input::placeholder { color: rgba(255,255,255,0.35); }
+    .prog-email-input:focus { border-color: rgba(255,255,255,0.4); }
+    .prog-email-submit {
+      flex-shrink: 0;
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .prog-email-submit:hover { background: rgba(255,255,255,0.26); }
+    .prog-email-ok {
+      display: none;
+      font-size: 12px;
+      color: #4ade80;
+      margin-top: 8px;
+    }
+
     /* Progress screen slide-out */
     .hs-progress.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
@@ -900,6 +972,7 @@
             </span>
             I&rsquo;ve already applied to Handshake
           </button>
+          <button class="undo-link" id="hs-undo">↩ I did not apply yet</button>
         </div>
         <!-- Step 3: Outlier AI -->
         <div id="ot-apply">
@@ -924,6 +997,7 @@
             </span>
             I&rsquo;ve already applied to Outlier AI
           </button>
+          <button class="undo-link" id="ot-undo">↩ I did not apply yet</button>
         </div>
         <!-- Step 4: RentAHuman AI -->
         <div id="rh-apply">
@@ -952,6 +1026,7 @@
             </span>
             I&rsquo;ve already applied to RentAHuman
           </button>
+          <button class="undo-link" id="rh-undo">↩ I did not apply yet</button>
         </div>
         <!-- Step 5: Completion screen -->
         <div class="hs-progress" id="hs-progress">
@@ -962,9 +1037,19 @@
           <p class="prog-header">🏆 Your Progress</p>
           <p class="prog-sub">Keep completing steps to unlock more resources.</p>
           <ul class="prog-list">
-            <li class="prog-item done">
-              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
-              Joined Remote Work Union Newsletter
+            <li class="prog-item done clickable prog-item-col" id="prog-newsletter">
+              <div class="prog-newsletter-row">
+                <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+                Joined Remote Work Union Newsletter
+                <span class="prog-item-arrow">→</span>
+              </div>
+              <div class="prog-email-wrap" id="prog-email-wrap">
+                <div class="prog-email-row">
+                  <input type="email" class="prog-email-input" id="prog-email-input" placeholder="Enter a different email" autocomplete="email">
+                  <button class="prog-email-submit" id="prog-email-submit">Update &rarr;</button>
+                </div>
+              </div>
+              <p class="prog-email-ok" id="prog-email-ok">&#10003; Updated!</p>
             </li>
             <li class="prog-item done anim-in clickable" id="prog-hs">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
@@ -1112,6 +1197,14 @@
     const progHs         = document.getElementById('prog-hs');
     const progOt         = document.getElementById('prog-ot');
     const progRh         = document.getElementById('prog-rh');
+    const hsUndo         = document.getElementById('hs-undo');
+    const otUndo         = document.getElementById('ot-undo');
+    const rhUndo         = document.getElementById('rh-undo');
+    const progNewsletter  = document.getElementById('prog-newsletter');
+    const progEmailWrap   = document.getElementById('prog-email-wrap');
+    const progEmailInput  = document.getElementById('prog-email-input');
+    const progEmailSubmit = document.getElementById('prog-email-submit');
+    const progEmailOk     = document.getElementById('prog-email-ok');
 
     // ── helpers ──────────────────────────────────────────────
     function revealCard() {
@@ -1149,11 +1242,18 @@
       });
     }
 
-    function checkAnimate(cb, el) {
+    let pendingAdvance = null;
+
+    function checkAnimate(cb, el, undoBtn) {
       if (el.classList.contains('checked')) return;
       el.classList.add('checked');
       hsCard.classList.add('glow');
-      setTimeout(cb, 800);
+      if (undoBtn) undoBtn.classList.add('show');
+      pendingAdvance = setTimeout(() => {
+        pendingAdvance = null;
+        if (undoBtn) undoBtn.classList.remove('show');
+        cb();
+      }, 800);
     }
 
     // ── dashboard navigation ──────────────────────────────────
@@ -1173,10 +1273,18 @@
     }
 
     function reviveView(el) {
-      if (el !== hsApply) el.classList.add('show');
-      el.classList.add('fade-out');
-      el.style.removeProperty('display');
-      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('fade-out')));
+      if (el === hsApply) {
+        // hs-apply starts at opacity:1 by default; fade-out drives it to 0 then back
+        el.classList.add('fade-out');
+        el.style.removeProperty('display');
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('fade-out')));
+      } else {
+        // ot-apply / rh-apply base CSS has opacity:0; need .show + .animate to be visible
+        el.classList.remove('animate', 'fade-out'); // start from opacity:0
+        el.style.removeProperty('display');
+        el.classList.add('show');                   // display:flex
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('animate')));
+      }
     }
 
     function goToDashboard() {
@@ -1289,7 +1397,7 @@
     });
 
     hsAlready.addEventListener('click', () => {
-      checkAnimate(showOutlier, hsCb);
+      checkAnimate(showOutlier, hsCb, hsUndo);
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
     });
@@ -1302,7 +1410,7 @@
     });
 
     otAlready.addEventListener('click', () => {
-      checkAnimate(showRentAHuman, otCb);
+      checkAnimate(showRentAHuman, otCb, otUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Current Step': 3 });
     });
@@ -1315,9 +1423,74 @@
     });
 
     rhAlready.addEventListener('click', () => {
-      checkAnimate(showProgress, rhCb);
+      checkAnimate(showProgress, rhCb, rhUndo);
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
+    });
+
+    // ── undo checkbox ─────────────────────────────────────────
+    hsUndo.addEventListener('click', () => {
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      hsCb.classList.remove('checked');
+      hsUndo.classList.remove('show');
+      hsCard.classList.remove('glow');
+      localStorage.setItem('rwu_step', '1');
+      atPatch({ 'Handshake Applied': false, 'Current Step': 1 });
+    });
+
+    otUndo.addEventListener('click', () => {
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      otCb.classList.remove('checked');
+      otUndo.classList.remove('show');
+      hsCard.classList.remove('glow');
+      localStorage.setItem('rwu_step', '2');
+      atPatch({ 'Current Step': 2 });
+    });
+
+    rhUndo.addEventListener('click', () => {
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      rhCb.classList.remove('checked');
+      rhUndo.classList.remove('show');
+      hsCard.classList.remove('glow');
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'RentAHuman Applied': false, 'Current Step': 3 });
+    });
+
+    // ── newsletter re-entry ────────────────────────────────────
+    progNewsletter.addEventListener('click', (e) => {
+      if (e.target.closest('.prog-email-wrap')) return;
+      progEmailWrap.classList.toggle('open');
+      if (progEmailWrap.classList.contains('open')) {
+        setTimeout(() => progEmailInput.focus(), 350);
+      }
+    });
+
+    progEmailWrap.addEventListener('click', e => e.stopPropagation());
+
+    progEmailInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); progEmailSubmit.click(); }
+    });
+
+    progEmailSubmit.addEventListener('click', async () => {
+      const val = progEmailInput.value.trim();
+      if (!val || !val.includes('@')) return;
+      progEmailSubmit.textContent = '...';
+      progEmailSubmit.disabled = true;
+      localStorage.setItem('rwu_email', val);
+      try {
+        await fetch('https://app.kit.com/forms/9465424/subscriptions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email_address: val })
+        });
+      } catch (_) {}
+      atPatch({ 'Email': val });
+      progEmailSubmit.textContent = 'Update →';
+      progEmailSubmit.disabled = false;
+      progEmailInput.value = '';
+      progEmailWrap.classList.remove('open');
+      progEmailOk.style.display = 'block';
+      setTimeout(() => { progEmailOk.style.display = 'none'; }, 2500);
     });
 
     // ── dashboard nav ─────────────────────────────────────────
