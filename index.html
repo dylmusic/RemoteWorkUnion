@@ -387,10 +387,14 @@
     }
     .hs-cta:hover { opacity: 0.88; transform: scale(1.02); }
     .hs-cta:active { transform: scale(1); }
-    .hs-skip {
-      margin-top: 12px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.45);
+    /* Checkbox button */
+    .hs-cb-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
       cursor: pointer;
       background: none;
       border: none;
@@ -398,7 +402,154 @@
       padding: 0;
       transition: color 0.2s;
     }
-    .hs-skip:hover { color: rgba(255,255,255,0.75); }
+    .hs-cb-btn:hover { color: rgba(255,255,255,0.85); }
+    .hs-cb {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 2px solid rgba(255,255,255,0.3);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .hs-cb-check { width: 10px; height: 8px; opacity: 0; transition: opacity 0.15s 0.1s; }
+    .hs-cb.checked {
+      background: #4ade80;
+      border-color: #4ade80;
+      animation: cbPop 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+    .hs-cb.checked .hs-cb-check { opacity: 1; }
+    @keyframes cbPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.4); }
+      70%  { transform: scale(0.88); }
+      100% { transform: scale(1); }
+    }
+    .hs-card.glow { animation: cardGlow 0.8s ease forwards; }
+    @keyframes cardGlow {
+      0%   { border-color: rgba(255,255,255,0.24); }
+      35%  { border-color: rgba(74,222,128,0.6); box-shadow: 0 0 24px rgba(74,222,128,0.25); }
+      100% { border-color: rgba(255,255,255,0.24); box-shadow: none; }
+    }
+
+    /* Apply view wrapper */
+    .hs-apply {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hs-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
+    /* Progress screen */
+    .hs-progress {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hs-progress.show { display: flex; }
+    .hs-progress.animate { opacity: 1; transform: translateY(0); }
+    .prog-header {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      align-self: center;
+      margin-bottom: 4px;
+    }
+    .prog-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      align-self: center;
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .prog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      width: 100%;
+    }
+    .prog-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .prog-item.done { color: rgba(255,255,255,0.92); }
+    .prog-item.locked { color: rgba(255,255,255,0.35); }
+    .prog-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .prog-item.done .prog-icon { background: #4ade80; }
+    .prog-item.locked .prog-icon { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); }
+    .prog-item.done .prog-icon svg { stroke: #fff; }
+    .prog-item.locked .prog-icon svg { stroke: rgba(255,255,255,0.3); }
+    .prog-item.anim-in { animation: progSlideIn 0.4s ease 0.25s both; }
+    @keyframes progSlideIn {
+      from { opacity: 0; transform: translateX(-6px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .prog-banner {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 12px;
+      width: 100%;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.55;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+    }
+    .prog-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      margin-top: 3px;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+    .prog-thanks {
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      align-self: center;
+      line-height: 1.5;
+    }
+    .prog-follow {
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+      align-self: center;
+      text-align: center;
+    }
+    .prog-follow a { color: rgba(255,255,255,0.55); text-decoration: underline; }
+    .prog-follow a:hover { color: #fff; }
 
     /* Disclaimer bar */
     .disclaimer-bar {
@@ -549,12 +700,49 @@
         Success!
       </div>
       <div class="hs-card" id="hs-card">
-        <p class="hs-tag">&#10003; You&rsquo;re in!</p>
-        <p class="hs-headline">Apply for Handshake AI</p>
-        <p class="hs-subline">Work Remote For Top AI Companies</p>
-        <span class="hs-salary">Earn $50&ndash;$200/hr</span>
-        <a class="hs-cta" id="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
-        <button class="hs-skip" id="hs-already">I&rsquo;ve already applied to Handshake</button>
+        <div class="hs-apply" id="hs-apply">
+          <p class="hs-tag">&#10003; You&rsquo;re in!</p>
+          <p class="hs-headline">Apply for Handshake AI</p>
+          <p class="hs-subline">Work Remote For Top AI Companies</p>
+          <span class="hs-salary">Earn $50&ndash;$200/hr</span>
+          <a class="hs-cta" id="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
+          <button class="hs-cb-btn" id="hs-already">
+            <span class="hs-cb" id="hs-cb">
+              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,4 3.8,7 9,1"/>
+              </svg>
+            </span>
+            I&rsquo;ve already applied to Handshake
+          </button>
+        </div>
+        <div class="hs-progress" id="hs-progress">
+          <p class="prog-header">🏆 Your Progress</p>
+          <p class="prog-sub">Keep completing steps to unlock more resources.</p>
+          <ul class="prog-list">
+            <li class="prog-item done">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Joined Remote Work Union Newsletter
+            </li>
+            <li class="prog-item done anim-in">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Applied to Handshake AI
+            </li>
+            <li class="prog-item locked">
+              <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
+              More opportunities coming soon&hellip;
+            </li>
+            <li class="prog-item locked">
+              <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
+              More opportunities coming soon&hellip;
+            </li>
+          </ul>
+          <div class="prog-banner">
+            <span class="prog-pulse"></span>
+            <span>We&rsquo;re always adding new resources and opportunities for remote workers. Check back soon!</span>
+          </div>
+          <p class="prog-thanks">Thanks for being an early member of Remote Work Union. 🙌</p>
+          <p class="prog-follow">Follow <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer">@RemoteWorkUnion on X</a> for real-time updates</p>
+        </div>
       </div>
     </div>
 
@@ -642,6 +830,9 @@
     const hsCard = document.getElementById('hs-card');
     const hsCta = document.getElementById('hs-cta');
     const hsAlready = document.getElementById('hs-already');
+    const hsCb = document.getElementById('hs-cb');
+    const hsApply = document.getElementById('hs-apply');
+    const hsProgress = document.getElementById('hs-progress');
     const disclaimerLink = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
     const modalClose = document.getElementById('modal-close');
@@ -653,13 +844,25 @@
       requestAnimationFrame(() => requestAnimationFrame(() => hsCard.classList.add('animate')));
     }
 
+    function showProgress() {
+      hsApply.classList.add('fade-out');
+      setTimeout(() => {
+        hsApply.style.display = 'none';
+        hsCard.classList.remove('glow');
+        hsProgress.classList.add('show');
+        requestAnimationFrame(() => requestAnimationFrame(() => hsProgress.classList.add('animate')));
+      }, 400);
+    }
+
     // Returning user check
     (function() {
       const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
-      if (step >= 2) {
-        const wrap = form.closest('.form-wrap');
-        if (wrap) wrap.style.display = 'none';
-      } else if (step === 1) {
+      if (step >= 3) {
+        form.style.display = 'none';
+        hsCard.classList.add('show', 'animate');
+        hsApply.style.display = 'none';
+        hsProgress.classList.add('show', 'animate');
+      } else if (step >= 1) {
         form.style.display = 'none';
         hsCard.classList.add('show', 'animate');
       }
@@ -707,11 +910,12 @@
     });
 
     hsAlready.addEventListener('click', () => {
-      localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
-      hsCard.style.transition = 'opacity 0.3s ease';
-      hsCard.style.opacity = '0';
-      setTimeout(() => { hsCard.style.display = 'none'; }, 300);
+      if (hsCb.classList.contains('checked')) return;
+      hsCb.classList.add('checked');
+      hsCard.classList.add('glow');
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'Handshake Applied': true, 'Current Step': 3 });
+      setTimeout(showProgress, 800);
     });
 
     disclaimerLink.addEventListener('click', (e) => {
