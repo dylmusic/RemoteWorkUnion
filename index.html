@@ -726,6 +726,9 @@
     .prog-item.skipped .prog-icon { background: rgba(245,158,11,0.25); border: 1px solid rgba(245,158,11,0.4); }
     .prog-item.skipped .prog-icon svg { stroke: #F59E0B; }
     .prog-item.skipped.clickable:hover { filter: brightness(1.12); }
+    .prog-item:not(.done):not(.skipped):not(.locked) { color: rgba(255,255,255,0.6); }
+    .prog-item:not(.done):not(.skipped):not(.locked) .prog-icon { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); }
+    .prog-item:not(.done):not(.skipped):not(.locked) .prog-icon svg { stroke: rgba(255,255,255,0.22); }
     .prog-skipped-badge {
       display: none;
       font-size: 10px;
@@ -752,7 +755,8 @@
       cursor: pointer;
       padding: 0;
       margin-top: 5px;
-      align-self: flex-start;
+      align-self: stretch;
+      text-align: center;
       transition: color 0.2s;
     }
     .card-action-link:hover { color: rgba(255,255,255,0.6); }
@@ -808,7 +812,8 @@
       cursor: pointer;
       padding: 0;
       margin-top: 6px;
-      align-self: flex-start;
+      align-self: stretch;
+      text-align: center;
       transition: color 0.2s;
     }
     .undo-link:hover { color: rgba(255,255,255,0.65); }
