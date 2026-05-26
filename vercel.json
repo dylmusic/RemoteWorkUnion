@@ -8,12 +8,20 @@
     {
       "src": "api/airtable.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/og.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/airtable",
       "dest": "/api/airtable.js"
+    },
+    {
+      "src": "/og-image",
+      "dest": "/api/og.js"
     },
     {
       "src": "/(.*)",
