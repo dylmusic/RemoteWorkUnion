@@ -8,15 +8,32 @@ module.exports = (req, res) => {
       </linearGradient>
     </defs>
     <rect width="1200" height="630" fill="url(#bg)"/>
-    <rect x="80" y="80" width="1040" height="470" rx="24" fill="rgba(255,255,255,0.08)"/>
-    <text x="600" y="220" font-family="Arial Black, sans-serif" font-size="32" font-weight="900" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="4">REMOTE WORK UNION</text>
-    <text x="600" y="340" font-family="Arial Black, sans-serif" font-size="88" font-weight="900" fill="white" text-anchor="middle">Find Remote</text>
-    <text x="600" y="440" font-family="Arial Black, sans-serif" font-size="88" font-weight="900" fill="white" text-anchor="middle">Work Jobs</text>
-    <text x="600" y="510" font-family="Arial, sans-serif" font-size="32" fill="rgba(255,255,255,0.75)" text-anchor="middle">Free newsletter · Job listings · Hiring tips · Resume advice</text>
-    <text x="600" y="570" font-family="Arial, sans-serif" font-size="26" fill="rgba(255,255,255,0.5)" text-anchor="middle">remoteworkunion.com</text>
+
+    <!-- Logo card -->
+    <rect x="524" y="60" width="152" height="152" rx="28" fill="white"/>
+    <!-- RM text in logo -->
+    <text x="600" y="170" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" fill="#1A6DFF" text-anchor="middle">RM</text>
+    <!-- Pencil lines under RM -->
+    <rect x="544" y="182" width="112" height="6" rx="3" fill="rgba(26,109,255,0.25)"/>
+    <rect x="544" y="194" width="90" height="6" rx="3" fill="rgba(26,109,255,0.2)"/>
+    <rect x="544" y="206" width="100" height="6" rx="3" fill="rgba(26,109,255,0.15)"/>
+
+    <!-- Brand name -->
+    <text x="600" y="275" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="4">REMOTE WORK UNION</text>
+
+    <!-- Main headline -->
+    <text x="600" y="370" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" fill="white" text-anchor="middle">Find Remote</text>
+    <text x="600" y="465" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" fill="white" text-anchor="middle">Work Jobs</text>
+
+    <!-- Subline -->
+    <text x="600" y="530" font-family="Arial, sans-serif" font-size="30" fill="rgba(255,255,255,0.75)" text-anchor="middle">Job listings · AI companies · Resume tips · Free to join</text>
+
+    <!-- URL -->
+    <text x="600" y="590" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.45)" text-anchor="middle">remoteworkunion.com</text>
   </svg>`;
 
   res.setHeader('Content-Type', 'image/svg+xml');
   res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.status(200).send(svg);
 };
