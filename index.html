@@ -753,6 +753,23 @@
     .prog-item.skipped .prog-icon { background: rgba(245,158,11,0.25); border: 1px solid rgba(245,158,11,0.4); }
     .prog-item.skipped .prog-icon svg { stroke: #F59E0B; }
     .prog-item.skipped.clickable:hover { filter: brightness(1.12); }
+    .prog-next-btn {
+      display: none;
+      margin-left: auto;
+      background: #10B981;
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 16px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .prog-next-btn.show { display: inline-flex; align-items: center; }
+    .prog-next-btn:hover { background: #059669; box-shadow: 0 2px 8px rgba(16,185,129,0.35); }
     .prog-item:not(.done):not(.skipped):not(.locked) { color: rgba(255,255,255,0.6); }
     .prog-item:not(.done):not(.skipped):not(.locked) .prog-icon { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); }
     .prog-item:not(.done):not(.skipped):not(.locked) .prog-icon svg { stroke: rgba(255,255,255,0.22); }
@@ -1160,7 +1177,8 @@
               <div class="prog-newsletter-row">
                 <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
                 Joined Remote Work Union Newsletter
-                <span class="prog-item-arrow">→</span>
+                <span class="prog-item-arrow" id="prog-newsletter-arrow">→</span>
+                <button class="prog-next-btn" id="prog-newsletter-next">Next &rarr;</button>
               </div>
               <div class="prog-email-wrap" id="prog-email-wrap">
                 <div class="prog-email-row">
@@ -1176,18 +1194,21 @@
               Applied to Handshake AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-hs-next">Next &rarr;</button>
             </li>
             <li class="prog-item done anim-in clickable" id="prog-ot" style="animation-delay:0.45s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to Outlier AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
             </li>
             <li class="prog-item done anim-in clickable" id="prog-rh" style="animation-delay:0.65s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to RentAHuman AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-rh-next">Next &rarr;</button>
             </li>
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
@@ -1339,7 +1360,12 @@
     const progEmailInput  = document.getElementById('prog-email-input');
     const progEmailSubmit = document.getElementById('prog-email-submit');
     const progEmailOk     = document.getElementById('prog-email-ok');
-    const progNudge          = document.getElementById('prog-newsletter-nudge');
+    const progNudge              = document.getElementById('prog-newsletter-nudge');
+    const progNewsletterArrow    = document.getElementById('prog-newsletter-arrow');
+    const progNewsletterNext     = document.getElementById('prog-newsletter-next');
+    const progHsNext             = document.getElementById('prog-hs-next');
+    const progOtNext             = document.getElementById('prog-ot-next');
+    const progRhNext             = document.getElementById('prog-rh-next');
     const hiddenRolesSection = document.getElementById('hidden-roles-section');
     const hiddenRolesToggle  = document.getElementById('hidden-roles-toggle');
     const hiddenRolesList    = document.getElementById('hidden-roles-list');
@@ -1469,7 +1495,36 @@
         }
       });
       refreshHiddenRoles();
+      updateNextButton();
       updateProgressBar();
+    }
+
+    function updateNextButton() {
+      const step    = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      const email   = localStorage.getItem('rwu_email');
+      const hidden  = getHidden();
+      const skipped = getSkipped();
+      const candidates = [
+        { nextBtn: progNewsletterNext, arrow: progNewsletterArrow,
+          isIncomplete: !email || step < 1 },
+        { nextBtn: progHsNext, arrow: progHs.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && step < 2 },
+        { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && step < 3 },
+        { nextBtn: progRhNext, arrow: progRh.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('rentahuman') && !skipped.includes('rentahuman') && step < 4 },
+      ];
+      let assigned = false;
+      candidates.forEach(({ nextBtn, arrow, isIncomplete }) => {
+        if (isIncomplete && !assigned) {
+          nextBtn.classList.add('show');
+          if (arrow) arrow.style.display = 'none';
+          assigned = true;
+        } else {
+          nextBtn.classList.remove('show');
+          if (arrow) arrow.style.removeProperty('display');
+        }
+      });
     }
 
     function refreshHiddenRoles() {
@@ -1783,6 +1838,10 @@
     progHs.addEventListener('click', () => goToCard(hsApply));
     progOt.addEventListener('click', () => goToCard(otApply));
     progRh.addEventListener('click', () => goToCard(rhApply));
+    progNewsletterNext.addEventListener('click', (e) => { e.stopPropagation(); goToForm(); });
+    progHsNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(hsApply); });
+    progOtNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(otApply); });
+    progRhNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(rhApply); });
 
     // ── modal ─────────────────────────────────────────────────
     disclaimerLink.addEventListener('click', (e) => {
