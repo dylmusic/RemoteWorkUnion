@@ -120,7 +120,7 @@
     }
 
     /* Form */
-    .form-wrap { margin-top: 32px; width: 100%; }
+    .form-wrap { margin-top: 32px; width: 100%; position: relative; }
 
     .email-row {
       display: flex;
@@ -551,6 +551,79 @@
     .prog-follow a { color: rgba(255,255,255,0.55); text-decoration: underline; }
     .prog-follow a:hover { color: #fff; }
 
+    /* Step progress dots */
+    .step-dots {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .step-dot.done { background: #4ade80; }
+    .step-dot.current {
+      background: #60a5fa;
+      animation: dotActivePulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dotActivePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(96,165,250,0.5); }
+      50% { box-shadow: 0 0 0 5px rgba(96,165,250,0); }
+    }
+
+    /* Outlier view */
+    #ot-apply {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #ot-apply.show { display: flex; }
+    #ot-apply.animate { opacity: 1; transform: translateY(0); }
+    #ot-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
+    /* Notification badge */
+    .notif-badge {
+      position: absolute;
+      top: -14px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #4ade80;
+      color: #003BB5;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 8px 5px 10px;
+      border-radius: 100px;
+      z-index: 10;
+      animation: badgePulse 2.5s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      50% { box-shadow: 0 0 0 7px rgba(74,222,128,0); }
+    }
+    .notif-label { cursor: pointer; }
+    .notif-x {
+      background: none;
+      border: none;
+      color: rgba(0,59,181,0.55);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 0 0 2px;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .notif-x:hover { color: #003BB5; }
+
     /* Disclaimer bar */
     .disclaimer-bar {
       margin-top: 32px;
@@ -680,6 +753,10 @@
 
     <!-- 6. Email form -->
     <div class="form-wrap">
+      <div class="notif-badge" id="notif-badge" style="display:none">
+        <span class="notif-label" id="notif-label">🆕 New opportunity available!</span>
+        <button class="notif-x" id="notif-x" aria-label="Dismiss">&times;</button>
+      </div>
       <form action="https://app.kit.com/forms/9465424/subscriptions" method="post" data-sv-form="9465424" data-uid="10575c54d0" class="email-row" id="form">
         <input
           type="email"
@@ -700,7 +777,14 @@
         Success!
       </div>
       <div class="hs-card" id="hs-card">
+        <!-- Step 2: Handshake -->
         <div class="hs-apply" id="hs-apply">
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+          </div>
           <p class="hs-tag">&#10003; You&rsquo;re in!</p>
           <p class="hs-headline">Apply for Handshake AI</p>
           <p class="hs-subline">Work Remote For Top AI Companies</p>
@@ -715,6 +799,29 @@
             I&rsquo;ve already applied to Handshake
           </button>
         </div>
+        <!-- Step 3: Outlier AI -->
+        <div id="ot-apply">
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+            <span class="step-dot"></span>
+          </div>
+          <p class="hs-tag">&#10003; Step 3 of 4</p>
+          <p class="hs-headline">Apply to Outlier AI</p>
+          <p class="hs-subline">Work remotely training AI models for top tech companies</p>
+          <span class="hs-salary">Earn $20&ndash;$50/hr</span>
+          <a class="hs-cta" id="ot-cta" href="https://app.outlier.ai/expert/referrals/link/FoX8qlAiDvvf4s1zZi_a-6aidSA" target="_blank" rel="noopener noreferrer">Get My Referral &rarr;</a>
+          <button class="hs-cb-btn" id="ot-already">
+            <span class="hs-cb" id="ot-cb">
+              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,4 3.8,7 9,1"/>
+              </svg>
+            </span>
+            I&rsquo;ve already applied to Outlier AI
+          </button>
+        </div>
+        <!-- Step 4: Completion screen -->
         <div class="hs-progress" id="hs-progress">
           <p class="prog-header">🏆 Your Progress</p>
           <p class="prog-sub">Keep completing steps to unlock more resources.</p>
@@ -726,6 +833,10 @@
             <li class="prog-item done anim-in">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to Handshake AI
+            </li>
+            <li class="prog-item done anim-in" style="animation-delay:0.45s">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Applied to Outlier AI
             </li>
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
@@ -794,6 +905,8 @@
   </div>
 
   <script>
+    const TOTAL_STEPS = 4;
+
     let atId = localStorage.getItem('rwu_record_id') || null;
 
     async function atCreate(email) {
@@ -824,50 +937,100 @@
       } catch (_) {}
     }
 
-    const form = document.getElementById('form');
-    const input = document.getElementById('email');
-    const success = document.getElementById('success');
-    const hsCard = document.getElementById('hs-card');
-    const hsCta = document.getElementById('hs-cta');
-    const hsAlready = document.getElementById('hs-already');
-    const hsCb = document.getElementById('hs-cb');
-    const hsApply = document.getElementById('hs-apply');
-    const hsProgress = document.getElementById('hs-progress');
-    const disclaimerLink = document.getElementById('disclaimer-link');
+    const form        = document.getElementById('form');
+    const input       = document.getElementById('email');
+    const success     = document.getElementById('success');
+    const hsCard      = document.getElementById('hs-card');
+    const hsApply     = document.getElementById('hs-apply');
+    const hsCb        = document.getElementById('hs-cb');
+    const hsCta       = document.getElementById('hs-cta');
+    const hsAlready   = document.getElementById('hs-already');
+    const otApply     = document.getElementById('ot-apply');
+    const otCb        = document.getElementById('ot-cb');
+    const otCta       = document.getElementById('ot-cta');
+    const otAlready   = document.getElementById('ot-already');
+    const hsProgress  = document.getElementById('hs-progress');
+    const notifBadge  = document.getElementById('notif-badge');
+    const notifLabel  = document.getElementById('notif-label');
+    const notifX      = document.getElementById('notif-x');
+    const disclaimerLink  = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
-    const modalClose = document.getElementById('modal-close');
+    const modalClose      = document.getElementById('modal-close');
 
-    function showHsCard() {
+    // ── helpers ──────────────────────────────────────────────
+    function revealCard() {
       success.classList.remove('show', 'fade-in');
       success.style.cssText = '';
       hsCard.classList.add('show');
       requestAnimationFrame(() => requestAnimationFrame(() => hsCard.classList.add('animate')));
     }
 
-    function showProgress() {
-      hsApply.classList.add('fade-out');
-      setTimeout(() => {
-        hsApply.style.display = 'none';
-        hsCard.classList.remove('glow');
-        hsProgress.classList.add('show');
-        requestAnimationFrame(() => requestAnimationFrame(() => hsProgress.classList.add('animate')));
-      }, 400);
+    function fadeOut(el, cb) {
+      el.classList.add('fade-out');
+      setTimeout(() => { el.style.display = 'none'; hsCard.classList.remove('glow'); cb(); }, 400);
     }
 
-    // Returning user check
+    function showView(el) {
+      el.classList.add('show');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('animate')));
+    }
+
+    function showOutlier() {
+      fadeOut(hsApply, () => showView(otApply));
+    }
+
+    function showProgress() {
+      fadeOut(otApply, () => {
+        showView(hsProgress);
+        localStorage.setItem('rwu_step', '4');
+        atPatch({ 'Current Step': 4 });
+      });
+    }
+
+    function checkAnimate(cb, el) {
+      if (el.classList.contains('checked')) return;
+      el.classList.add('checked');
+      hsCard.classList.add('glow');
+      setTimeout(cb, 800);
+    }
+
+    // ── returning user ────────────────────────────────────────
     (function() {
       const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
-      if (step >= 3) {
-        form.style.display = 'none';
-        hsCard.classList.add('show', 'animate');
+      if (step <= 0) return;
+
+      form.style.display = 'none';
+      hsCard.classList.add('show', 'animate');
+
+      if (step >= 4) {
         hsApply.style.display = 'none';
         hsProgress.classList.add('show', 'animate');
-      } else if (step >= 1) {
-        form.style.display = 'none';
-        hsCard.classList.add('show', 'animate');
+      } else if (step >= 3) {
+        hsApply.style.display = 'none';
+        hsProgress.classList.add('show', 'animate');
+      } else if (step >= 2) {
+        hsApply.style.display = 'none';
+        otApply.classList.add('show', 'animate');
+      }
+      // step 1: Handshake view already visible by default
+
+      // Show notification badge if there are incomplete steps
+      if (step < TOTAL_STEPS) {
+        setTimeout(() => { notifBadge.style.display = 'flex'; }, 1000);
       }
     })();
 
+    // ── notification badge ────────────────────────────────────
+    notifLabel.addEventListener('click', () => {
+      notifBadge.style.display = 'none';
+      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      // Scroll card into view
+      hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    notifX.addEventListener('click', () => { notifBadge.style.display = 'none'; });
+
+    // ── form submit ───────────────────────────────────────────
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const val = input.value.trim();
@@ -879,7 +1042,6 @@
 
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
-
       atCreate(val);
 
       try {
@@ -899,38 +1061,46 @@
         setTimeout(() => {
           success.style.transition = 'opacity 0.3s ease';
           success.style.opacity = '0';
-          setTimeout(() => { showHsCard(); }, 300);
+          setTimeout(() => { revealCard(); }, 300);
         }, 900);
       }, 300);
     });
 
+    // ── Handshake card ────────────────────────────────────────
     hsCta.addEventListener('click', () => {
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Current Step': 2 });
+      setTimeout(showOutlier, 600);
     });
 
     hsAlready.addEventListener('click', () => {
-      if (hsCb.classList.contains('checked')) return;
-      hsCb.classList.add('checked');
-      hsCard.classList.add('glow');
-      localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Handshake Applied': true, 'Current Step': 3 });
-      setTimeout(showProgress, 800);
+      checkAnimate(showOutlier, hsCb);
+      localStorage.setItem('rwu_step', '2');
+      atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
     });
 
+    // ── Outlier card ──────────────────────────────────────────
+    otCta.addEventListener('click', () => {
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'Current Step': 3 });
+      setTimeout(showProgress, 600);
+    });
+
+    otAlready.addEventListener('click', () => {
+      checkAnimate(showProgress, otCb);
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'Current Step': 3 });
+    });
+
+    // ── modal ─────────────────────────────────────────────────
     disclaimerLink.addEventListener('click', (e) => {
       e.preventDefault();
       disclaimerModal.classList.add('open');
     });
-
-    modalClose.addEventListener('click', () => {
-      disclaimerModal.classList.remove('open');
-    });
-
+    modalClose.addEventListener('click', () => disclaimerModal.classList.remove('open'));
     disclaimerModal.addEventListener('click', (e) => {
       if (e.target === disclaimerModal) disclaimerModal.classList.remove('open');
     });
-
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') disclaimerModal.classList.remove('open');
     });
