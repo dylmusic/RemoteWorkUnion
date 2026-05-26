@@ -387,6 +387,18 @@
     }
     .hs-cta:hover { opacity: 0.88; transform: scale(1.02); }
     .hs-cta:active { transform: scale(1); }
+    .hs-skip {
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .hs-skip:hover { color: rgba(255,255,255,0.75); }
 
     /* Disclaimer bar */
     .disclaimer-bar {
@@ -541,7 +553,8 @@
         <p class="hs-headline">Apply for Handshake AI</p>
         <p class="hs-subline">Work Remote For Top AI Companies</p>
         <span class="hs-salary">Earn $50&ndash;$200/hr</span>
-        <a class="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get My Referral &rarr;</a>
+        <a class="hs-cta" id="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
+        <button class="hs-skip" id="hs-already">I&rsquo;ve already applied to Handshake</button>
       </div>
     </div>
 
@@ -593,13 +606,64 @@
   </div>
 
   <script>
+    let atId = localStorage.getItem('rwu_record_id') || null;
+
+    async function atCreate(email) {
+      try {
+        const r = await fetch('/api/airtable', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'create', fields: {
+            'Email': email,
+            'Joined Date': new Date().toISOString().split('T')[0],
+            'Handshake Applied': false,
+            'Current Step': 1
+          }})
+        });
+        const d = await r.json();
+        if (d.id) { atId = d.id; localStorage.setItem('rwu_record_id', d.id); }
+      } catch (_) {}
+    }
+
+    async function atPatch(fields) {
+      if (!atId) return;
+      try {
+        await fetch('/api/airtable', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'patch', recordId: atId, fields })
+        });
+      } catch (_) {}
+    }
+
     const form = document.getElementById('form');
     const input = document.getElementById('email');
     const success = document.getElementById('success');
     const hsCard = document.getElementById('hs-card');
+    const hsCta = document.getElementById('hs-cta');
+    const hsAlready = document.getElementById('hs-already');
     const disclaimerLink = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
     const modalClose = document.getElementById('modal-close');
+
+    function showHsCard() {
+      success.classList.remove('show', 'fade-in');
+      success.style.cssText = '';
+      hsCard.classList.add('show');
+      requestAnimationFrame(() => requestAnimationFrame(() => hsCard.classList.add('animate')));
+    }
+
+    // Returning user check
+    (function() {
+      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      if (step >= 2) {
+        const wrap = form.closest('.form-wrap');
+        if (wrap) wrap.style.display = 'none';
+      } else if (step === 1) {
+        form.style.display = 'none';
+        hsCard.classList.add('show', 'animate');
+      }
+    })();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -610,6 +674,11 @@
       btn.textContent = '...';
       btn.disabled = true;
 
+      localStorage.setItem('rwu_email', val);
+      localStorage.setItem('rwu_step', '1');
+
+      atCreate(val);
+
       try {
         await fetch('https://app.kit.com/forms/9465424/subscriptions', {
           method: 'POST',
@@ -618,26 +687,31 @@
         });
       } catch (_) {}
 
-      // Fade out form
       form.style.transition = 'opacity 0.3s ease';
       form.style.opacity = '0';
       setTimeout(() => {
         form.style.display = 'none';
-        // Show success flash
         success.classList.add('show');
         requestAnimationFrame(() => requestAnimationFrame(() => success.classList.add('fade-in')));
-        // After 900ms, cross-fade to Handshake card
         setTimeout(() => {
           success.style.transition = 'opacity 0.3s ease';
           success.style.opacity = '0';
-          setTimeout(() => {
-            success.classList.remove('show', 'fade-in');
-            success.style.cssText = '';
-            hsCard.classList.add('show');
-            requestAnimationFrame(() => requestAnimationFrame(() => hsCard.classList.add('animate')));
-          }, 300);
+          setTimeout(() => { showHsCard(); }, 300);
         }, 900);
       }, 300);
+    });
+
+    hsCta.addEventListener('click', () => {
+      localStorage.setItem('rwu_step', '2');
+      atPatch({ 'Current Step': 2 });
+    });
+
+    hsAlready.addEventListener('click', () => {
+      localStorage.setItem('rwu_step', '2');
+      atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
+      hsCard.style.transition = 'opacity 0.3s ease';
+      hsCard.style.opacity = '0';
+      setTimeout(() => { hsCard.style.display = 'none'; }, 300);
     });
 
     disclaimerLink.addEventListener('click', (e) => {

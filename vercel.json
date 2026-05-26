@@ -4,9 +4,17 @@
     {
       "src": "index.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/airtable.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/airtable",
+      "dest": "/api/airtable.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/$1"
