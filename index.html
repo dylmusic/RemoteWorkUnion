@@ -1024,7 +1024,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
-        Success!
+        You're in!
       </div>
       <div class="hs-card" id="hs-card">
         <!-- Step 2: Handshake -->
@@ -1489,20 +1489,10 @@
       if (step <= 0) return;
 
       form.style.display = 'none';
+      hsApply.style.display = 'none';
       hsCard.classList.add('show', 'animate');
-
-      if (step >= 4) {
-        hsApply.style.display = 'none';
-        hsProgress.classList.add('show', 'animate');
-        setTimeout(refreshDashboard, 100);
-      } else if (step >= 3) {
-        hsApply.style.display = 'none';
-        rhApply.classList.add('show', 'animate');
-      } else if (step >= 2) {
-        hsApply.style.display = 'none';
-        otApply.classList.add('show', 'animate');
-      }
-      // step 1: Handshake view visible by default
+      hsProgress.classList.add('show', 'animate');
+      setTimeout(refreshDashboard, 100);
 
       if (step < TOTAL_STEPS) {
         setTimeout(() => { notifBadge.style.display = 'flex'; }, 1000);
@@ -1548,8 +1538,20 @@
         setTimeout(() => {
           success.style.transition = 'opacity 0.3s ease';
           success.style.opacity = '0';
-          setTimeout(() => { revealCard(); }, 300);
-        }, 900);
+          setTimeout(() => {
+            success.classList.remove('show', 'fade-in');
+            success.style.cssText = '';
+            hsApply.style.display = 'none';
+            progBarFill.style.width = '0%';
+            hsProgress.classList.add('show');
+            hsCard.classList.add('show');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              hsCard.classList.add('animate');
+              hsProgress.classList.add('animate');
+              setTimeout(refreshDashboard, 50);
+            }));
+          }, 300);
+        }, 1000);
       }, 300);
     });
 
