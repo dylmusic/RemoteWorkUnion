@@ -26,7 +26,7 @@ module.exports = (req, res) => {
     <text x="600" y="465" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" fill="white" text-anchor="middle">Work Jobs</text>
 
     <!-- Subline -->
-    <text x="600" y="530" font-family="Arial, sans-serif" font-size="30" fill="rgba(255,255,255,0.75)" text-anchor="middle">Job listings · AI companies · Resume tips · Free to join</text>
+    <text x="600" y="530" font-family="Arial, sans-serif" font-size="30" fill="rgba(255,255,255,0.75)" text-anchor="middle">AI Training · Data Annotation · Prompt Writing · Remote Jobs</text>
 
     <!-- URL -->
     <text x="600" y="590" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.45)" text-anchor="middle">remoteworkunion.com</text>
