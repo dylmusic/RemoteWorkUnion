@@ -589,6 +589,42 @@
     #ot-apply.animate { opacity: 1; transform: translateY(0); }
     #ot-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
+    /* RentAHuman view */
+    #rh-apply {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #rh-apply.show { display: flex; }
+    #rh-apply.animate { opacity: 1; transform: translateY(0); }
+    #rh-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+    .hs-badge-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hs-badge-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(74,222,128,0.15);
+      border: 1px solid rgba(74,222,128,0.3);
+      color: #4ade80;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .hs-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+
     /* Notification badge */
     .notif-badge {
       position: absolute;
@@ -784,6 +820,7 @@
             <span class="step-dot current"></span>
             <span class="step-dot"></span>
             <span class="step-dot"></span>
+            <span class="step-dot"></span>
           </div>
           <p class="hs-tag">&#10003; You&rsquo;re in!</p>
           <p class="hs-headline">Apply for Handshake AI</p>
@@ -806,8 +843,9 @@
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
             <span class="step-dot"></span>
+            <span class="step-dot"></span>
           </div>
-          <p class="hs-tag">&#10003; Step 3 of 4</p>
+          <p class="hs-tag">&#10003; Step 3 of 5</p>
           <p class="hs-headline">Apply to Outlier AI</p>
           <p class="hs-subline">Work remotely training AI models for top tech companies</p>
           <span class="hs-salary">Earn $20&ndash;$50/hr</span>
@@ -821,7 +859,34 @@
             I&rsquo;ve already applied to Outlier AI
           </button>
         </div>
-        <!-- Step 4: Completion screen -->
+        <!-- Step 4: RentAHuman AI -->
+        <div id="rh-apply">
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+            <span class="step-dot"></span>
+          </div>
+          <p class="hs-tag">🟢 Beginner Friendly</p>
+          <p class="hs-headline">Get Started in Remote Work</p>
+          <p class="hs-subline">Record simple household tasks from home &mdash; equipment provided</p>
+          <div class="hs-badge-row">
+            <span class="hs-badge-pill">💰 Earn $13/hr</span>
+            <span class="hs-badge-pill">🏠 Work From Home</span>
+          </div>
+          <p class="hs-note">Perfect for beginners. No experience required.</p>
+          <a class="hs-cta" id="rh-cta" href="https://rentahuman.ai/bounties/dVrMLRQK74kzWmbLeQ3z?ref=K4PCWP" target="_blank" rel="noopener noreferrer">Apply Now &rarr;</a>
+          <button class="hs-cb-btn" id="rh-already">
+            <span class="hs-cb" id="rh-cb">
+              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,4 3.8,7 9,1"/>
+              </svg>
+            </span>
+            I&rsquo;ve already applied to RentAHuman
+          </button>
+        </div>
+        <!-- Step 5: Completion screen -->
         <div class="hs-progress" id="hs-progress">
           <p class="prog-header">🏆 Your Progress</p>
           <p class="prog-sub">Keep completing steps to unlock more resources.</p>
@@ -837,6 +902,10 @@
             <li class="prog-item done anim-in" style="animation-delay:0.45s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to Outlier AI
+            </li>
+            <li class="prog-item done anim-in" style="animation-delay:0.65s">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Applied to RentAHuman AI
             </li>
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
@@ -905,7 +974,7 @@
   </div>
 
   <script>
-    const TOTAL_STEPS = 4;
+    const TOTAL_STEPS = 5;
 
     let atId = localStorage.getItem('rwu_record_id') || null;
 
@@ -918,6 +987,7 @@
             'Email': email,
             'Joined Date': new Date().toISOString().split('T')[0],
             'Handshake Applied': false,
+            'RentAHuman Applied': false,
             'Current Step': 1
           }})
         });
@@ -949,6 +1019,10 @@
     const otCb        = document.getElementById('ot-cb');
     const otCta       = document.getElementById('ot-cta');
     const otAlready   = document.getElementById('ot-already');
+    const rhApply     = document.getElementById('rh-apply');
+    const rhCb        = document.getElementById('rh-cb');
+    const rhCta       = document.getElementById('rh-cta');
+    const rhAlready   = document.getElementById('rh-already');
     const hsProgress  = document.getElementById('hs-progress');
     const notifBadge  = document.getElementById('notif-badge');
     const notifLabel  = document.getElementById('notif-label');
@@ -979,11 +1053,15 @@
       fadeOut(hsApply, () => showView(otApply));
     }
 
+    function showRentAHuman() {
+      fadeOut(otApply, () => showView(rhApply));
+    }
+
     function showProgress() {
-      fadeOut(otApply, () => {
+      fadeOut(rhApply, () => {
         showView(hsProgress);
-        localStorage.setItem('rwu_step', '4');
-        atPatch({ 'Current Step': 4 });
+        localStorage.setItem('rwu_step', '5');
+        atPatch({ 'Current Step': 5 });
       });
     }
 
@@ -1007,14 +1085,13 @@
         hsProgress.classList.add('show', 'animate');
       } else if (step >= 3) {
         hsApply.style.display = 'none';
-        hsProgress.classList.add('show', 'animate');
+        rhApply.classList.add('show', 'animate');
       } else if (step >= 2) {
         hsApply.style.display = 'none';
         otApply.classList.add('show', 'animate');
       }
-      // step 1: Handshake view already visible by default
+      // step 1: Handshake view visible by default
 
-      // Show notification badge if there are incomplete steps
       if (step < TOTAL_STEPS) {
         setTimeout(() => { notifBadge.style.display = 'flex'; }, 1000);
       }
@@ -1023,8 +1100,6 @@
     // ── notification badge ────────────────────────────────────
     notifLabel.addEventListener('click', () => {
       notifBadge.style.display = 'none';
-      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
-      // Scroll card into view
       hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
@@ -1083,13 +1158,26 @@
     otCta.addEventListener('click', () => {
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Current Step': 3 });
-      setTimeout(showProgress, 600);
+      setTimeout(showRentAHuman, 600);
     });
 
     otAlready.addEventListener('click', () => {
-      checkAnimate(showProgress, otCb);
+      checkAnimate(showRentAHuman, otCb);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Current Step': 3 });
+    });
+
+    // ── RentAHuman card ───────────────────────────────────────
+    rhCta.addEventListener('click', () => {
+      localStorage.setItem('rwu_step', '4');
+      atPatch({ 'Current Step': 4 });
+      setTimeout(showProgress, 600);
+    });
+
+    rhAlready.addEventListener('click', () => {
+      checkAnimate(showProgress, rhCb);
+      localStorage.setItem('rwu_step', '4');
+      atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
     });
 
     // ── modal ─────────────────────────────────────────────────
