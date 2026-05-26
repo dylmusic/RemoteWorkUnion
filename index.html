@@ -1537,6 +1537,7 @@
       });
       refreshHiddenRoles();
       updateNextButton();
+      applyNowBtn.textContent = 'Learn More →';
       updateProgressBar();
     }
 
@@ -1637,6 +1638,7 @@
         form.style.removeProperty('display');
         form.style.opacity = '1';
         form.style.transition = '';
+        applyNowBtn.innerHTML = 'Apply For Jobs Now &rarr;';
         setTimeout(() => { input.focus(); }, 50);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 400);
@@ -1854,6 +1856,7 @@
     rhSkip.addEventListener('click', () => { skipStep('rentahuman'); goToDashboard(); });
     rhHide.addEventListener('click', () => { hideStep('rentahuman'); goToDashboard(); });
     applyNowBtn.addEventListener('click', () => {
+      if (hsProgress.classList.contains('show')) { window.location.href = '/work'; return; }
       const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
       if (step >= 1) { hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
       localStorage.setItem('rwu_step', '0');

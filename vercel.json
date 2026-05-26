@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "work.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/airtable.js",
       "use": "@vercel/node"
     },
@@ -22,6 +26,10 @@
     {
       "src": "/og-image",
       "dest": "/api/og.js"
+    },
+    {
+      "src": "/work",
+      "dest": "/work.html"
     },
     {
       "src": "/(.*)",

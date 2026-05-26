@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The New Remote Work | Remote Work Union</title>
+  <meta name="description" content="Get paid to train AI, write prompts, and annotate data — remote work that pays $15–$200/hr. Discover the best platforms and how to get started."/>
+  <meta property="og:title" content="The New Remote Work | Remote Work Union"/>
+  <meta property="og:description" content="Get paid to train AI, write prompts, and annotate data. Find remote work that pays $15–$200/hr with top platforms like Outlier AI, Handshake AI, Mercor, and more."/>
+  <meta property="og:image" content="https://www.remoteworkunion.com/og-image"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.remoteworkunion.com/work"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="The New Remote Work | Remote Work Union"/>
+  <meta name="twitter:description" content="Get paid to train AI, write prompts, and annotate data. $15–$200/hr remote work."/>
+  <meta name="twitter:image" content="https://www.remoteworkunion.com/og-image"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, #003BB5 0%, #1A84FF 60%, #40A0FF 100%);
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,30,100,0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-inner {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: white; }
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.3px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 7px 18px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); }
+
+    /* LAYOUT */
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 72px 0 56px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 28px;
+      letter-spacing: 0.2px;
+    }
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ADE80;
+      box-shadow: 0 0 6px rgba(74,222,128,0.7);
+      flex-shrink: 0;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.72);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero-pay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .hero-pay-badge span { color: rgba(255,255,255,0.6); font-size: 0.9rem; font-weight: 500; letter-spacing: 0; }
+
+    /* SECTION HEADERS */
+    .section-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .section-header h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .section-header p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.55;
+    }
+
+    section { margin-bottom: 64px; }
+
+    /* GLASS CARD */
+    .glass-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* KEYWORD CLOUD */
+    .keyword-cloud-section { margin-bottom: 64px; }
+    .keyword-cloud-wrap {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 24px;
+      background: rgba(0,20,80,0.35);
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: default;
+      user-select: none;
+    }
+    .kw-word {
+      position: absolute;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: opacity 0.3s, text-shadow 0.3s, transform 0.1s;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .kw-word.hovered {
+      text-shadow: 0 0 20px rgba(255,255,255,0.9), 0 0 40px rgba(100,180,255,0.6);
+    }
+
+    /* WORK TYPE CARDS */
+    .work-type-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .work-type-card {
+      padding: 24px 22px;
+    }
+    .work-type-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .work-type-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .work-type-card p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.55;
+    }
+
+    /* PAY CARDS */
+    .pay-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .pay-card {
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .pay-card .pay-range {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .pay-card .pay-role {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    /* PLATFORM CARDS */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .platform-card {
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .platform-card:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+    .platform-card-name {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .platform-card-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.58);
+      line-height: 1.5;
+    }
+    .platform-card-pay {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(180,230,255,0.9);
+      margin-top: 4px;
+    }
+    .platform-card-arrow {
+      margin-top: auto;
+      padding-top: 8px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 8px; }
+    .faq-item {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.07);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 18px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.05); }
+    .faq-chevron {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      transition: transform 0.25s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer-inner {
+      padding: 0 20px 18px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.65;
+    }
+    .faq-answer-inner a { color: rgba(160,210,255,0.9); text-decoration: none; }
+    .faq-answer-inner a:hover { text-decoration: underline; }
+
+    /* BOTTOM CTA */
+    .bottom-cta {
+      text-align: center;
+      padding: 56px 32px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .bottom-cta h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+    .bottom-cta p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 28px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: #1A54E0;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 100px;
+      padding: 16px 36px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+
+    /* FOOTER */
+    .page-footer {
+      text-align: center;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-x-link {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-x-link:hover { color: rgba(255,255,255,0.8); }
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* FADE IN ANIMATION */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 520px) {
+      .work-type-grid { grid-template-columns: 1fr; }
+      .platform-grid { grid-template-columns: 1fr; }
+      .pay-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 48px 0 40px; }
+      .keyword-cloud-wrap { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-back">← Back</a>
+      <span class="nav-logo">Remote Work Union</span>
+      <a href="/" class="nav-cta">Join Free</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero fade-in">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        The New Remote Work
+      </div>
+      <h1>Get Paid to Train the<br/>World's Most Powerful AI</h1>
+      <p class="hero-sub">Millions of remote workers are earning money by teaching AI how to think, write, and reason — no office, no commute, no degree required.</p>
+      <div class="hero-pay-badge">
+        $15–$200/hr <span>depending on expertise</span>
+      </div>
+    </section>
+
+    <!-- KEYWORD CLOUD -->
+    <section class="keyword-cloud-section fade-in">
+      <div class="keyword-cloud-wrap" id="kwCloud">
+      </div>
+    </section>
+
+    <!-- WHAT IS THIS WORK -->
+    <section class="fade-in">
+      <div class="section-header">
+        <h2>What Is This Work?</h2>
+        <p>Four categories of remote work that are growing fast — and paying well.</p>
+      </div>
+      <div class="work-type-grid">
+        <div class="glass-card work-type-card">
+          <div class="work-type-icon">🤖</div>
+          <h3>AI Training</h3>
+          <p>Rate and rank AI responses to help models improve. Test edge cases, identify failures, and score quality — no coding required.</p>
+        </div>
+        <div class="glass-card work-type-card">
+          <div class="work-type-icon">📝</div>
+          <h3>Prompt Writing</h3>
+          <p>Craft high-quality prompts that push AI to its limits. RLHF tasks, red-teaming, adversarial testing, and creative ideation.</p>
+        </div>
+        <div class="glass-card work-type-card">
+          <div class="work-type-icon">🏷️</div>
+          <h3>Data Annotation</h3>
+          <p>Label images, transcribe audio, classify text, and tag datasets. The foundational layer of every AI system that exists.</p>
+        </div>
+        <div class="glass-card work-type-card">
+          <div class="work-type-icon">💻</div>
+          <h3>Remote Tech Roles</h3>
+          <p>Software engineers, domain experts, and researchers working remotely on model evaluation, fine-tuning, and QA.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAY BREAKDOWN -->
+    <section class="fade-in">
+      <div class="section-header">
+        <h2>How Much Does It Pay?</h2>
+        <p>Rates vary by skill level, task type, and platform — here's what to expect.</p>
+      </div>
+      <div class="pay-grid">
+        <div class="glass-card pay-card">
+          <div class="pay-range">$15–$25/hr</div>
+          <div class="pay-role">Data annotation<br/>& basic labeling</div>
+        </div>
+        <div class="glass-card pay-card">
+          <div class="pay-range">$20–$40/hr</div>
+          <div class="pay-role">AI response<br/>rating & ranking</div>
+        </div>
+        <div class="glass-card pay-card">
+          <div class="pay-range">$25–$60/hr</div>
+          <div class="pay-role">Prompt writing<br/>& RLHF tasks</div>
+        </div>
+        <div class="glass-card pay-card">
+          <div class="pay-range">$40–$80/hr</div>
+          <div class="pay-role">Domain expert<br/>evaluation</div>
+        </div>
+        <div class="glass-card pay-card">
+          <div class="pay-range">$60–$200/hr</div>
+          <div class="pay-role">ML engineers &<br/>researchers</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP PLATFORMS -->
+    <section class="fade-in">
+      <div class="section-header">
+        <h2>Top Platforms to Apply</h2>
+        <p>These are the best places to find legitimate, well-paying remote AI work right now.</p>
+      </div>
+      <div class="platform-grid">
+        <a href="https://app.joinhandshake.com/school_referrals/eyJzY2hvb2xfaWQiOjQ1MDE5fQ" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
+          <div class="platform-card-name">Handshake AI</div>
+          <div class="platform-card-desc">Entry-level remote jobs and gigs — great for getting started quickly.</div>
+          <div class="platform-card-pay">$15–$35/hr · Entry friendly</div>
+          <div class="platform-card-arrow">Apply now →</div>
+        </a>
+        <a href="https://outlier.ai/for-contributors?rcode=SYpfzS" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
+          <div class="platform-card-name">Outlier AI</div>
+          <div class="platform-card-desc">Scale AI's platform for high-quality RLHF, prompt writing, and model evaluation.</div>
+          <div class="platform-card-pay">$20–$60/hr · Flexible hours</div>
+          <div class="platform-card-arrow">Apply now →</div>
+        </a>
+        <a href="https://www.mercor.com/" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
+          <div class="platform-card-name">Mercor</div>
+          <div class="platform-card-desc">AI-matched hiring for technical talent — engineers earn top rates on ML projects.</div>
+          <div class="platform-card-pay">$40–$200/hr · Technical roles</div>
+          <div class="platform-card-arrow">Apply now →</div>
+        </a>
+        <a href="https://www.rentahuman.ai/?via=remoteworkunion" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
+          <div class="platform-card-name">RentAHuman AI</div>
+          <div class="platform-card-desc">Human-in-the-loop tasks for AI companies — varied work, fast onboarding.</div>
+          <div class="platform-card-pay">$15–$40/hr · Quick start</div>
+          <div class="platform-card-arrow">Apply now →</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="fade-in">
+      <div class="section-header">
+        <h2>Common Questions</h2>
+        <p>Everything you need to know before you apply.</p>
+      </div>
+      <div class="faq-list" id="faqList">
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Do I need a degree or technical background?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">No degree is required for most roles. Data annotation, basic AI rating, and entry-level prompt writing are all accessible to beginners. Higher-paying roles (domain expert evaluation, ML research) do benefit from specialized knowledge — but there's work for every skill level.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Is this full-time work or a side hustle?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Both. Most platforms offer flexible, contract-based work where you choose your hours. Many people start part-time and scale up. Some contributors earn full-time income from a single platform; others diversify across several.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How long does it take to get approved and start earning?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">It varies by platform. Handshake and RentAHuman can be fast — sometimes days. Outlier AI has a qualification process that can take 1–2 weeks. Mercor uses AI matching, which can be quick for in-demand skills. Applying to multiple platforms in parallel is a smart move.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Are these jobs actually legitimate?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes. The platforms listed here — Outlier AI, Handshake, Mercor, and RentAHuman AI — are all real companies backed by major investors. They work with companies like Google, Meta, OpenAI, and Amazon to source human data. Remote Work Union only features platforms we've vetted.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I get paid?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Payment methods vary by platform. Most use PayPal, direct bank transfer (ACH), or services like Stripe. Some platforms pay weekly; others pay at the end of each project. Always confirm payment terms before accepting a contract.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Can I work from anywhere in the world?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Many platforms are open globally, though availability of tasks varies by region and language. Platforms like Outlier AI and Appen have strong international availability. Some enterprise-grade platforms (like Mercor) may prefer US-based contributors for certain projects. Check each platform's eligibility page.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What's the difference between AI training and data annotation?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Data annotation is the process of labeling raw data — tagging objects in images, transcribing audio, classifying text. AI training is broader: it includes annotation but also includes rating model outputs, writing prompts to test AI capabilities, and doing RLHF (Reinforcement Learning from Human Feedback) work that directly shapes how a model learns.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Do these platforms have consistent work, or does it dry up?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Workflow can fluctuate on any single platform — it depends on active projects and demand. The best approach is to get approved on 2–3 platforms so you always have access to tasks. Remote Work Union's newsletter alerts members when new platforms, campaigns, or high-demand projects become available.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What does Remote Work Union do?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Remote Work Union is a free platform that helps remote workers find the best AI training, data annotation, and prompt writing opportunities. We curate top platforms, provide guides for getting approved, and send members updates on new opportunities — all for free. <a href="/">Join here →</a></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BOTTOM CTA -->
+    <section class="bottom-cta fade-in">
+      <h2>Ready to Start?</h2>
+      <p>Join Remote Work Union for free and get access to the best remote AI work opportunities available right now.</p>
+      <a href="/" class="cta-btn">Join Free →</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="page-footer fade-in">
+      <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="footer-x-link">@RemoteWorkUnion on X</a>
+      <p class="footer-disclaimer">Remote Work Union is an independent platform. We may receive referral compensation from some platforms listed on this page. Always do your own research before accepting any contract or providing personal information.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // ---- KEYWORD CLOUD ----
+    (function() {
+      const words = [
+        { text: 'AI Training', weight: 9 },
+        { text: 'Prompt Writing', weight: 9 },
+        { text: 'Remote Work', weight: 9 },
+        { text: 'Data Annotation', weight: 8 },
+        { text: 'RLHF', weight: 8 },
+        { text: 'Outlier AI', weight: 7 },
+        { text: 'Handshake AI', weight: 7 },
+        { text: 'Mercor', weight: 7 },
+        { text: 'Model Evaluation', weight: 7 },
+        { text: 'Fine-tuning', weight: 6 },
+        { text: 'LLM', weight: 6 },
+        { text: 'GPT', weight: 6 },
+        { text: 'Claude', weight: 6 },
+        { text: 'Image Labeling', weight: 5 },
+        { text: 'Text Classification', weight: 5 },
+        { text: 'Audio Transcription', weight: 5 },
+        { text: 'Named Entity', weight: 5 },
+        { text: 'Red Teaming', weight: 5 },
+        { text: 'Sentiment Analysis', weight: 5 },
+        { text: 'Human Feedback', weight: 5 },
+        { text: 'Scale AI', weight: 5 },
+        { text: 'Quality Assurance', weight: 5 },
+        { text: 'Bounding Boxes', weight: 4 },
+        { text: 'Benchmark', weight: 4 },
+        { text: 'Dataset', weight: 4 },
+        { text: 'Annotation', weight: 4 },
+        { text: 'Machine Learning', weight: 4 },
+        { text: 'Contractor', weight: 4 },
+        { text: 'Freelance', weight: 4 },
+        { text: 'Part-time', weight: 4 },
+        { text: 'Task Completion', weight: 3 },
+        { text: 'NLP', weight: 3 },
+        { text: 'Computer Vision', weight: 3 },
+        { text: 'Transcription', weight: 3 },
+        { text: 'Tagging', weight: 3 },
+        { text: 'Ranking', weight: 3 },
+        { text: 'Evaluation', weight: 3 },
+        { text: 'Crowdsourcing', weight: 3 },
+        { text: 'Domain Expert', weight: 3 },
+        { text: 'Side Hustle', weight: 3 },
+        { text: 'Remote Pay', weight: 3 },
+        { text: 'Instructions', weight: 2 },
+        { text: 'Guidelines', weight: 2 },
+        { text: 'Accuracy', weight: 2 },
+        { text: 'Consistency', weight: 2 },
+        { text: 'Feedback Loop', weight: 2 },
+        { text: 'Token Limit', weight: 2 },
+        { text: 'Inference', weight: 2 },
+        { text: 'Prompt Injection', weight: 2 },
+        { text: 'Hallucination', weight: 2 },
+        { text: 'Sandbox', weight: 2 },
+        { text: 'Reward Model', weight: 2 },
+        { text: 'Ontology', weight: 2 },
+        { text: 'Edge Cases', weight: 2 },
+        { text: 'Ground Truth', weight: 2 },
+        { text: 'Segmentation', weight: 2 },
+        { text: 'Confidence Score', weight: 2 },
+        { text: 'Chain-of-Thought', weight: 2 },
+        { text: 'Zero-shot', weight: 2 },
+        { text: 'Few-shot', weight: 2 },
+        { text: 'Instruction Tuning', weight: 2 },
+      ];
+
+      const container = document.getElementById('kwCloud');
+      if (!container) return;
+
+      const W = container.offsetWidth || 700;
+      const H = container.offsetHeight || 300;
+
+      // Place words randomly but spread
+      const placed = [];
+      const els = [];
+
+      words.forEach(function(w) {
+        const fontSize = Math.round(10 + w.weight * 2.2);
+        const opacity = 0.25 + (w.weight / 9) * 0.65;
+
+        const el = document.createElement('span');
+        el.className = 'kw-word';
+        el.textContent = w.text;
+        el.style.fontSize = fontSize + 'px';
+        el.style.opacity = opacity.toFixed(2);
+        el.style.color = 'white';
+
+        // Random hue tint for variety
+        const hue = Math.random() > 0.6 ? 'rgba(160,210,255,' + opacity.toFixed(2) + ')' : 'white';
+        el.style.color = hue;
+
+        container.appendChild(el);
+
+        const elW = el.offsetWidth || fontSize * w.text.length * 0.55;
+        const elH = fontSize * 1.4;
+
+        // Try to find a non-overlapping position (up to 30 attempts)
+        let x, y, attempts = 0, ok = false;
+        while (!ok && attempts < 30) {
+          x = Math.random() * (W - elW - 16) + 8;
+          y = Math.random() * (H - elH - 8) + 4;
+          ok = placed.every(function(p) {
+            return !(x < p.x + p.w + 6 && x + elW + 6 > p.x && y < p.y + p.h + 4 && y + elH + 4 > p.y);
+          });
+          attempts++;
+        }
+
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        placed.push({ x: x, y: y, w: elW, h: elH });
+        els.push({ el: el, bx: x, by: y, weight: w.weight });
+      });
+
+      // Mousemove parallax
+      container.addEventListener('mousemove', function(e) {
+        const rect = container.getBoundingClientRect();
+        const cx = (e.clientX - rect.left) / rect.width - 0.5;
+        const cy = (e.clientY - rect.top) / rect.height - 0.5;
+
+        els.forEach(function(item) {
+          const depth = item.weight / 9;
+          const dx = cx * depth * 18;
+          const dy = cy * depth * 12;
+          item.el.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+
+          // Proximity glow
+          const bx = item.bx + (item.el.offsetWidth || 60) / 2;
+          const by = item.by + 10;
+          const ex = e.clientX - rect.left;
+          const ey = e.clientY - rect.top;
+          const dist = Math.sqrt((ex - bx) * (ex - bx) + (ey - by) * (ey - by));
+          if (dist < 80) {
+            item.el.style.textShadow = '0 0 18px rgba(255,255,255,0.9), 0 0 36px rgba(120,180,255,0.7)';
+            item.el.style.opacity = '1';
+          } else {
+            item.el.style.textShadow = '';
+            const baseOpacity = 0.25 + (item.weight / 9) * 0.65;
+            item.el.style.opacity = baseOpacity.toFixed(2);
+          }
+        });
+      });
+
+      container.addEventListener('mouseleave', function() {
+        els.forEach(function(item) {
+          item.el.style.transform = '';
+          item.el.style.textShadow = '';
+          const baseOpacity = 0.25 + (item.weight / 9) * 0.65;
+          item.el.style.opacity = baseOpacity.toFixed(2);
+        });
+      });
+    })();
+
+    // ---- FAQ ACCORDION ----
+    (function() {
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach(function(item) {
+        item.querySelector('.faq-question').addEventListener('click', function() {
+          const isOpen = item.classList.contains('open');
+          items.forEach(function(i) { i.classList.remove('open'); });
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+    })();
+
+    // ---- INTERSECTION OBSERVER FADE-INS ----
+    (function() {
+      const els = document.querySelectorAll('.fade-in');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function(el) { el.classList.add('visible'); });
+        return;
+      }
+      const obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(function(el) { obs.observe(el); });
+    })();
+  </script>
+
+</body>
+</html>
