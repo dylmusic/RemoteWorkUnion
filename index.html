@@ -660,6 +660,70 @@
     }
     .notif-x:hover { color: #003BB5; }
 
+    /* Dashboard button on step cards */
+    .dash-btn {
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+      background: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    .dash-btn:hover { color: rgba(255,255,255,0.72); }
+
+    /* Progress bar */
+    .prog-bar-wrap { width: 100%; margin-bottom: 16px; }
+    .prog-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 7px;
+    }
+    .prog-bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #4ade80, #22d3a5);
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Clickable progress items */
+    .prog-item.done.clickable {
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      transition: filter 0.15s;
+    }
+    .prog-item.done.clickable:hover { filter: brightness(1.18); }
+    .prog-item-arrow {
+      margin-left: auto;
+      color: rgba(255,255,255,0.28);
+      font-size: 11px;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    .prog-item.done.clickable:hover .prog-item-arrow { color: rgba(255,255,255,0.65); }
+
+    /* Progress screen slide-out */
+    .hs-progress.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
     /* Disclaimer bar */
     .disclaimer-bar {
       margin-top: 32px;
@@ -815,6 +879,7 @@
       <div class="hs-card" id="hs-card">
         <!-- Step 2: Handshake -->
         <div class="hs-apply" id="hs-apply">
+          <button class="dash-btn" id="hs-dash-btn">⊞ Dashboard</button>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
@@ -838,6 +903,7 @@
         </div>
         <!-- Step 3: Outlier AI -->
         <div id="ot-apply">
+          <button class="dash-btn" id="ot-dash-btn">⊞ Dashboard</button>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -861,6 +927,7 @@
         </div>
         <!-- Step 4: RentAHuman AI -->
         <div id="rh-apply">
+          <button class="dash-btn" id="rh-dash-btn">⊞ Dashboard</button>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -888,6 +955,10 @@
         </div>
         <!-- Step 5: Completion screen -->
         <div class="hs-progress" id="hs-progress">
+          <div class="prog-bar-wrap">
+            <div class="prog-bar-labels"><span>Your Progress</span><span id="prog-pct">0% Complete</span></div>
+            <div class="prog-bar-track"><div class="prog-bar-fill" id="prog-bar-fill"></div></div>
+          </div>
           <p class="prog-header">🏆 Your Progress</p>
           <p class="prog-sub">Keep completing steps to unlock more resources.</p>
           <ul class="prog-list">
@@ -895,17 +966,20 @@
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Joined Remote Work Union Newsletter
             </li>
-            <li class="prog-item done anim-in">
+            <li class="prog-item done anim-in clickable" id="prog-hs">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to Handshake AI
+              <span class="prog-item-arrow">→</span>
             </li>
-            <li class="prog-item done anim-in" style="animation-delay:0.45s">
+            <li class="prog-item done anim-in clickable" id="prog-ot" style="animation-delay:0.45s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to Outlier AI
+              <span class="prog-item-arrow">→</span>
             </li>
-            <li class="prog-item done anim-in" style="animation-delay:0.65s">
+            <li class="prog-item done anim-in clickable" id="prog-rh" style="animation-delay:0.65s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Applied to RentAHuman AI
+              <span class="prog-item-arrow">→</span>
             </li>
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
@@ -1030,6 +1104,14 @@
     const disclaimerLink  = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
     const modalClose      = document.getElementById('modal-close');
+    const hsDashBtn      = document.getElementById('hs-dash-btn');
+    const otDashBtn      = document.getElementById('ot-dash-btn');
+    const rhDashBtn      = document.getElementById('rh-dash-btn');
+    const progBarFill    = document.getElementById('prog-bar-fill');
+    const progPct        = document.getElementById('prog-pct');
+    const progHs         = document.getElementById('prog-hs');
+    const progOt         = document.getElementById('prog-ot');
+    const progRh         = document.getElementById('prog-rh');
 
     // ── helpers ──────────────────────────────────────────────
     function revealCard() {
@@ -1059,7 +1141,9 @@
 
     function showProgress() {
       fadeOut(rhApply, () => {
+        progBarFill.style.width = '0%';
         showView(hsProgress);
+        setTimeout(updateProgressBar, 50);
         localStorage.setItem('rwu_step', '5');
         atPatch({ 'Current Step': 5 });
       });
@@ -1070,6 +1154,61 @@
       el.classList.add('checked');
       hsCard.classList.add('glow');
       setTimeout(cb, 800);
+    }
+
+    // ── dashboard navigation ──────────────────────────────────
+    let fromDash = false;
+
+    function updateDashBtns() {
+      const label = fromDash ? '← Back to Dashboard' : '⊞ Dashboard';
+      [hsDashBtn, otDashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
+    }
+
+    function updateProgressBar() {
+      const step  = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      const total = hsProgress.querySelectorAll('.prog-item:not(.locked)').length;
+      const pct   = total ? Math.round((Math.min(step, total) / total) * 100) : 0;
+      progPct.textContent = pct + '% Complete';
+      requestAnimationFrame(() => requestAnimationFrame(() => { progBarFill.style.width = pct + '%'; }));
+    }
+
+    function reviveView(el) {
+      if (el !== hsApply) el.classList.add('show');
+      el.classList.add('fade-out');
+      el.style.removeProperty('display');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('fade-out')));
+    }
+
+    function goToDashboard() {
+      fromDash = false;
+      updateDashBtns();
+      progBarFill.style.width = '0%';
+      const views = [hsApply, otApply, rhApply];
+      const visible = views.find(el =>
+        el.style.display !== 'none' &&
+        !el.classList.contains('fade-out') &&
+        (el === hsApply || el.classList.contains('show'))
+      );
+      const doShow = () => {
+        hsProgress.style.removeProperty('display');
+        hsProgress.classList.remove('fade-out');
+        hsProgress.classList.add('show');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          hsProgress.classList.add('animate');
+          setTimeout(updateProgressBar, 50);
+        }));
+      };
+      if (visible) { fadeOut(visible, doShow); } else { doShow(); }
+    }
+
+    function goToCard(el) {
+      fromDash = true;
+      updateDashBtns();
+      hsProgress.classList.add('fade-out');
+      setTimeout(() => {
+        hsProgress.classList.remove('show', 'animate', 'fade-out');
+        reviveView(el);
+      }, 400);
     }
 
     // ── returning user ────────────────────────────────────────
@@ -1083,6 +1222,7 @@
       if (step >= 4) {
         hsApply.style.display = 'none';
         hsProgress.classList.add('show', 'animate');
+        setTimeout(updateProgressBar, 100);
       } else if (step >= 3) {
         hsApply.style.display = 'none';
         rhApply.classList.add('show', 'animate');
@@ -1179,6 +1319,12 @@
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
     });
+
+    // ── dashboard nav ─────────────────────────────────────────
+    [hsDashBtn, otDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', goToDashboard));
+    progHs.addEventListener('click', () => goToCard(hsApply));
+    progOt.addEventListener('click', () => goToCard(otApply));
+    progRh.addEventListener('click', () => goToCard(rhApply));
 
     // ── modal ─────────────────────────────────────────────────
     disclaimerLink.addEventListener('click', (e) => {
