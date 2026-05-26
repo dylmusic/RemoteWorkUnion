@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#003BB5"/>
+      <stop offset="60%" stop-color="#1A84FF"/>
+      <stop offset="100%" stop-color="#40A0FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="260" font-family="Inter, -apple-system, Arial, sans-serif" font-size="76" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-1">Find Remote Work Jobs</text>
+  <text x="600" y="340" font-family="Inter, -apple-system, Arial, sans-serif" font-size="34" font-weight="400" fill="rgba(255,255,255,0.72)" text-anchor="middle">Join Remote Work Union — Free Newsletter</text>
+  <text x="600" y="410" font-family="Inter, -apple-system, Arial, sans-serif" font-size="26" font-weight="400" fill="rgba(255,255,255,0.45)" text-anchor="middle">remoteworkunion.com</text>
+</svg>

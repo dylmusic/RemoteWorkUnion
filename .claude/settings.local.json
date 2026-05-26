@@ -4,7 +4,10 @@
       "Bash(git add *)",
       "Bash(git push *)",
       "Bash(git commit *)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(python3 *)",
+      "Bash(grep *)",
+      "Bash(md5 /Users/dylanrhodes/Documents/remoteworkunion/RemoteWorkUnion.PNG)"
     ]
   }
 }
