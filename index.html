@@ -1510,7 +1510,9 @@
       atPatch({ 'Hidden Steps': arr.join(',') });
     }
     function unskipStep(key) {
-      const arr = getSkipped().filter(k => k !== key);
+      const prev = getSkipped();
+      if (!prev.includes(key)) return;
+      const arr = prev.filter(k => k !== key);
       localStorage.setItem('rwu_skipped', arr.join(','));
       atPatch({ 'Skipped Steps': arr.join(',') });
     }
@@ -1780,12 +1782,14 @@
 
     // ── Handshake card ────────────────────────────────────────
     hsCta.addEventListener('click', () => {
+      unskipStep('handshake');
       localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Current Step': 2 });
+      atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
       setTimeout(fromDash ? goToDashboard : showOutlier, 600);
     });
 
     hsAlready.addEventListener('click', () => {
+      unskipStep('handshake');
       checkAnimate(fromDash ? goToDashboard : showOutlier, hsCb, hsUndo);
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
@@ -1793,12 +1797,14 @@
 
     // ── Outlier card ──────────────────────────────────────────
     otCta.addEventListener('click', () => {
+      unskipStep('outlier');
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
       setTimeout(fromDash ? goToDashboard : showRentAHuman, 600);
     });
 
     otAlready.addEventListener('click', () => {
+      unskipStep('outlier');
       checkAnimate(fromDash ? goToDashboard : showRentAHuman, otCb, otUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
@@ -1806,12 +1812,14 @@
 
     // ── RentAHuman card ───────────────────────────────────────
     rhCta.addEventListener('click', () => {
+      unskipStep('rentahuman');
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
       setTimeout(fromDash ? goToDashboard : showProgress, 600);
     });
 
     rhAlready.addEventListener('click', () => {
+      unskipStep('rentahuman');
       checkAnimate(fromDash ? goToDashboard : showProgress, rhCb, rhUndo);
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
