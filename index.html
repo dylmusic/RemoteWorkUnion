@@ -657,6 +657,20 @@
     #ot-apply.animate { opacity: 1; transform: translateY(0); }
     #ot-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
+    /* Mercor view */
+    #mc-apply {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #mc-apply.show { display: flex; }
+    #mc-apply.animate { opacity: 1; transform: translateY(0); }
+    #mc-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
     /* RentAHuman view */
     #rh-apply {
       display: none;
@@ -826,6 +840,20 @@
       transition: color 0.2s;
     }
     .card-action-link:hover { color: rgba(255,255,255,0.6); }
+
+    .prog-new-badge {
+      display: none;
+      font-size: 9px;
+      font-weight: 700;
+      background: #10b981;
+      color: #fff;
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 6px;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+    }
+    .prog-new-badge.show { display: inline-block; }
     .card-action-link.selected { color: #F59E0B; }
     .card-action-link.selected:hover { color: #fbbf24; }
 
@@ -1290,6 +1318,7 @@
             <li class="prog-item done anim-in clickable" id="prog-mc" style="animation-delay:0.65s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Mercor AI
+              <span class="prog-new-badge" id="prog-mc-new">NEW</span>
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
@@ -1517,6 +1546,7 @@
     const progHsNext             = document.getElementById('prog-hs-next');
     const progOtNext             = document.getElementById('prog-ot-next');
     const progMcNext             = document.getElementById('prog-mc-next');
+    const progMcNew              = document.getElementById('prog-mc-new');
     const progRhNext             = document.getElementById('prog-rh-next');
     const rgTeaser               = document.getElementById('rg-teaser');
     const rgDashBtn              = document.getElementById('rg-dash-btn');
@@ -1674,6 +1704,11 @@
           el.classList.add('done', 'clickable');
         }
       });
+      // NEW badge: show on Mercor if returning user hasn't interacted with it yet
+      const mercorUnseen = email && step >= 1 &&
+        !applied.includes('mercor') && !skipped.includes('mercor') && !hidden.includes('mercor');
+      progMcNew.classList.toggle('show', !!mercorUnseen);
+
       refreshHiddenRoles();
       updateNextButton();
       applyNowBtn.textContent = 'Learn More →';
@@ -1810,17 +1845,26 @@
       }, 400);
     }
 
+    function hideAllCards() {
+      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => {
+        el.classList.remove('show', 'animate', 'fade-out');
+        el.style.display = 'none';
+      });
+    }
+
     function goToDashboard() {
       fromDash = false;
       updateDashBtns();
       progBarFill.style.width = '0%';
-      const views = [hsApply, otApply, rhApply, rgTeaser];
-      const visible = views.find(el =>
+      hsCard.classList.remove('glow');
+      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser];
+      const visible = allCards.find(el =>
         el.style.display !== 'none' &&
         !el.classList.contains('fade-out') &&
         (el === hsApply || el.classList.contains('show'))
       );
       const doShow = () => {
+        hideAllCards();
         hsProgress.style.removeProperty('display');
         hsProgress.classList.remove('fade-out');
         hsProgress.classList.add('show');
@@ -1838,6 +1882,7 @@
       hsProgress.classList.add('fade-out');
       setTimeout(() => {
         hsProgress.classList.remove('show', 'animate', 'fade-out');
+        hideAllCards();
         reviveView(el);
         refreshCardState(el);
       }, 400);
@@ -1850,7 +1895,8 @@
       if (!email && step <= 0) return;
 
       form.style.display = 'none';
-      hsApply.style.display = 'none';
+      // hide all cards — only the dashboard shows on return
+      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
