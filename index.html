@@ -1377,11 +1377,12 @@
           atId = d.id;
           localStorage.setItem('rwu_record_id', d.id);
           const f = d.fields || {};
-          let step = (f['Current Step'] != null) ? Number(f['Current Step']) : 0;
-          if (f['RentAHuman Applied'] === true) step = Math.max(step, 4);
-          if (f['Outlier Applied'] === true)    step = Math.max(step, 3);
-          if (f['Handshake Applied'] === true)  step = Math.max(step, 2);
-          if (step > 0) localStorage.setItem('rwu_step', String(step));
+          if (f['Current Step'] != null) localStorage.setItem('rwu_step', String(Number(f['Current Step'])));
+          const applied = [];
+          if (f['Handshake Applied'] === true)  applied.push('handshake');
+          if (f['Outlier Applied'] === true)    applied.push('outlier');
+          if (f['RentAHuman Applied'] === true) applied.push('rentahuman');
+          if (applied.length) localStorage.setItem('rwu_applied', applied.join(','));
           if (f['Skipped Steps']) localStorage.setItem('rwu_skipped', f['Skipped Steps']);
           if (f['Hidden Steps'])  localStorage.setItem('rwu_hidden',  f['Hidden Steps']);
         }
@@ -1498,6 +1499,21 @@
     // ── skip / hide helpers ──────────────────────────────────
     function getSkipped() { return (localStorage.getItem('rwu_skipped') || '').split(',').filter(Boolean); }
     function getHidden()  { return (localStorage.getItem('rwu_hidden')  || '').split(',').filter(Boolean); }
+    function getApplied() { return (localStorage.getItem('rwu_applied') || '').split(',').filter(Boolean); }
+    function addApplied(key) {
+      const arr = getApplied(); if (arr.includes(key)) return;
+      arr.push(key); localStorage.setItem('rwu_applied', arr.join(','));
+    }
+    function removeApplied(key) {
+      const arr = getApplied().filter(k => k !== key);
+      localStorage.setItem('rwu_applied', arr.join(','));
+    }
+    function unhideStep(key) {
+      const prev = getHidden(); if (!prev.includes(key)) return;
+      const arr = prev.filter(k => k !== key);
+      localStorage.setItem('rwu_hidden', arr.join(','));
+      atPatch({ 'Hidden Steps': arr.join(',') });
+    }
 
     function skipStep(key) {
       const arr = getSkipped(); if (!arr.includes(key)) arr.push(key);
@@ -1529,15 +1545,16 @@
       const step    = parseInt(localStorage.getItem('rwu_step') || '0', 10);
       const hidden  = getHidden();
       const skipped = getSkipped();
+      const applied = getApplied();
       const stepMap = [
-        { key: 'handshake',  minStep: 2 },
-        { key: 'outlier',    minStep: 3 },
-        { key: 'rentahuman', minStep: 4 },
+        { key: 'handshake' },
+        { key: 'outlier' },
+        { key: 'rentahuman' },
       ];
       const visible   = stepMap.filter(s => !hidden.includes(s.key));
       const total     = visible.length + 1;
       const newsletterDone = (localStorage.getItem('rwu_email') && step >= 1) ? 1 : 0;
-      const completed = newsletterDone + visible.filter(s => !skipped.includes(s.key) && step >= s.minStep).length;
+      const completed = newsletterDone + visible.filter(s => !skipped.includes(s.key) && applied.includes(s.key)).length;
       const pct = total ? Math.round((completed / total) * 100) : 0;
       progPct.textContent = pct + '% Complete';
       requestAnimationFrame(() => requestAnimationFrame(() => { progBarFill.style.width = pct + '%'; }));
@@ -1548,6 +1565,7 @@
       const email   = localStorage.getItem('rwu_email');
       const hidden  = getHidden();
       const skipped = getSkipped();
+      const applied = getApplied();
       if (email && step >= 1) {
         progNewsletter.classList.add('done');
         progNudge.classList.remove('show');
@@ -1566,7 +1584,7 @@
         el.classList.remove('done', 'skipped', 'clickable');
         if (skipped.includes(key)) {
           el.classList.add('skipped', 'clickable');
-        } else if (step >= minStep) {
+        } else if (applied.includes(key)) {
           el.classList.add('done', 'clickable');
         }
       });
@@ -1623,16 +1641,16 @@
     }
 
     function refreshCardState(el) {
-      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      const applied = getApplied();
       if (el === hsApply) {
-        if (step >= 2) { hsCb.classList.add('checked'); hsUndo.classList.add('show'); }
-        else           { hsCb.classList.remove('checked'); hsUndo.classList.remove('show'); }
+        if (applied.includes('handshake'))  { hsCb.classList.add('checked'); hsUndo.classList.add('show'); }
+        else                                { hsCb.classList.remove('checked'); hsUndo.classList.remove('show'); }
       } else if (el === otApply) {
-        if (step >= 3) { otCb.classList.add('checked'); otUndo.classList.add('show'); }
-        else           { otCb.classList.remove('checked'); otUndo.classList.remove('show'); }
+        if (applied.includes('outlier'))    { otCb.classList.add('checked'); otUndo.classList.add('show'); }
+        else                                { otCb.classList.remove('checked'); otUndo.classList.remove('show'); }
       } else if (el === rhApply) {
-        if (step >= 4) { rhCb.classList.add('checked'); rhUndo.classList.add('show'); }
-        else           { rhCb.classList.remove('checked'); rhUndo.classList.remove('show'); }
+        if (applied.includes('rentahuman')) { rhCb.classList.add('checked'); rhUndo.classList.add('show'); }
+        else                                { rhCb.classList.remove('checked'); rhUndo.classList.remove('show'); }
       }
     }
 
@@ -1783,6 +1801,7 @@
     // ── Handshake card ────────────────────────────────────────
     hsCta.addEventListener('click', () => {
       unskipStep('handshake');
+      addApplied('handshake');
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
       setTimeout(fromDash ? goToDashboard : showOutlier, 600);
@@ -1790,6 +1809,7 @@
 
     hsAlready.addEventListener('click', () => {
       unskipStep('handshake');
+      addApplied('handshake');
       checkAnimate(fromDash ? goToDashboard : showOutlier, hsCb, hsUndo);
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
@@ -1798,6 +1818,7 @@
     // ── Outlier card ──────────────────────────────────────────
     otCta.addEventListener('click', () => {
       unskipStep('outlier');
+      addApplied('outlier');
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
       setTimeout(fromDash ? goToDashboard : showRentAHuman, 600);
@@ -1805,6 +1826,7 @@
 
     otAlready.addEventListener('click', () => {
       unskipStep('outlier');
+      addApplied('outlier');
       checkAnimate(fromDash ? goToDashboard : showRentAHuman, otCb, otUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
@@ -1813,6 +1835,7 @@
     // ── RentAHuman card ───────────────────────────────────────
     rhCta.addEventListener('click', () => {
       unskipStep('rentahuman');
+      addApplied('rentahuman');
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
       setTimeout(fromDash ? goToDashboard : showProgress, 600);
@@ -1820,6 +1843,7 @@
 
     rhAlready.addEventListener('click', () => {
       unskipStep('rentahuman');
+      addApplied('rentahuman');
       checkAnimate(fromDash ? goToDashboard : showProgress, rhCb, rhUndo);
       localStorage.setItem('rwu_step', '4');
       atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
@@ -1831,8 +1855,10 @@
       hsCb.classList.remove('checked');
       hsUndo.classList.remove('show');
       hsCard.classList.remove('glow');
-      localStorage.setItem('rwu_step', '1');
-      atPatch({ 'Handshake Applied': false, 'Current Step': 1 });
+      removeApplied('handshake');
+      unskipStep('handshake');
+      unhideStep('handshake');
+      atPatch({ 'Handshake Applied': false });
       if (fromDash) goToDashboard();
     });
 
@@ -1841,8 +1867,10 @@
       otCb.classList.remove('checked');
       otUndo.classList.remove('show');
       hsCard.classList.remove('glow');
-      localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Outlier Applied': false, 'Current Step': 2 });
+      removeApplied('outlier');
+      unskipStep('outlier');
+      unhideStep('outlier');
+      atPatch({ 'Outlier Applied': false });
       if (fromDash) goToDashboard();
     });
 
@@ -1851,8 +1879,10 @@
       rhCb.classList.remove('checked');
       rhUndo.classList.remove('show');
       hsCard.classList.remove('glow');
-      localStorage.setItem('rwu_step', '3');
-      atPatch({ 'RentAHuman Applied': false, 'Current Step': 3 });
+      removeApplied('rentahuman');
+      unskipStep('rentahuman');
+      unhideStep('rentahuman');
+      atPatch({ 'RentAHuman Applied': false });
       if (fromDash) goToDashboard();
     });
 
