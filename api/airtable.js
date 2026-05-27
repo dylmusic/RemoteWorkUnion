@@ -1,6 +1,6 @@
 const BASE_ID = 'appRMEXhqhENAGzHW';
-const TABLE_ID = 'tblm2Fgijgdqr68sq';
-const AT_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}`;
+const TABLE_NAME = 'Newsletter Subscribers';
+const AT_URL = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,55 +8,106 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST') {
+    console.log('[airtable] rejected non-POST method:', req.method);
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   const token = process.env.AIRTABLE_TOKEN;
-  if (!token) return res.status(500).json({ error: 'Configuration error' });
+  if (!token) {
+    console.error('[airtable] AIRTABLE_TOKEN env var is not set');
+    return res.status(500).json({ error: 'Configuration error' });
+  }
 
-  const { action, recordId, fields, email } = req.body || {};
+  const body = req.body || {};
+  const { action, recordId, fields, email } = body;
 
-  console.log('[airtable] action:', action, '| recordId:', recordId, '| fields:', JSON.stringify(fields));
+  console.log('[airtable] incoming request — action:', action, '| recordId:', recordId || '(none)', '| fields:', JSON.stringify(fields || {}));
 
   try {
+    // ── SEARCH ──────────────────────────────────────────────────────────────
     if (action === 'search') {
-      if (!email) return res.status(400).json({ error: 'Missing email' });
-      const formula = encodeURIComponent(`({Email}="${email.replace(/"/g, '')}")`);
-      const searchRes = await fetch(`${AT_URL}?filterByFormula=${formula}&maxRecords=1`, {
+      if (!email) {
+        console.error('[airtable] search called without email');
+        return res.status(400).json({ error: 'Missing email' });
+      }
+      const sanitized = email.replace(/"/g, '');
+      const formula = encodeURIComponent(`({Email}="${sanitized}")`);
+      const url = `${AT_URL}?filterByFormula=${formula}&maxRecords=1`;
+      console.log('[airtable] search URL:', url);
+
+      const searchRes = await fetch(url, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       const searchData = await searchRes.json();
-      console.log('[airtable] search response:', JSON.stringify(searchData));
+      console.log('[airtable] search response status:', searchRes.status, '| body:', JSON.stringify(searchData));
+
       const record = searchData.records && searchData.records[0];
-      if (!record) return res.status(200).json({});
+      if (!record) {
+        console.log('[airtable] no record found for email:', sanitized);
+        return res.status(200).json({});
+      }
       return res.status(200).json({ id: record.id, fields: record.fields });
     }
 
-    let url = AT_URL;
-    let method = 'POST';
+    // ── CREATE ───────────────────────────────────────────────────────────────
+    if (action === 'create') {
+      if (!fields || !fields['Email']) {
+        console.error('[airtable] create called without Email field');
+        return res.status(400).json({ error: 'Missing Email field' });
+      }
+      console.log('[airtable] creating record at:', AT_URL);
 
-    if (action === 'patch') {
-      if (!recordId) return res.status(400).json({ error: 'Missing recordId' });
-      url = `${AT_URL}/${recordId}`;
-      method = 'PATCH';
-    } else if (action !== 'create') {
-      return res.status(400).json({ error: 'Invalid action' });
+      const atRes = await fetch(AT_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fields }),
+      });
+
+      const data = await atRes.json();
+      console.log('[airtable] create response status:', atRes.status, '| body:', JSON.stringify(data));
+
+      if (!atRes.ok) {
+        console.error('[airtable] create failed — Airtable error:', JSON.stringify(data));
+      }
+      return res.status(atRes.status).json(data);
     }
 
-    const atRes = await fetch(url, {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fields }),
-    });
+    // ── PATCH ────────────────────────────────────────────────────────────────
+    if (action === 'patch') {
+      if (!recordId) {
+        console.error('[airtable] patch called without recordId');
+        return res.status(400).json({ error: 'Missing recordId' });
+      }
+      const patchUrl = `${AT_URL}/${recordId}`;
+      console.log('[airtable] patching record at:', patchUrl);
 
-    const data = await atRes.json();
-    console.log('[airtable] response status:', atRes.status, '| body:', JSON.stringify(data));
+      const atRes = await fetch(patchUrl, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fields }),
+      });
 
-    return res.status(atRes.status).json(data);
+      const data = await atRes.json();
+      console.log('[airtable] patch response status:', atRes.status, '| body:', JSON.stringify(data));
+
+      if (!atRes.ok) {
+        console.error('[airtable] patch failed — Airtable error:', JSON.stringify(data));
+      }
+      return res.status(atRes.status).json(data);
+    }
+
+    console.error('[airtable] unknown action:', action);
+    return res.status(400).json({ error: 'Invalid action' });
+
   } catch (err) {
-    console.error('[airtable] error:', err.message);
+    console.error('[airtable] unhandled exception:', err.message, err.stack);
     return res.status(500).json({ error: 'Internal error' });
   }
 };

@@ -1344,7 +1344,8 @@
         });
         const d = await r.json();
         if (d.id) { atId = d.id; localStorage.setItem('rwu_record_id', d.id); }
-      } catch (_) {}
+        else { console.error('[rwu] atCreate no id in response', d); }
+      } catch (err) { console.error('[rwu] atCreate error', err); }
     }
 
     function today() { return new Date().toISOString().split('T')[0]; }
