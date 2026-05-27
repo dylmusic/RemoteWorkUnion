@@ -1539,6 +1539,7 @@
     const rhSkip         = document.getElementById('rh-skip');
     const rhHide         = document.getElementById('rh-hide');
     const applyNowBtn    = document.getElementById('apply-now');
+    const learnMoreLink  = document.querySelector('.learn-more-link');
     const hsUndo         = document.getElementById('hs-undo');
     const otUndo         = document.getElementById('ot-undo');
     const mcUndo         = document.getElementById('mc-undo');
@@ -1724,6 +1725,7 @@
       refreshHiddenRoles();
       updateNextButton();
       applyNowBtn.textContent = 'Learn More →';
+      if (learnMoreLink) learnMoreLink.style.display = 'none';
       updateProgressBar();
     }
 
