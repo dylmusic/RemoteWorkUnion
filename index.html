@@ -1372,9 +1372,13 @@
           atId = d.id;
           localStorage.setItem('rwu_record_id', d.id);
           const f = d.fields || {};
-          if (f['Current Step'] != null) localStorage.setItem('rwu_step', String(f['Current Step']));
+          let step = (f['Current Step'] != null) ? Number(f['Current Step']) : 0;
+          if (f['RentAHuman Applied'] === true) step = Math.max(step, 4);
+          if (f['Outlier Applied'] === true)    step = Math.max(step, 3);
+          if (f['Handshake Applied'] === true)  step = Math.max(step, 2);
+          if (step > 0) localStorage.setItem('rwu_step', String(step));
           if (f['Skipped Steps']) localStorage.setItem('rwu_skipped', f['Skipped Steps']);
-          if (f['Hidden Steps']) localStorage.setItem('rwu_hidden', f['Hidden Steps']);
+          if (f['Hidden Steps'])  localStorage.setItem('rwu_hidden',  f['Hidden Steps']);
         }
       } catch (_) {}
     }
@@ -1703,15 +1707,15 @@
 
     // ── returning user ────────────────────────────────────────
     (function() {
-      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
-      if (step <= 0) return;
+      const email = localStorage.getItem('rwu_email');
+      const step  = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      if (!email && step <= 0) return;
 
       form.style.display = 'none';
       hsApply.style.display = 'none';
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
-      const email = localStorage.getItem('rwu_email');
       atId = localStorage.getItem('rwu_record_id') || '';
       if (email) {
         atFetch(email).then(refreshDashboard);
