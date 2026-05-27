@@ -826,6 +826,21 @@
       transition: color 0.2s;
     }
     .card-action-link:hover { color: rgba(255,255,255,0.6); }
+    .card-action-link.selected { color: #F59E0B; }
+    .card-action-link.selected:hover { color: #fbbf24; }
+
+    .skipped-banner {
+      display: none;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.35);
+      border-radius: 6px;
+      color: #F59E0B;
+      font-size: 12px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .skipped-banner.show { display: block; }
 
     /* X link on dashboard */
     .x-opps-link {
@@ -1100,6 +1115,7 @@
         <!-- Step 2: Handshake -->
         <div class="hs-apply" id="hs-apply">
           <button class="dash-btn" id="hs-dash-btn">⊞ Dashboard</button>
+          <div class="skipped-banner" id="hs-skipped-banner">⚠ You skipped this opportunity</div>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
@@ -1127,6 +1143,7 @@
         <!-- Step 3: Outlier AI -->
         <div id="ot-apply">
           <button class="dash-btn" id="ot-dash-btn">⊞ Dashboard</button>
+          <div class="skipped-banner" id="ot-skipped-banner">⚠ You skipped this opportunity</div>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -1154,6 +1171,7 @@
         <!-- Step 4: RentAHuman AI -->
         <div id="rh-apply">
           <button class="dash-btn" id="rh-dash-btn">⊞ Dashboard</button>
+          <div class="skipped-banner" id="rh-skipped-banner">⚠ You skipped this opportunity</div>
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -1427,6 +1445,9 @@
     const hsUndo         = document.getElementById('hs-undo');
     const otUndo         = document.getElementById('ot-undo');
     const rhUndo         = document.getElementById('rh-undo');
+    const hsSkippedBanner = document.getElementById('hs-skipped-banner');
+    const otSkippedBanner = document.getElementById('ot-skipped-banner');
+    const rhSkippedBanner = document.getElementById('rh-skipped-banner');
     const progNewsletter  = document.getElementById('prog-newsletter');
     const progEmailWrap   = document.getElementById('prog-email-wrap');
     const progEmailInput  = document.getElementById('prog-email-input');
@@ -1599,15 +1620,16 @@
       const email   = localStorage.getItem('rwu_email');
       const hidden  = getHidden();
       const skipped = getSkipped();
+      const applied = getApplied();
       const candidates = [
         { nextBtn: progNewsletterNext, arrow: progNewsletterArrow,
           isIncomplete: !email || step < 1 },
         { nextBtn: progHsNext, arrow: progHs.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && step < 2 },
+          isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && !applied.includes('handshake') },
         { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && step < 3 },
+          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && !applied.includes('outlier') },
         { nextBtn: progRhNext, arrow: progRh.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('rentahuman') && !skipped.includes('rentahuman') && step < 4 },
+          isIncomplete: !hidden.includes('rentahuman') && !skipped.includes('rentahuman') && !applied.includes('rentahuman') },
       ];
       let assigned = false;
       candidates.forEach(({ nextBtn, arrow, isIncomplete }) => {
@@ -1642,15 +1664,31 @@
 
     function refreshCardState(el) {
       const applied = getApplied();
+      const skipped = getSkipped();
       if (el === hsApply) {
-        if (applied.includes('handshake'))  { hsCb.classList.add('checked'); hsUndo.classList.add('show'); }
-        else                                { hsCb.classList.remove('checked'); hsUndo.classList.remove('show'); }
+        const isSkipped = skipped.includes('handshake');
+        const isApplied = applied.includes('handshake');
+        hsCb.classList.toggle('checked', isApplied);
+        hsUndo.classList.toggle('show', isApplied || isSkipped);
+        hsUndo.textContent = isSkipped ? '↩ I did not apply yet — Reset this step' : '↩ I did not apply yet';
+        hsSkip.classList.toggle('selected', isSkipped);
+        hsSkippedBanner.classList.toggle('show', isSkipped);
       } else if (el === otApply) {
-        if (applied.includes('outlier'))    { otCb.classList.add('checked'); otUndo.classList.add('show'); }
-        else                                { otCb.classList.remove('checked'); otUndo.classList.remove('show'); }
+        const isSkipped = skipped.includes('outlier');
+        const isApplied = applied.includes('outlier');
+        otCb.classList.toggle('checked', isApplied);
+        otUndo.classList.toggle('show', isApplied || isSkipped);
+        otUndo.textContent = isSkipped ? '↩ I did not apply yet — Reset this step' : '↩ I did not apply yet';
+        otSkip.classList.toggle('selected', isSkipped);
+        otSkippedBanner.classList.toggle('show', isSkipped);
       } else if (el === rhApply) {
-        if (applied.includes('rentahuman')) { rhCb.classList.add('checked'); rhUndo.classList.add('show'); }
-        else                                { rhCb.classList.remove('checked'); rhUndo.classList.remove('show'); }
+        const isSkipped = skipped.includes('rentahuman');
+        const isApplied = applied.includes('rentahuman');
+        rhCb.classList.toggle('checked', isApplied);
+        rhUndo.classList.toggle('show', isApplied || isSkipped);
+        rhUndo.textContent = isSkipped ? '↩ I did not apply yet — Reset this step' : '↩ I did not apply yet';
+        rhSkip.classList.toggle('selected', isSkipped);
+        rhSkippedBanner.classList.toggle('show', isSkipped);
       }
     }
 
@@ -1854,7 +1892,10 @@
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       hsCb.classList.remove('checked');
       hsUndo.classList.remove('show');
+      hsUndo.textContent = '↩ I did not apply yet';
       hsCard.classList.remove('glow');
+      hsSkip.classList.remove('selected');
+      hsSkippedBanner.classList.remove('show');
       removeApplied('handshake');
       unskipStep('handshake');
       unhideStep('handshake');
@@ -1866,7 +1907,10 @@
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       otCb.classList.remove('checked');
       otUndo.classList.remove('show');
+      otUndo.textContent = '↩ I did not apply yet';
       hsCard.classList.remove('glow');
+      otSkip.classList.remove('selected');
+      otSkippedBanner.classList.remove('show');
       removeApplied('outlier');
       unskipStep('outlier');
       unhideStep('outlier');
@@ -1878,7 +1922,10 @@
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       rhCb.classList.remove('checked');
       rhUndo.classList.remove('show');
+      rhUndo.textContent = '↩ I did not apply yet';
       hsCard.classList.remove('glow');
+      rhSkip.classList.remove('selected');
+      rhSkippedBanner.classList.remove('show');
       removeApplied('rentahuman');
       unskipStep('rentahuman');
       unhideStep('rentahuman');
