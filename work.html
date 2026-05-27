@@ -231,24 +231,58 @@
     /* PAY CARDS */
     .pay-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
     .pay-card {
-      padding: 20px 16px;
-      text-align: center;
+      padding: 24px 20px;
+    }
+    .pay-card .pay-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
     }
     .pay-card .pay-range {
-      font-size: 1.15rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      letter-spacing: -0.3px;
-      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
       color: white;
     }
-    .pay-card .pay-role {
-      font-size: 0.78rem;
+    .pay-card .pay-desc {
+      font-size: 0.82rem;
       color: rgba(255,255,255,0.55);
-      line-height: 1.4;
+      line-height: 1.55;
+    }
+
+    /* INDUSTRY GRID */
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .industry-card {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .industry-emoji {
+      font-size: 1.6rem;
+      margin-bottom: 2px;
+    }
+    .industry-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: white;
+    }
+    .industry-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.52);
+      line-height: 1.5;
     }
 
     /* PLATFORM CARDS */
@@ -422,10 +456,14 @@
     }
 
     /* MOBILE */
+    @media (max-width: 640px) {
+      .industry-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 520px) {
       .work-type-grid { grid-template-columns: 1fr; }
       .platform-grid { grid-template-columns: 1fr; }
-      .pay-grid { grid-template-columns: repeat(2, 1fr); }
+      .pay-grid { grid-template-columns: 1fr; }
+      .industry-grid { grid-template-columns: repeat(2, 1fr); }
       .hero { padding: 48px 0 40px; }
       .keyword-cloud-wrap { height: 220px; }
     }
@@ -463,6 +501,7 @@
       <div class="hero-pay-badge">
         $15–$200/hr <span>depending on expertise</span>
       </div>
+      <p class="hero-sub" style="margin-top: 28px; margin-bottom: 0;">AI companies are hiring professionals from every field — not just tech. Lawyers, doctors, accountants, writers, scientists, teachers, and business professionals are all getting paid to apply their expertise to train the next generation of AI models. Your years of experience in your industry are exactly what these companies need.</p>
     </section>
 
     <!-- KEYWORD CLOUD -->
@@ -501,6 +540,76 @@
       </div>
     </section>
 
+    <!-- EVERY INDUSTRY QUALIFIES -->
+    <section class="fade-in">
+      <div class="section-header">
+        <h2>Your Expertise Is the Product</h2>
+        <p>AI companies don't just need coders. They need real professionals from every industry to teach AI how experts think.</p>
+      </div>
+      <div class="industry-grid">
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">⚖️</div>
+          <div class="industry-name">Law &amp; Legal</div>
+          <div class="industry-desc">Review AI legal reasoning, evaluate case summaries, and verify contract analysis.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🏥</div>
+          <div class="industry-name">Medicine &amp; Healthcare</div>
+          <div class="industry-desc">Evaluate medical AI outputs, verify clinical information, and assess diagnostic reasoning.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">💰</div>
+          <div class="industry-name">Finance &amp; Accounting</div>
+          <div class="industry-desc">Review financial analysis, evaluate investment reasoning, and assess tax and audit tasks.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">✍️</div>
+          <div class="industry-name">Writing &amp; Journalism</div>
+          <div class="industry-desc">Write prompts, evaluate AI-generated content, and rate creative and editorial outputs.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🔬</div>
+          <div class="industry-name">Science &amp; Research</div>
+          <div class="industry-desc">Evaluate scientific reasoning, verify research summaries, and assess technical accuracy.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">💻</div>
+          <div class="industry-name">Software Engineering</div>
+          <div class="industry-desc">Code review, debugging tasks, algorithm evaluation, and technical prompt writing.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">📊</div>
+          <div class="industry-name">Business &amp; Sales</div>
+          <div class="industry-desc">Evaluate business strategy outputs, sales copy, market analysis, and CRM-related AI tasks.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🎨</div>
+          <div class="industry-name">Creative &amp; Design</div>
+          <div class="industry-desc">Rate AI creative outputs, evaluate visual descriptions, and assess brand and marketing content.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">📚</div>
+          <div class="industry-name">Education &amp; Teaching</div>
+          <div class="industry-desc">Evaluate AI tutoring responses, assess curriculum content, and review educational materials.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🏗️</div>
+          <div class="industry-name">Engineering &amp; Architecture</div>
+          <div class="industry-desc">Review technical specifications, evaluate engineering problem-solving, and assess design outputs.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🔒</div>
+          <div class="industry-name">Cybersecurity</div>
+          <div class="industry-desc">Evaluate AI security assessments, review vulnerability analysis, and test AI reasoning on threat scenarios.</div>
+        </div>
+        <div class="glass-card industry-card">
+          <div class="industry-emoji">🌍</div>
+          <div class="industry-name">Languages &amp; Translation</div>
+          <div class="industry-desc">Multilingual prompt writing, translation evaluation, and cross-cultural AI output review.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- PAY BREAKDOWN -->
     <section class="fade-in">
       <div class="section-header">
@@ -509,24 +618,19 @@
       </div>
       <div class="pay-grid">
         <div class="glass-card pay-card">
-          <div class="pay-range">$15–$25/hr</div>
-          <div class="pay-role">Data annotation<br/>& basic labeling</div>
+          <div class="pay-title">Beginner Roles</div>
+          <div class="pay-range">$15–$30/hr</div>
+          <div class="pay-desc">Entry level tasks like data labeling, content review, and basic annotation. No experience required.</div>
         </div>
         <div class="glass-card pay-card">
-          <div class="pay-range">$20–$40/hr</div>
-          <div class="pay-role">AI response<br/>rating & ranking</div>
+          <div class="pay-title">Generalist Roles</div>
+          <div class="pay-range">$50–$100/hr</div>
+          <div class="pay-desc">AI response evaluation, prompt writing, RLHF tasks, and domain feedback. Strong writing and judgment required.</div>
         </div>
         <div class="glass-card pay-card">
-          <div class="pay-range">$25–$60/hr</div>
-          <div class="pay-role">Prompt writing<br/>& RLHF tasks</div>
-        </div>
-        <div class="glass-card pay-card">
-          <div class="pay-range">$40–$80/hr</div>
-          <div class="pay-role">Domain expert<br/>evaluation</div>
-        </div>
-        <div class="glass-card pay-card">
-          <div class="pay-range">$60–$200/hr</div>
-          <div class="pay-role">ML engineers &<br/>researchers</div>
+          <div class="pay-title">Expert Roles</div>
+          <div class="pay-range">$100–$200/hr</div>
+          <div class="pay-desc">Specialized professional expertise in law, medicine, finance, engineering, research, and more. Your career knowledge is the skill.</div>
         </div>
       </div>
     </section>
@@ -541,25 +645,21 @@
         <a href="https://app.joinhandshake.com/school_referrals/eyJzY2hvb2xfaWQiOjQ1MDE5fQ" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
           <div class="platform-card-name">Handshake AI</div>
           <div class="platform-card-desc">Entry-level remote jobs and gigs — great for getting started quickly.</div>
-          <div class="platform-card-pay">$15–$35/hr · Entry friendly</div>
           <div class="platform-card-arrow">Apply now →</div>
         </a>
         <a href="https://outlier.ai/for-contributors?rcode=SYpfzS" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
           <div class="platform-card-name">Outlier AI</div>
           <div class="platform-card-desc">Scale AI's platform for high-quality RLHF, prompt writing, and model evaluation.</div>
-          <div class="platform-card-pay">$20–$60/hr · Flexible hours</div>
           <div class="platform-card-arrow">Apply now →</div>
         </a>
         <a href="https://www.mercor.com/" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
           <div class="platform-card-name">Mercor</div>
           <div class="platform-card-desc">AI-matched hiring for technical talent — engineers earn top rates on ML projects.</div>
-          <div class="platform-card-pay">$40–$200/hr · Technical roles</div>
           <div class="platform-card-arrow">Apply now →</div>
         </a>
         <a href="https://www.rentahuman.ai/?via=remoteworkunion" target="_blank" rel="noopener noreferrer" class="glass-card platform-card">
           <div class="platform-card-name">RentAHuman AI</div>
           <div class="platform-card-desc">Human-in-the-loop tasks for AI companies — varied work, fast onboarding.</div>
-          <div class="platform-card-pay">$15–$40/hr · Quick start</div>
           <div class="platform-card-arrow">Apply now →</div>
         </a>
       </div>
