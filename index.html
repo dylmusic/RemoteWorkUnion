@@ -1347,6 +1347,11 @@
       } catch (err) { console.error('[rwu] atCreate error', err); }
     }
 
+    async function atCreateOrRestore(email) {
+      await atFetch(email);
+      if (!atId) await atCreate(email);
+    }
+
     function today() { return new Date().toISOString().split('T')[0]; }
 
     async function atPatch(fields) {
@@ -1737,7 +1742,7 @@
 
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
-      atCreate(val);
+      atCreateOrRestore(val);
 
       try {
         await fetch('https://app.kit.com/forms/9465424/subscriptions', {
