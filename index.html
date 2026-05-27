@@ -1337,15 +1337,17 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'create', fields: {
             'Email': email,
-            'Joined Date': new Date().toISOString().split('T')[0],
-            'Handshake Applied': false,
-            'Current Step': 1
+            'Joined Date': today(),
+            'Current Step': 1,
+            'Last Activity': today()
           }})
         });
         const d = await r.json();
         if (d.id) { atId = d.id; localStorage.setItem('rwu_record_id', d.id); }
       } catch (_) {}
     }
+
+    function today() { return new Date().toISOString().split('T')[0]; }
 
     async function atPatch(fields) {
       if (!atId) return;
@@ -1355,6 +1357,25 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'patch', recordId: atId, fields })
         });
+      } catch (_) {}
+    }
+
+    async function atFetch(email) {
+      try {
+        const r = await fetch('/api/airtable', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'search', email })
+        });
+        const d = await r.json();
+        if (d.id) {
+          atId = d.id;
+          localStorage.setItem('rwu_record_id', d.id);
+          const f = d.fields || {};
+          if (f['Current Step'] != null) localStorage.setItem('rwu_step', String(f['Current Step']));
+          if (f['Skipped Steps']) localStorage.setItem('rwu_skipped', f['Skipped Steps']);
+          if (f['Hidden Steps']) localStorage.setItem('rwu_hidden', f['Hidden Steps']);
+        }
       } catch (_) {}
     }
 
@@ -1447,7 +1468,7 @@
         showView(hsProgress);
         setTimeout(refreshDashboard, 50);
         localStorage.setItem('rwu_step', '5');
-        atPatch({ 'Current Step': 5 });
+        atPatch({ 'Current Step': 5, 'Last Activity': today() });
       });
     }
 
@@ -1472,14 +1493,17 @@
     function skipStep(key) {
       const arr = getSkipped(); if (!arr.includes(key)) arr.push(key);
       localStorage.setItem('rwu_skipped', arr.join(','));
+      atPatch({ 'Skipped Steps': arr.join(','), 'Last Activity': today() });
     }
     function hideStep(key) {
       const arr = getHidden(); if (!arr.includes(key)) arr.push(key);
       localStorage.setItem('rwu_hidden', arr.join(','));
+      atPatch({ 'Hidden Steps': arr.join(','), 'Last Activity': today() });
     }
     function unskipStep(key) {
       const arr = getSkipped().filter(k => k !== key);
       localStorage.setItem('rwu_skipped', arr.join(','));
+      atPatch({ 'Skipped Steps': arr.join(','), 'Last Activity': today() });
     }
 
         // ── dashboard navigation ──────────────────────────────────
@@ -1626,6 +1650,7 @@
       const key = btn.dataset.key;
       const arr = getHidden().filter(k => k !== key);
       localStorage.setItem('rwu_hidden', arr.join(','));
+      atPatch({ 'Hidden Steps': arr.join(','), 'Last Activity': today() });
       refreshDashboard();
     });
 
@@ -1685,7 +1710,14 @@
       hsApply.style.display = 'none';
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
-      setTimeout(refreshDashboard, 100);
+
+      const email = localStorage.getItem('rwu_email');
+      atId = localStorage.getItem('rwu_record_id') || '';
+      if (email) {
+        atFetch(email).then(refreshDashboard);
+      } else {
+        setTimeout(refreshDashboard, 100);
+      }
 
     })();
 
@@ -1740,40 +1772,40 @@
     // ── Handshake card ────────────────────────────────────────
     hsCta.addEventListener('click', () => {
       localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Current Step': 2 });
+      atPatch({ 'Current Step': 2, 'Last Activity': today() });
       setTimeout(fromDash ? goToDashboard : showOutlier, 600);
     });
 
     hsAlready.addEventListener('click', () => {
       checkAnimate(fromDash ? goToDashboard : showOutlier, hsCb, hsUndo);
       localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
+      atPatch({ 'Handshake Applied': true, 'Current Step': 2, 'Last Activity': today() });
     });
 
     // ── Outlier card ──────────────────────────────────────────
     otCta.addEventListener('click', () => {
       localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Current Step': 3 });
+      atPatch({ 'Outlier Applied': true, 'Current Step': 3, 'Last Activity': today() });
       setTimeout(fromDash ? goToDashboard : showRentAHuman, 600);
     });
 
     otAlready.addEventListener('click', () => {
       checkAnimate(fromDash ? goToDashboard : showRentAHuman, otCb, otUndo);
       localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Current Step': 3 });
+      atPatch({ 'Outlier Applied': true, 'Current Step': 3, 'Last Activity': today() });
     });
 
     // ── RentAHuman card ───────────────────────────────────────
     rhCta.addEventListener('click', () => {
       localStorage.setItem('rwu_step', '4');
-      atPatch({ 'Current Step': 4 });
+      atPatch({ 'RentAHuman Applied': true, 'Current Step': 4, 'Last Activity': today() });
       setTimeout(fromDash ? goToDashboard : showProgress, 600);
     });
 
     rhAlready.addEventListener('click', () => {
       checkAnimate(fromDash ? goToDashboard : showProgress, rhCb, rhUndo);
       localStorage.setItem('rwu_step', '4');
-      atPatch({ 'Current Step': 4 });
+      atPatch({ 'RentAHuman Applied': true, 'Current Step': 4, 'Last Activity': today() });
     });
 
     // ── undo checkbox ─────────────────────────────────────────
@@ -1783,7 +1815,7 @@
       hsUndo.classList.remove('show');
       hsCard.classList.remove('glow');
       localStorage.setItem('rwu_step', '1');
-      atPatch({ 'Handshake Applied': false, 'Current Step': 1 });
+      atPatch({ 'Handshake Applied': false, 'Current Step': 1, 'Last Activity': today() });
       if (fromDash) goToDashboard();
     });
 
@@ -1793,7 +1825,7 @@
       otUndo.classList.remove('show');
       hsCard.classList.remove('glow');
       localStorage.setItem('rwu_step', '2');
-      atPatch({ 'Current Step': 2 });
+      atPatch({ 'Outlier Applied': false, 'Current Step': 2, 'Last Activity': today() });
       if (fromDash) goToDashboard();
     });
 
@@ -1803,7 +1835,7 @@
       rhUndo.classList.remove('show');
       hsCard.classList.remove('glow');
       localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Current Step': 3 });
+      atPatch({ 'RentAHuman Applied': false, 'Current Step': 3, 'Last Activity': today() });
       if (fromDash) goToDashboard();
     });
 
@@ -1838,7 +1870,7 @@
           body: JSON.stringify({ email_address: val })
         });
       } catch (_) {}
-      atPatch({ 'Email': val });
+      atPatch({ 'Email': val, 'Last Activity': today() });
       progEmailSubmit.textContent = 'Update →';
       progEmailSubmit.disabled = false;
       progEmailInput.value = '';
