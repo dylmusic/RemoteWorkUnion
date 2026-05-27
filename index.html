@@ -1297,7 +1297,7 @@
           <p class="prog-header">🏆 Your Progress</p>
           <p class="prog-sub">Keep completing steps to unlock more resources.</p>
           <ul class="prog-list">
-            <li class="prog-item done clickable prog-item-col" id="prog-newsletter">
+            <li class="prog-item clickable prog-item-col" id="prog-newsletter">
               <div class="prog-newsletter-row">
                 <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
                 Join Remote Work Union
@@ -1313,21 +1313,21 @@
               <p class="prog-email-ok" id="prog-email-ok">&#10003; Updated!</p>
               <p class="prog-nudge" id="prog-newsletter-nudge">Sign up to unlock your full member profile</p>
             </li>
-            <li class="prog-item done anim-in clickable" id="prog-hs">
+            <li class="prog-item anim-in" id="prog-hs">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Handshake AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-hs-next">Next &rarr;</button>
             </li>
-            <li class="prog-item done anim-in clickable" id="prog-ot" style="animation-delay:0.45s">
+            <li class="prog-item anim-in" id="prog-ot" style="animation-delay:0.45s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Outlier AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
             </li>
-            <li class="prog-item done anim-in clickable" id="prog-mc" style="animation-delay:0.65s">
+            <li class="prog-item anim-in" id="prog-mc" style="animation-delay:0.65s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Mercor AI
               <span class="prog-new-badge" id="prog-mc-new">NEW</span>
@@ -1335,7 +1335,7 @@
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
             </li>
-            <li class="prog-item done anim-in clickable" id="prog-rh" style="animation-delay:0.85s">
+            <li class="prog-item anim-in" id="prog-rh" style="animation-delay:0.85s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to RentAHuman AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
@@ -1710,11 +1710,12 @@
       items.forEach(({ el, key, minStep }) => {
         if (hidden.includes(key)) { el.style.display = 'none'; return; }
         el.style.removeProperty('display');
-        el.classList.remove('done', 'skipped', 'clickable');
+        el.classList.remove('done', 'skipped');
+        el.classList.add('clickable');
         if (skipped.includes(key)) {
-          el.classList.add('skipped', 'clickable');
+          el.classList.add('skipped');
         } else if (applied.includes(key)) {
-          el.classList.add('done', 'clickable');
+          el.classList.add('done');
         }
       });
       // NEW badge: show on Mercor if returning user hasn't interacted with it yet
