@@ -15,6 +15,8 @@ module.exports = async (req, res) => {
 
   const { action, recordId, fields } = req.body || {};
 
+  console.log('[airtable] action:', action, '| recordId:', recordId, '| fields:', JSON.stringify(fields));
+
   try {
     let url = AT_URL;
     let method = 'POST';
@@ -37,8 +39,11 @@ module.exports = async (req, res) => {
     });
 
     const data = await atRes.json();
+    console.log('[airtable] response status:', atRes.status, '| body:', JSON.stringify(data));
+
     return res.status(atRes.status).json(data);
-  } catch (_) {
+  } catch (err) {
+    console.error('[airtable] error:', err.message);
     return res.status(500).json({ error: 'Internal error' });
   }
 };

@@ -1339,7 +1339,6 @@
             'Email': email,
             'Joined Date': new Date().toISOString().split('T')[0],
             'Handshake Applied': false,
-            'RentAHuman Applied': false,
             'Current Step': 1
           }})
         });
@@ -1473,17 +1472,14 @@
     function skipStep(key) {
       const arr = getSkipped(); if (!arr.includes(key)) arr.push(key);
       localStorage.setItem('rwu_skipped', arr.join(','));
-      atPatch({ 'Skipped Steps': arr.join(',') });
     }
     function hideStep(key) {
       const arr = getHidden(); if (!arr.includes(key)) arr.push(key);
       localStorage.setItem('rwu_hidden', arr.join(','));
-      atPatch({ 'Hidden Steps': arr.join(',') });
     }
     function unskipStep(key) {
       const arr = getSkipped().filter(k => k !== key);
       localStorage.setItem('rwu_skipped', arr.join(','));
-      atPatch({ 'Skipped Steps': arr.join(',') });
     }
 
         // ── dashboard navigation ──────────────────────────────────
@@ -1630,7 +1626,6 @@
       const key = btn.dataset.key;
       const arr = getHidden().filter(k => k !== key);
       localStorage.setItem('rwu_hidden', arr.join(','));
-      atPatch({ 'Hidden Steps': arr.join(',') });
       refreshDashboard();
     });
 
@@ -1778,7 +1773,7 @@
     rhAlready.addEventListener('click', () => {
       checkAnimate(fromDash ? goToDashboard : showProgress, rhCb, rhUndo);
       localStorage.setItem('rwu_step', '4');
-      atPatch({ 'RentAHuman Applied': true, 'Current Step': 4 });
+      atPatch({ 'Current Step': 4 });
     });
 
     // ── undo checkbox ─────────────────────────────────────────
@@ -1808,7 +1803,7 @@
       rhUndo.classList.remove('show');
       hsCard.classList.remove('glow');
       localStorage.setItem('rwu_step', '3');
-      atPatch({ 'RentAHuman Applied': false, 'Current Step': 3 });
+      atPatch({ 'Current Step': 3 });
       if (fromDash) goToDashboard();
     });
 
