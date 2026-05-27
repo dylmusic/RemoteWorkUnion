@@ -16,6 +16,14 @@
     {
       "src": "api/airtable.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "sitemap.xml",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "robots.txt",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -26,6 +34,14 @@
     {
       "src": "/work",
       "dest": "/work.html"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
     },
     {
       "src": "/(.*)",
