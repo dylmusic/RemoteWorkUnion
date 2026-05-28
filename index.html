@@ -1348,20 +1348,19 @@
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-hs-next">Next &rarr;</button>
             </li>
-            <li class="prog-item anim-in" id="prog-ot" style="animation-delay:0.45s">
+            <li class="prog-item anim-in" id="prog-mc" style="animation-delay:0.45s">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Apply to Mercor AI
+              <span class="prog-skipped-badge">⚠ Skipped</span>
+              <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
+            </li>
+            <li class="prog-item anim-in" id="prog-ot" style="animation-delay:0.65s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Outlier AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
-            </li>
-            <li class="prog-item anim-in" id="prog-mc" style="animation-delay:0.65s">
-              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
-              Apply to Mercor AI
-              <span class="prog-new-badge" id="prog-mc-new">NEW</span>
-              <span class="prog-skipped-badge">⚠ Skipped</span>
-              <span class="prog-item-arrow">→</span>
-              <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
             </li>
             <li class="prog-item anim-in" id="prog-rh" style="animation-delay:0.85s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
@@ -1592,7 +1591,6 @@
     const progHsNext             = document.getElementById('prog-hs-next');
     const progOtNext             = document.getElementById('prog-ot-next');
     const progMcNext             = document.getElementById('prog-mc-next');
-    const progMcNew              = document.getElementById('prog-mc-new');
     const progRhNext             = document.getElementById('prog-rh-next');
     const rgTeaser               = document.getElementById('rg-teaser');
     const rgDashBtn              = document.getElementById('rg-dash-btn');
@@ -1620,16 +1618,16 @@
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('animate')));
     }
 
-    function showOutlier() {
-      fadeOut(hsApply, () => showView(otApply));
+    function showMercor() {
+      fadeOut(hsApply, () => showView(mcApply));
     }
 
-    function showMercor() {
-      fadeOut(otApply, () => showView(mcApply));
+    function showOutlier() {
+      fadeOut(mcApply, () => showView(otApply));
     }
 
     function showRentAHuman() {
-      fadeOut(mcApply, () => showView(rhApply));
+      fadeOut(otApply, () => showView(rhApply));
     }
 
     function showProgress() {
@@ -1736,8 +1734,8 @@
       }
       const items = [
         { el: progHs, key: 'handshake',  minStep: 2 },
-        { el: progOt, key: 'outlier',    minStep: 3 },
-        { el: progMc, key: 'mercor',     minStep: 4 },
+        { el: progMc, key: 'mercor',     minStep: 3 },
+        { el: progOt, key: 'outlier',    minStep: 4 },
         { el: progRh, key: 'rentahuman', minStep: 5 },
       ];
       items.forEach(({ el, key, minStep }) => {
@@ -1751,11 +1749,6 @@
           el.classList.add('done');
         }
       });
-      // NEW badge: show on Mercor if returning user hasn't interacted with it yet
-      const mercorUnseen = email && step >= 1 &&
-        !applied.includes('mercor') && !skipped.includes('mercor') && !hidden.includes('mercor');
-      progMcNew.classList.toggle('show', !!mercorUnseen);
-
       refreshHiddenRoles();
       updateNextButton();
       applyNowBtn.textContent = 'Learn More →';
@@ -1774,10 +1767,10 @@
           isIncomplete: !email || step < 1 },
         { nextBtn: progHsNext, arrow: progHs.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && !applied.includes('handshake') },
-        { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && !applied.includes('outlier') },
         { nextBtn: progMcNext, arrow: progMc.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('mercor') && !skipped.includes('mercor') && !applied.includes('mercor') },
+        { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && !applied.includes('outlier') },
         { nextBtn: progRhNext, arrow: progRh.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('rentahuman') && !skipped.includes('rentahuman') && !applied.includes('rentahuman') },
       ];
@@ -2024,13 +2017,13 @@
       addApplied('handshake');
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
-      setTimeout(fromDash ? goToDashboard : showOutlier, 600);
+      setTimeout(fromDash ? goToDashboard : showMercor, 600);
     });
 
     hsAlready.addEventListener('click', () => {
       unskipStep('handshake');
       addApplied('handshake');
-      checkAnimate(fromDash ? goToDashboard : showOutlier, hsCb, hsUndo);
+      checkAnimate(fromDash ? goToDashboard : showMercor, hsCb, hsUndo);
       localStorage.setItem('rwu_step', '2');
       atPatch({ 'Handshake Applied': true, 'Current Step': 2 });
     });
@@ -2044,17 +2037,17 @@
     otConfirm.addEventListener('click', () => {
       unskipStep('outlier');
       addApplied('outlier');
-      localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
-      setTimeout(fromDash ? goToDashboard : showMercor, 600);
+      localStorage.setItem('rwu_step', '4');
+      atPatch({ 'Outlier Applied': true, 'Current Step': 4 });
+      setTimeout(fromDash ? goToDashboard : showRentAHuman, 600);
     });
 
     otAlready.addEventListener('click', () => {
       unskipStep('outlier');
       addApplied('outlier');
-      checkAnimate(fromDash ? goToDashboard : showMercor, otCb, otUndo);
-      localStorage.setItem('rwu_step', '3');
-      atPatch({ 'Outlier Applied': true, 'Current Step': 3 });
+      checkAnimate(fromDash ? goToDashboard : showRentAHuman, otCb, otUndo);
+      localStorage.setItem('rwu_step', '4');
+      atPatch({ 'Outlier Applied': true, 'Current Step': 4 });
     });
 
     // ── Mercor card ───────────────────────────────────────────
@@ -2066,17 +2059,17 @@
     mcConfirm.addEventListener('click', () => {
       unskipStep('mercor');
       addApplied('mercor');
-      localStorage.setItem('rwu_step', '4');
-      atPatch({ 'Mercor Applied': true, 'Current Step': 4 });
-      setTimeout(fromDash ? goToDashboard : showRentAHuman, 600);
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
+      setTimeout(fromDash ? goToDashboard : showOutlier, 600);
     });
 
     mcAlready.addEventListener('click', () => {
       unskipStep('mercor');
       addApplied('mercor');
-      checkAnimate(fromDash ? goToDashboard : showRentAHuman, mcCb, mcUndo);
-      localStorage.setItem('rwu_step', '4');
-      atPatch({ 'Mercor Applied': true, 'Current Step': 4 });
+      checkAnimate(fromDash ? goToDashboard : showOutlier, mcCb, mcUndo);
+      localStorage.setItem('rwu_step', '3');
+      atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
     });
 
     // ── RentAHuman card ───────────────────────────────────────
