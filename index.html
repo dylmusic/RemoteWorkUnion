@@ -1517,9 +1517,9 @@
           if (f['Outlier Applied'] === true)    applied.push('outlier');
           if (f['Mercor Applied'] === true)     applied.push('mercor');
           if (f['RentAHuman Applied'] === true) applied.push('rentahuman');
-          if (applied.length) localStorage.setItem('rwu_applied', applied.join(','));
-          if (f['Skipped Steps']) localStorage.setItem('rwu_skipped', f['Skipped Steps']);
-          if (f['Hidden Steps'])  localStorage.setItem('rwu_hidden',  f['Hidden Steps']);
+          localStorage.setItem('rwu_applied', applied.join(','));
+          localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
+          localStorage.setItem('rwu_hidden',  f['Hidden Steps']  || '');
           atPatch({ 'Last Activity Date': new Date().toISOString() });
         }
       } catch (_) {}
