@@ -58,13 +58,14 @@ module.exports = async (req, res) => {
       }
       console.log('[airtable] creating record at:', AT_URL);
 
+      const createFields = { ...fields, 'Last Activity Date': new Date().toISOString() };
       const atRes = await fetch(AT_URL, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fields }),
+        body: JSON.stringify({ fields: createFields }),
       });
 
       const data = await atRes.json();
