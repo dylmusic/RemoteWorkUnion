@@ -85,13 +85,14 @@ module.exports = async (req, res) => {
       const patchUrl = `${AT_URL}/${recordId}`;
       console.log('[airtable] patching record at:', patchUrl);
 
+      const patchFields = { ...fields, 'Last Activity Date': new Date().toISOString() };
       const atRes = await fetch(patchUrl, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fields }),
+        body: JSON.stringify({ fields: patchFields }),
       });
 
       const data = await atRes.json();
