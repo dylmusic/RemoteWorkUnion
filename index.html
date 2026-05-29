@@ -883,13 +883,13 @@
     .prog-resource-divider {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.9px;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.48);
-      padding-top: 4px;
+      color: rgba(255,255,255,0.65);
+      padding: 10px 0 6px;
       list-style: none;
     }
     .prog-resource-divider::before,
@@ -897,49 +897,56 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.18);
     }
     .prog-item-resource {
       display: flex;
       align-items: center;
       list-style: none;
-      border-radius: 8px;
-      padding: 3px 5px;
-      margin: -3px -5px;
-      transition: background 0.15s;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: background 0.18s, border-color 0.18s;
     }
-    .prog-item-resource:hover { background: rgba(255,255,255,0.06); }
+    .prog-item-resource:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(74,222,128,0.38);
+    }
     .prog-item-resource a {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.88);
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
       text-decoration: none;
       transition: color 0.15s;
     }
     .prog-item-resource a:hover { color: #fff; }
     .prog-item-resource .prog-resource-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 11px;
-      background: rgba(74,222,128,0.14);
-      border: 1px solid rgba(74,222,128,0.28);
+      font-size: 14px;
+      background: rgba(74,222,128,0.16);
+      border: 1px solid rgba(74,222,128,0.32);
     }
     .prog-item-resource .prog-resource-arrow {
       margin-left: auto;
-      font-size: 11px;
-      color: rgba(255,255,255,0.5);
-      transition: color 0.15s;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.15s, transform 0.15s;
     }
-    .prog-item-resource:hover .prog-resource-arrow { color: rgba(255,255,255,0.88); }
+    .prog-item-resource:hover .prog-resource-arrow {
+      color: rgba(255,255,255,0.95);
+      transform: translateX(3px);
+    }
 
     .card-action-link.selected { color: #F59E0B; }
     .card-action-link.selected:hover { color: #fbbf24; }
@@ -1438,7 +1445,7 @@
             <li class="prog-item-resource" id="prog-resume-guide">
               <a href="/blog/remote-work-resume-guide">
                 <span class="prog-resource-icon">📝</span>
-                Resume Guide
+                Resume Guide &amp; Optimizer
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
