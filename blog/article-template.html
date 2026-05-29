@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    INSTRUCTIONS: Replace every [PLACEHOLDER] below with real values
+    before publishing. Delete this comment block when done.
+
+    CHECKLIST:
+    - [ ] Replace [ARTICLE TITLE] (3 places: title tag, og:title, twitter:title)
+    - [ ] Replace [META DESCRIPTION] (150-160 chars — 2 places)
+    - [ ] Replace [ARTICLE-SLUG] with the URL slug (3 places)
+    - [ ] Replace [OG IMAGE URL] with the article's featured image URL
+    - [ ] Replace [PUBLISHED DATE ISO] e.g. 2026-05-29T00:00:00Z
+    - [ ] Replace [MODIFIED DATE ISO] same as published on first publish
+    - [ ] Replace [ARTICLE DESCRIPTION FOR JSON-LD] (1-2 sentences)
+    - [ ] Replace [READ TIME] e.g. "7 min read"
+    - [ ] Replace [DISPLAY DATE] e.g. "May 29, 2026"
+    - [ ] Replace [CATEGORY] e.g. "AI Training Jobs"
+    - [ ] Replace [SUBTITLE] (1 sentence summary shown below title)
+    - [ ] Replace hero image placeholder with real <img> once image is ready
+    - [ ] Write the article body replacing the H2/H3/p structure
+    - [ ] Add the article URL to sitemap.xml
+    - [ ] Add the article card to blog/index.html
+    ═══════════════════════════════════════════════════════════════
+  -->
+
+  <title>[ARTICLE TITLE] | Remote Work Union Blog</title>
+  <meta name="description" content="[META DESCRIPTION — 150-160 characters describing the article content and its value to the reader.]">
+  <meta name="author" content="Remote Work Union">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.remoteworkunion.com/blog/[ARTICLE-SLUG]">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+
+  <!-- Open Graph (Article) -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.remoteworkunion.com/blog/[ARTICLE-SLUG]">
+  <meta property="og:title" content="[ARTICLE TITLE] | Remote Work Union Blog">
+  <meta property="og:description" content="[META DESCRIPTION — same as above]">
+  <meta property="og:image" content="[OG IMAGE URL — full absolute URL, ideally 1200x630px]">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Remote Work Union">
+  <meta property="article:published_time" content="[PUBLISHED DATE ISO]">
+  <meta property="article:modified_time" content="[MODIFIED DATE ISO]">
+  <meta property="article:author" content="https://www.remoteworkunion.com">
+  <meta property="article:section" content="[CATEGORY]">
+
+  <!-- Twitter/X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@RemoteWorkUnion">
+  <meta name="twitter:creator" content="@RemoteWorkUnion">
+  <meta name="twitter:title" content="[ARTICLE TITLE] | Remote Work Union Blog">
+  <meta name="twitter:description" content="[META DESCRIPTION — same as above]">
+  <meta name="twitter:image" content="[OG IMAGE URL]">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J84MSTXMXF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J84MSTXMXF');
+  </script>
+
+  <!-- Structured data: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "[ARTICLE TITLE]",
+    "description": "[ARTICLE DESCRIPTION FOR JSON-LD — 1-2 sentences]",
+    "image": "[OG IMAGE URL]",
+    "url": "https://www.remoteworkunion.com/blog/[ARTICLE-SLUG]",
+    "datePublished": "[PUBLISHED DATE ISO]",
+    "dateModified": "[MODIFIED DATE ISO]",
+    "author": {
+      "@type": "Organization",
+      "name": "Remote Work Union",
+      "url": "https://www.remoteworkunion.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Remote Work Union",
+      "url": "https://www.remoteworkunion.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.remoteworkunion.com/og.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.remoteworkunion.com/blog/[ARTICLE-SLUG]"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/article-styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="blog-nav">
+    <a class="blog-nav-back" href="/blog">← Back to Blog</a>
+    <a class="blog-nav-home" href="/">RemoteWorkUnion.com</a>
+  </nav>
+
+  <article class="article-wrap">
+
+    <!-- Hero image
+         Replace the placeholder div with a real <img> once the image is ready:
+         <img class="article-hero-img"
+              src="[IMAGE URL]"
+              alt="[DESCRIPTIVE, KEYWORD-RICH ALT TEXT — describe what's in the image specifically]"
+              width="1200" height="675" loading="eager">
+    -->
+    <div class="article-hero-placeholder" role="img" aria-label="[DESCRIPTIVE ALT TEXT FOR HERO IMAGE — describe the image in detail for SEO and accessibility]">
+      📝
+    </div>
+
+    <!-- Article header -->
+    <span class="article-tag">[CATEGORY]</span>
+    <h1 class="article-h1">[ARTICLE TITLE]</h1>
+    <p class="article-subtitle">[SUBTITLE — one sentence that expands on the title and hooks the reader]</p>
+    <div class="article-meta">
+      <span>By Remote Work Union</span>
+      <span class="article-meta-dot">·</span>
+      <span>[DISPLAY DATE]</span>
+      <span class="article-meta-dot">·</span>
+      <span>[READ TIME]</span>
+    </div>
+    <div class="article-divider"></div>
+
+    <!-- Article body
+         ─────────────────────────────────────────────────────────
+         HEADING HIERARCHY RULES (never skip levels):
+           H1  →  Article title (above, only one per page)
+           H2  →  Main sections
+           H3  →  Sub-sections within an H2
+         ───────────────────────────────────────────────────────── -->
+    <div class="article-body">
+
+      <p>[Opening paragraph — hook the reader, state the problem or opportunity, and preview what they'll learn. 2-3 sentences.]</p>
+
+      <h2>[Main Section Title]</h2>
+
+      <p>[Section intro paragraph. Explain the concept or topic.]</p>
+
+      <p>[Additional paragraph if needed. Keep paragraphs to 3-4 sentences max for readability.]</p>
+
+      <h3>[Sub-section Title]</h3>
+
+      <p>[Sub-section content.]</p>
+
+      <ul>
+        <li><strong>[Point one]</strong> — explanation</li>
+        <li><strong>[Point two]</strong> — explanation</li>
+        <li><strong>[Point three]</strong> — explanation</li>
+      </ul>
+
+      <h2>[Second Main Section Title]</h2>
+
+      <p>[Content for second section. Link to <a href="https://www.remoteworkunion.com">Remote Work Union</a> where natural.]</p>
+
+      <blockquote>[Optional pull quote or key insight to highlight.]</blockquote>
+
+      <h3>[Sub-section Title]</h3>
+
+      <p>[Sub-section content.]</p>
+
+      <h2>[Third Main Section Title]</h2>
+
+      <p>[Content for third section.]</p>
+
+      <h2>Next Steps</h2>
+
+      <p>[Closing section — summarize key takeaways and point the reader toward action. Link to relevant resources on remoteworkunion.com.]</p>
+
+      <p>Ready to find remote work? <a href="https://www.remoteworkunion.com">Join Remote Work Union</a> and apply to the top AI training and remote work platforms in one place.</p>
+
+    </div>
+
+    <!-- CTA block -->
+    <div class="blog-cta-block">
+      <h3>Find Remote Work Today</h3>
+      <p>Remote Work Union helps you apply to the top AI training and remote work platforms — all in one place, completely free.</p>
+      <a class="blog-cta-btn" href="https://www.remoteworkunion.com">Join Remote Work Union →</a>
+    </div>
+
+  </article>
+
+  <footer class="blog-footer">
+    <p><a href="/blog">← Remote Work Union Blog</a> &nbsp;&middot;&nbsp; <a href="/">RemoteWorkUnion.com</a></p>
+  </footer>
+
+</body>
+</html>

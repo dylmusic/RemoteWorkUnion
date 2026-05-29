@@ -878,6 +878,61 @@
       vertical-align: middle;
     }
     .prog-new-badge.show { display: inline-block; }
+
+    /* Resources section in dashboard */
+    .prog-resource-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      padding-top: 4px;
+      list-style: none;
+    }
+    .prog-resource-divider::before,
+    .prog-resource-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.09);
+    }
+    .prog-item-resource {
+      display: flex;
+      align-items: center;
+      list-style: none;
+    }
+    .prog-item-resource a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .prog-item-resource a:hover { color: rgba(255,255,255,0.92); }
+    .prog-item-resource .prog-resource-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .prog-item-resource .prog-resource-arrow {
+      margin-left: auto;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+    }
+
     .card-action-link.selected { color: #F59E0B; }
     .card-action-link.selected:hover { color: #fbbf24; }
 
@@ -1369,6 +1424,16 @@
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-rh-next">Next &rarr;</button>
             </li>
+            <!-- ── Resources section ─────────────────────────── -->
+            <li class="prog-resource-divider">📚 Resources</li>
+            <li class="prog-item-resource">
+              <a href="/blog">
+                <span class="prog-resource-icon">📝</span>
+                Remote Work Union Blog
+                <span class="prog-resource-arrow">→</span>
+              </a>
+            </li>
+            <!-- ── Coming Soon ────────────────────────────────── -->
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
               Remote Work Union Chat 💬 &mdash; Coming Soon 🔒

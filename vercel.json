@@ -24,6 +24,10 @@
     {
       "src": "robots.txt",
       "use": "@vercel/static"
+    },
+    {
+      "src": "blog/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -34,6 +38,14 @@
     {
       "src": "/work",
       "dest": "/work.html"
+    },
+    {
+      "src": "/blog",
+      "dest": "/blog/index.html"
+    },
+    {
+      "src": "/blog/([a-z0-9-]+)",
+      "dest": "/blog/$1.html"
     },
     {
       "src": "/sitemap.xml",
