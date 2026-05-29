@@ -104,8 +104,8 @@ body {
 
 .article-card-img {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
@@ -180,9 +180,9 @@ body {
 
 .article-hero-img {
   width: 100%;
+  height: auto;
+  object-fit: contain;
   border-radius: 16px;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
   margin-bottom: 32px;
   display: block;
 }

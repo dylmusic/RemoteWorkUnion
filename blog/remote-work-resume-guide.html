@@ -920,14 +920,18 @@
     /* ── Article images ─────────────────────────────────────────── */
     .guide-img-hero {
       width: 100%;
+      height: auto;
+      object-fit: contain;
       border-radius: 18px;
       display: block;
-      margin: 0 0 0;
+      margin: 0;
       box-shadow: 0 8px 36px rgba(0,0,0,0.28);
     }
     .guide-img-float-right {
       float: right;
       width: 210px;
+      height: auto;
+      object-fit: contain;
       border-radius: 14px;
       margin: 2px 0 20px 28px;
       display: block;
@@ -936,6 +940,8 @@
     .guide-img-section {
       display: block;
       width: 100%;
+      height: auto;
+      object-fit: contain;
       max-width: 480px;
       margin: 0 auto 22px;
       border-radius: 16px;
@@ -944,6 +950,8 @@
     .guide-img-optimizer {
       display: block;
       width: 100%;
+      height: auto;
+      object-fit: contain;
       max-width: 440px;
       margin: 0 auto 28px;
       border-radius: 14px;
@@ -951,7 +959,7 @@
     }
     .guide-clearfix::after { content: ''; display: table; clear: both; }
     @media (max-width: 640px) {
-      .guide-img-float-right { float: none; width: 100%; margin: 0 0 18px 0; }
+      .guide-img-float-right { float: none; width: 100%; height: auto; margin: 0 0 18px 0; }
     }
   </style>
 </head>
