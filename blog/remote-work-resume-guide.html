@@ -1306,7 +1306,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Copy Optimizer Prompt
           </button>
-          <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn-chatgpt" aria-label="Open ChatGPT in a new tab">
+          <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn-chatgpt" aria-label="Open ChatGPT in a new tab" onclick="gtag('event','resume_optimizer_chatgpt')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Open ChatGPT
           </a>
@@ -1353,6 +1353,23 @@
         </a>
       </div>
     </section>
+
+    <!-- Share row -->
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:28px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);" aria-label="Share this guide">
+      <span style="font-size:13px;color:rgba(255,255,255,0.45);">Share:</span>
+      <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fremoteworkunion.com%2Fblog%2Fremote-work-resume-guide&text=Remote+Work+Resume+Guide+%E2%80%94+AI+Training%2C+AI+Research+%26+Free+Optimizer"
+        target="_blank" rel="noopener noreferrer"
+        onclick="gtag('event','resume_guide_share_x')"
+        style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-decoration:none;transition:background 0.2s,color 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.13)';this.style.color='#fff'"
+        onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.75)'">𝕏 Share on X</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fremoteworkunion.com%2Fblog%2Fremote-work-resume-guide"
+        target="_blank" rel="noopener noreferrer"
+        onclick="gtag('event','resume_guide_share_facebook')"
+        style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-decoration:none;transition:background 0.2s,color 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.13)';this.style.color='#fff'"
+        onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.75)'">Share on Facebook</a>
+    </div>
 
     <!-- 12. Footer Note -->
     <p class="footer-note">Remote Work Union provides job search resources and application guidance. Always keep your resume truthful and only include skills, tools, and experience you can accurately explain.</p>
@@ -1431,6 +1448,37 @@ Please start by asking me to upload or paste my current resume, then begin the 5
       }
       copyBtn.classList.add('copied');
       copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Copied. Now open ChatGPT and paste it.`;
+
+      // GA event
+      gtag('event', 'resume_optimizer_copy');
+
+      // Airtable: record click for known users
+      const rwuEmail = localStorage.getItem('rwu_email');
+      if (rwuEmail) {
+        const patchFields = { 'Resume Optimizer Clicked': new Date().toISOString() };
+        const cachedId = localStorage.getItem('rwu_record_id');
+        if (cachedId) {
+          fetch('/api/airtable', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'patch', recordId: cachedId, fields: patchFields })
+          }).catch(() => {});
+        } else {
+          fetch('/api/airtable', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'search', email: rwuEmail })
+          }).then(r => r.json()).then(d => {
+            if (d.id) {
+              fetch('/api/airtable', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'patch', recordId: d.id, fields: patchFields })
+              }).catch(() => {});
+            }
+          }).catch(() => {});
+        }
+      }
     });
 
     // ── Reading progress bar ──────────────────────────────────────

@@ -1389,7 +1389,7 @@
             <div class="prog-bar-labels"><span>Your Progress</span><span id="prog-pct">0% Complete</span></div>
             <div class="prog-bar-track"><div class="prog-bar-fill" id="prog-bar-fill"></div></div>
           </div>
-          <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-opps-link">
+          <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-opps-link" onclick="gtag('event','view_opportunities_x')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             View Latest Opportunities on X
           </a>
@@ -1443,14 +1443,14 @@
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
             <li class="prog-item-resource" id="prog-resume-guide">
-              <a href="/blog/remote-work-resume-guide">
+              <a href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_guide_opened')">
                 <span class="prog-resource-icon">📝</span>
                 Resume Guide &amp; Optimizer
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
             <li class="prog-item-resource">
-              <a href="/blog">
+              <a href="/blog" onclick="gtag('event','blog_opened')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work Union Blog
                 <span class="prog-resource-arrow">→</span>
@@ -1604,6 +1604,7 @@
           localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
           localStorage.setItem('rwu_hidden',  f['Hidden Steps']  || '');
           atPatch({ 'Last Activity Date': new Date().toISOString() });
+          gtag('event', 'dashboard_load', { user_type: 'returning' });
         }
       } catch (_) {}
     }
@@ -2055,6 +2056,7 @@
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       atCreateOrRestore(val);
+      gtag('event', 'email_signup', { method: 'landing_page' });
 
       try {
         await fetch('https://app.kit.com/forms/9465424/subscriptions', {
@@ -2092,11 +2094,13 @@
 
     // ── Handshake card ────────────────────────────────────────
     hsCta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'handshake' });
       hsCta.style.display = 'none';
       hsConfirm.classList.add('show');
     });
 
     hsConfirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'handshake' });
       unskipStep('handshake');
       addApplied('handshake');
       localStorage.setItem('rwu_step', '2');
@@ -2105,6 +2109,7 @@
     });
 
     hsAlready.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'handshake' });
       unskipStep('handshake');
       addApplied('handshake');
       checkAnimate(fromDash ? goToDashboard : showMercor, hsCb, hsUndo);
@@ -2114,11 +2119,13 @@
 
     // ── Outlier card ──────────────────────────────────────────
     otCta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'outlier' });
       otCta.style.display = 'none';
       otConfirm.classList.add('show');
     });
 
     otConfirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'outlier' });
       unskipStep('outlier');
       addApplied('outlier');
       localStorage.setItem('rwu_step', '4');
@@ -2127,6 +2134,7 @@
     });
 
     otAlready.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'outlier' });
       unskipStep('outlier');
       addApplied('outlier');
       checkAnimate(fromDash ? goToDashboard : showRentAHuman, otCb, otUndo);
@@ -2136,11 +2144,13 @@
 
     // ── Mercor card ───────────────────────────────────────────
     mcCta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'mercor' });
       mcCta.style.display = 'none';
       mcConfirm.classList.add('show');
     });
 
     mcConfirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'mercor' });
       unskipStep('mercor');
       addApplied('mercor');
       localStorage.setItem('rwu_step', '3');
@@ -2149,6 +2159,7 @@
     });
 
     mcAlready.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'mercor' });
       unskipStep('mercor');
       addApplied('mercor');
       checkAnimate(fromDash ? goToDashboard : showOutlier, mcCb, mcUndo);
@@ -2158,11 +2169,13 @@
 
     // ── RentAHuman card ───────────────────────────────────────
     rhCta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'rentahuman' });
       rhCta.style.display = 'none';
       rhConfirm.classList.add('show');
     });
 
     rhConfirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'rentahuman' });
       unskipStep('rentahuman');
       addApplied('rentahuman');
       localStorage.setItem('rwu_step', '5');
@@ -2171,6 +2184,7 @@
     });
 
     rhAlready.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'rentahuman' });
       unskipStep('rentahuman');
       addApplied('rentahuman');
       checkAnimate(fromDash ? goToDashboard : showProgress, rhCb, rhUndo);
@@ -2180,6 +2194,7 @@
 
     // ── undo checkbox ─────────────────────────────────────────
     hsUndo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'handshake' });
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       hsCb.classList.remove('checked');
       hsUndo.classList.remove('show');
@@ -2195,6 +2210,7 @@
     });
 
     otUndo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'outlier' });
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       otCb.classList.remove('checked');
       otUndo.classList.remove('show');
@@ -2210,6 +2226,7 @@
     });
 
     mcUndo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'mercor' });
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       mcCb.classList.remove('checked');
       mcUndo.classList.remove('show');
@@ -2225,6 +2242,7 @@
     });
 
     rhUndo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'rentahuman' });
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       rhCb.classList.remove('checked');
       rhUndo.classList.remove('show');
@@ -2280,14 +2298,14 @@
     });
 
     // ── skip / hide / apply-now ──────────────────────────────
-    hsSkip.addEventListener('click', () => { skipStep('handshake');  goToDashboard(); });
-    hsHide.addEventListener('click', () => { hideStep('handshake');  goToDashboard(); });
-    otSkip.addEventListener('click', () => { skipStep('outlier');    goToDashboard(); });
-    otHide.addEventListener('click', () => { hideStep('outlier');    goToDashboard(); });
-    mcSkip.addEventListener('click', () => { skipStep('mercor');     goToDashboard(); });
-    mcHide.addEventListener('click', () => { hideStep('mercor');     goToDashboard(); });
-    rhSkip.addEventListener('click', () => { skipStep('rentahuman'); goToDashboard(); });
-    rhHide.addEventListener('click', () => { hideStep('rentahuman'); goToDashboard(); });
+    hsSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'handshake'});  skipStep('handshake');  goToDashboard(); });
+    hsHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'handshake'});  hideStep('handshake');  goToDashboard(); });
+    otSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'outlier'});    skipStep('outlier');    goToDashboard(); });
+    otHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'outlier'});    hideStep('outlier');    goToDashboard(); });
+    mcSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'mercor'});     skipStep('mercor');     goToDashboard(); });
+    mcHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'mercor'});     hideStep('mercor');     goToDashboard(); });
+    rhSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'rentahuman'}); skipStep('rentahuman'); goToDashboard(); });
+    rhHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'rentahuman'}); hideStep('rentahuman'); goToDashboard(); });
     applyNowBtn.addEventListener('click', () => {
       if (hsProgress.classList.contains('show')) { window.location.href = '/work'; return; }
       const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
@@ -2311,7 +2329,7 @@
     });
 
         // ── dashboard nav ─────────────────────────────────────────
-    [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', goToDashboard));
+    [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
     if (progResumeGuide) {
       progResumeGuide.addEventListener('click', (e) => {
         if (!e.target.closest('a')) {
