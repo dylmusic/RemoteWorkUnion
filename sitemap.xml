@@ -21,6 +21,21 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://remoteworkunion.com/blog/remote-workers-making-50-200-ai-training-from-home</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://remoteworkunion.com/blog/best-remote-work-from-home-jobs-not-customer-support-sales</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://remoteworkunion.com/blog/how-to-find-online-jobs-from-home-that-pay-well</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <!-- Example:
   <url>
     <loc>https://www.remoteworkunion.com/blog/how-to-get-remote-work-with-no-experience</loc>
