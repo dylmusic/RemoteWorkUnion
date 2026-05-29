@@ -111,7 +111,9 @@ module.exports = async (req, res) => {
         console.error('[airtable] appendField called with missing params');
         return res.status(400).json({ error: 'Missing required fields' });
       }
-      const getUrl = `${AT_URL}/${recordId}?fields[]=${encodeURIComponent(body.fieldName)}`;
+      const counterField = body.counterField || null;
+      let getUrl = `${AT_URL}/${recordId}?fields[]=${encodeURIComponent(body.fieldName)}`;
+      if (counterField) getUrl += `&fields[]=${encodeURIComponent(counterField)}`;
       const getRes = await fetch(getUrl, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -126,6 +128,10 @@ module.exports = async (req, res) => {
         [body.fieldName]: newValue,
         'Last Activity Date': new Date().toISOString(),
       };
+      if (counterField) {
+        const currentCount = (getData.fields && getData.fields[counterField]) || 0;
+        patchFields[counterField] = Number(currentCount) + 1;
+      }
       const atRes = await fetch(patchUrl, {
         method: 'PATCH',
         headers: {
