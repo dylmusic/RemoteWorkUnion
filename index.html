@@ -1462,28 +1462,28 @@
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
             <li class="prog-item-resource">
-              <a href="https://remoteworkunion.com/work" onclick="trackResourceClick('Learn More')">
+              <a href="https://remoteworkunion.com/work" onclick="handleResourceClick(event, 'Learn More', 'https://remoteworkunion.com/work')">
                 <span class="prog-resource-icon">📝</span>
                 Learn More
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
             <li class="prog-item-resource">
-              <a href="https://remoteworkunion.com/work#faq" onclick="trackResourceClick('Remote Work FAQ')">
+              <a href="https://remoteworkunion.com/work#faq" onclick="handleResourceClick(event, 'Remote Work FAQ', 'https://remoteworkunion.com/work#faq')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work FAQ
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
             <li class="prog-item-resource" id="prog-resume-guide">
-              <a href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_guide_opened')">
+              <a href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_guide_opened'); handleResourceClick(event, 'Resume Guide &amp; Optimizer', '/blog/remote-work-resume-guide')">
                 <span class="prog-resource-icon">📝</span>
                 Resume Guide &amp; Optimizer
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
             <li class="prog-item-resource">
-              <a href="/blog" onclick="gtag('event','blog_opened'); trackResourceClick('Remote Work Union Blog')">
+              <a href="/blog" onclick="gtag('event','blog_opened'); handleResourceClick(event, 'Remote Work Union Blog', '/blog')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work Union Blog
                 <span class="prog-resource-arrow">→</span>
@@ -1615,56 +1615,59 @@
       } catch (_) {}
     }
 
-    function trackResourceClick(resourceName) {
+    async function trackResourceClick(resourceName) {
       const email = localStorage.getItem('rwu_email');
       if (!email) return;
-      // Fire-and-forget: every click independently GETs a fresh record then PATCHes
-      (async () => {
-        try {
-          // Step 1: fresh GET — no cached record ID or field values used
-          console.log('[trackResourceClick] GET record for', email);
-          const r = await fetch('/api/airtable?email=' + encodeURIComponent(email), {
-            keepalive: true
-          });
-          const d = await r.json();
-          console.log('[trackResourceClick] fetched record:', JSON.stringify(d));
+      try {
+        // Step 1: fresh GET — no cached record ID or field values used
+        console.log('[trackResourceClick] GET record for', email);
+        const r = await fetch('/api/airtable?email=' + encodeURIComponent(email), {
+          keepalive: true
+        });
+        const d = await r.json();
+        console.log('[trackResourceClick] fetched record:', JSON.stringify(d));
 
-          const recordId = d.id;
-          if (!recordId) {
-            console.warn('[trackResourceClick] no record ID in response, aborting');
-            return;
-          }
-
-          const existingClicks = (d.fields && d.fields['Resources Clicked']) || '';
-          const existingCount  = (d.fields && d.fields['Total Resources Clicked']) || 0;
-          console.log('[trackResourceClick] existing clicks:', JSON.stringify(existingClicks));
-          console.log('[trackResourceClick] existing count:', existingCount);
-
-          // Step 2: build appended values
-          const newEntry  = resourceName + ' — ' + new Date().toISOString();
-          const newClicks = existingClicks ? existingClicks + '\n' + newEntry : newEntry;
-          console.log('[trackResourceClick] new clicks value:', JSON.stringify(newClicks));
-
-          // Step 3: PATCH all three fields in one request using ID from GET response
-          const patchRes = await fetch('/api/airtable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({
-              action: 'patch',
-              recordId,
-              fields: {
-                'Resources Clicked': newClicks,
-                'Total Resources Clicked': Number(existingCount) + 1
-              }
-            })
-          });
-          const patchData = await patchRes.json();
-          console.log('[trackResourceClick] PATCH response:', JSON.stringify(patchData));
-        } catch (err) {
-          console.error('[trackResourceClick] error:', err);
+        const recordId = d.id;
+        if (!recordId) {
+          console.warn('[trackResourceClick] no record ID in response, aborting');
+          return;
         }
-      })();
+
+        const existingClicks = (d.fields && d.fields['Resources Clicked']) || '';
+        const existingCount  = (d.fields && d.fields['Total Resources Clicked']) || 0;
+        console.log('[trackResourceClick] existing clicks:', JSON.stringify(existingClicks));
+        console.log('[trackResourceClick] existing count:', existingCount);
+
+        // Step 2: build appended values
+        const newEntry  = resourceName + ' — ' + new Date().toISOString();
+        const newClicks = existingClicks ? existingClicks + '\n' + newEntry : newEntry;
+        console.log('[trackResourceClick] new clicks value:', JSON.stringify(newClicks));
+
+        // Step 3: PATCH all three fields in one request using ID from GET response
+        const patchRes = await fetch('/api/airtable', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          body: JSON.stringify({
+            action: 'patch',
+            recordId,
+            fields: {
+              'Resources Clicked': newClicks,
+              'Total Resources Clicked': Number(existingCount) + 1
+            }
+          })
+        });
+        const patchData = await patchRes.json();
+        console.log('[trackResourceClick] PATCH response:', JSON.stringify(patchData));
+      } catch (err) {
+        console.error('[trackResourceClick] error:', err);
+      }
+    }
+
+    async function handleResourceClick(e, resourceName, url) {
+      e.preventDefault();
+      await trackResourceClick(resourceName);
+      window.location.href = url;
     }
 
     async function atFetch(email) {
@@ -1933,7 +1936,7 @@
       if (email) {
         progResumeGuide.className = 'prog-item-resource';
         progResumeGuide.innerHTML =
-          '<a href="/blog/remote-work-resume-guide" onclick="gtag(\'event\',\'resume_guide_opened\'); trackResourceClick(\'Resume Guide &amp; Optimizer\')">' +
+          '<a href="/blog/remote-work-resume-guide" onclick="gtag(\'event\',\'resume_guide_opened\'); handleResourceClick(event, \'Resume Guide &amp; Optimizer\', \'/blog/remote-work-resume-guide\')">' +
           '<span class="prog-resource-icon">📝</span>' +
           'Resume Guide &amp; Optimizer' +
           '<span class="prog-resource-arrow">→</span>' +
