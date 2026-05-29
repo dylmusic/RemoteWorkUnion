@@ -1853,6 +1853,30 @@
       applyNowBtn.textContent = 'Learn More →';
       if (learnMoreLink) learnMoreLink.style.display = 'none';
       updateProgressBar();
+      updateResumeGuideRow();
+    }
+
+    function updateResumeGuideRow() {
+      if (!progResumeGuide) return;
+      const email = localStorage.getItem('rwu_email');
+      if (email) {
+        progResumeGuide.className = 'prog-item-resource';
+        progResumeGuide.innerHTML =
+          '<a href="/blog/remote-work-resume-guide" onclick="gtag(\'event\',\'resume_guide_opened\')">' +
+          '<span class="prog-resource-icon">📝</span>' +
+          'Resume Guide &amp; Optimizer' +
+          '<span class="prog-resource-arrow">→</span>' +
+          '</a>';
+      } else {
+        progResumeGuide.className = 'prog-item locked';
+        progResumeGuide.style.cursor = 'default';
+        progResumeGuide.innerHTML =
+          '<span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/>' +
+          '<path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/>' +
+          '</svg></span>' +
+          'Resume Guide &amp; Optimizer 🔒';
+      }
     }
 
     function updateNextButton() {
@@ -2346,6 +2370,7 @@
     [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
     if (progResumeGuide) {
       progResumeGuide.addEventListener('click', (e) => {
+        if (!localStorage.getItem('rwu_email')) return;
         if (!e.target.closest('a')) {
           window.location.href = '/blog/remote-work-resume-guide';
         }
