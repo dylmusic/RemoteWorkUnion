@@ -1359,12 +1359,13 @@
           <button class="card-action-link" id="rh-skip">⏭ Skip this opportunity for now</button>
           <button class="card-action-link" id="rh-hide">✕ Not for me</button>
         </div>
-        <!-- Resume Guide teaser -->
+        <!-- Resume Guide view -->
         <div id="rg-teaser">
           <button class="dash-btn" id="rg-dash-btn">&#8592; Back to Dashboard</button>
-          <p style="font-size:2.2rem; text-align:center; margin-top:16px;">&#128274;</p>
-          <p class="hs-headline">Resume Guide &mdash; Coming Soon</p>
-          <p class="hs-subline">We will help you optimize your resume for remote work jobs.</p>
+          <p style="font-size:2.2rem; text-align:center; margin-top:16px;">&#128196;</p>
+          <p class="hs-headline">Resume Guide</p>
+          <p class="hs-subline">Build a cleaner, stronger resume for remote work and AI training jobs.</p>
+          <a href="/blog/remote-work-resume-guide" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:11px 24px;background:linear-gradient(90deg,#4ade80,#22d3a5);color:#052e16;font-family:inherit;font-size:13px;font-weight:700;border-radius:100px;text-decoration:none;transition:filter 0.2s;" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">Open Resume Guide &#8594;</a>
         </div>
 
         <!-- Step 5: Completion screen -->
@@ -1426,6 +1427,13 @@
             </li>
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
+            <li class="prog-item-resource" id="prog-resume-guide">
+              <a href="/blog/remote-work-resume-guide">
+                <span class="prog-resource-icon">📝</span>
+                Resume Guide
+                <span class="prog-resource-arrow">→</span>
+              </a>
+            </li>
             <li class="prog-item-resource">
               <a href="/blog">
                 <span class="prog-resource-icon">📝</span>
@@ -1437,10 +1445,6 @@
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
               Remote Work Union Chat 💬 &mdash; Coming Soon 🔒
-            </li>
-            <li class="prog-item locked" id="prog-resume-guide" style="cursor:pointer">
-              <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
-              Resume Guide &mdash; Coming Soon 🔒
             </li>
             <li class="prog-item locked">
               <span class="prog-icon"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="0.75" y="4.75" width="7.5" height="5.5" rx="1.25"/><path d="M2.5 4.75V3.25a2 2 0 0 1 4 0v1.5"/></svg></span>
@@ -2293,15 +2297,13 @@
 
         // ── dashboard nav ─────────────────────────────────────────
     [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', goToDashboard));
-    progResumeGuide.addEventListener('click', () => {
-      fromDash = true;
-      updateDashBtns();
-      hsProgress.classList.add('fade-out');
-      setTimeout(() => {
-        hsProgress.classList.remove('show', 'animate', 'fade-out');
-        reviveView(rgTeaser);
-      }, 400);
-    });
+    if (progResumeGuide) {
+      progResumeGuide.addEventListener('click', (e) => {
+        if (!e.target.closest('a')) {
+          window.location.href = '/blog/remote-work-resume-guide';
+        }
+      });
+    }
     rgDashBtn.addEventListener('click', goToDashboard);
     progHs.addEventListener('click', () => goToCard(hsApply));
     progOt.addEventListener('click', () => goToCard(otApply));
