@@ -1461,10 +1461,17 @@
             </li>
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
-            <li class="prog-item-resource">
-              <a href="https://remoteworkunion.com/work" onclick="handleResourceClick(event, 'Learn More', 'https://remoteworkunion.com/work')">
+            <li class="prog-item-resource" id="prog-resume-guide">
+              <a href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_guide_opened'); handleResourceClick(event, 'Resume Guide &amp; Optimizer', '/blog/remote-work-resume-guide')">
                 <span class="prog-resource-icon">📝</span>
-                Learn More
+                Resume Guide &amp; Optimizer
+                <span class="prog-resource-arrow">→</span>
+              </a>
+            </li>
+            <li class="prog-item-resource">
+              <a href="https://remoteworkunion.com/work" onclick="handleResourceClick(event, 'What is this? Learn More', 'https://remoteworkunion.com/work')">
+                <span class="prog-resource-icon">📝</span>
+                What is this? Learn More
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
@@ -1472,13 +1479,6 @@
               <a href="https://remoteworkunion.com/work#faq" onclick="handleResourceClick(event, 'Remote Work FAQ', 'https://remoteworkunion.com/work#faq')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work FAQ
-                <span class="prog-resource-arrow">→</span>
-              </a>
-            </li>
-            <li class="prog-item-resource" id="prog-resume-guide">
-              <a href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_guide_opened'); handleResourceClick(event, 'Resume Guide &amp; Optimizer', '/blog/remote-work-resume-guide')">
-                <span class="prog-resource-icon">📝</span>
-                Resume Guide &amp; Optimizer
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
