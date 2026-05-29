@@ -94,15 +94,15 @@
     <div class="article-grid">
 
       <!-- FEATURED — Resume Guide (pinned) -->
-      <a class="article-card article-card-featured" href="/blog/remote-work-resume-guide" style="grid-column: 1 / -1; flex-direction: row; gap: 0; align-items: stretch; height: 200px;" onclick="gtag('event','article_opened',{article_slug:'remote-work-resume-guide'})">
+      <a class="article-card article-card-featured" href="/blog/remote-work-resume-guide" style="grid-column: 1 / -1; flex-direction: row; gap: 0; align-items: flex-start;" onclick="gtag('event','article_opened',{article_slug:'remote-work-resume-guide'})">
         <img
           src="/blog/images/remote-work-resume-guide.png"
           alt="Resume document with keyword highlights and a green checkmark, representing an ATS-optimized remote work resume"
           width="1200" height="630"
           loading="lazy"
           class="article-card-img-featured"
-          style="width: 240px; flex-shrink: 0; height: 100%; object-fit: cover; object-position: right center;">
-        <div class="article-card-body" style="padding: 16px 22px;">
+          style="width: 380px; flex-shrink: 0; height: auto; display: block;">
+        <div class="article-card-body" style="padding: 16px 22px; align-self: stretch;">
           <p class="article-card-tag" style="color: #facc15; font-size: 11px; margin-bottom: 4px;">📌 Featured Guide</p>
           <h2 class="article-card-title" style="font-size: 16px; margin-bottom: 6px;">Remote Work Resume Guide — AI Training, AI Research &amp; More</h2>
           <p class="article-card-desc" style="font-size: 12px;">Learn how to build a cleaner, stronger, ATS-friendly resume for remote jobs, AI training roles, and knowledge-work platforms like Mercor, Outlier AI, and Handshake AI. Includes a free Resume Optimizer tool.</p>
@@ -112,12 +112,12 @@
       </a>
       <style>
         @media (max-width: 640px) {
-          .article-card-featured { flex-direction: column !important; height: auto !important; }
+          .article-card-featured { flex-direction: column !important; }
           .article-card-featured .article-card-img-featured {
             width: 100% !important;
             height: auto !important;
-            aspect-ratio: 16/9 !important;
           }
+          .article-card-featured .article-card-body { align-self: auto !important; }
         }
       </style>
 
