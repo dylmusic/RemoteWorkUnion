@@ -466,7 +466,19 @@
       .pay-grid { grid-template-columns: 1fr; }
       .industry-grid { grid-template-columns: repeat(2, 1fr); }
       .hero { padding: 48px 0 40px; }
-      .keyword-cloud-wrap { height: 220px; }
+      .keyword-cloud-wrap {
+        height: 200px;
+        border-radius: 16px;
+        padding: 0 2px;
+      }
+      .kw-word[data-weight="9"] { font-size: 16px !important; }
+      .kw-word[data-weight="8"] { font-size: 15px !important; }
+      .kw-word[data-weight="7"] { font-size: 13px !important; }
+      .kw-word[data-weight="6"] { font-size: 12px !important; }
+      .kw-word[data-weight="5"] { font-size: 11px !important; }
+      .kw-word[data-weight="4"] { font-size: 10px !important; }
+      .kw-word[data-weight="3"] { font-size: 9px !important; }
+      .kw-word[data-weight="2"] { font-size: 8px !important; }
     }
   </style>
   <!-- Google Analytics -->
@@ -865,6 +877,7 @@
 
         const el = document.createElement('span');
         el.className = 'kw-word';
+        el.setAttribute('data-weight', w.weight);
         el.textContent = w.text;
         el.style.fontSize = fontSize + 'px';
         el.style.opacity = opacity.toFixed(2);
