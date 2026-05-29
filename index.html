@@ -1620,19 +1620,35 @@
       if (!email) return;
       const recordId = atId || localStorage.getItem('rwu_record_id');
       if (!recordId) return;
-      const appendValue = resourceName + ' — ' + new Date().toISOString();
-      fetch('/api/airtable', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        keepalive: true,
-        body: JSON.stringify({
-          action: 'appendField',
-          recordId: recordId,
-          fieldName: 'Resources Clicked',
-          appendValue: appendValue,
-          counterField: 'Total Resources Clicked'
-        })
-      }).catch(() => {});
+      // Fire-and-forget: read current record first, then patch with appended values
+      (async () => {
+        try {
+          const r = await fetch('/api/airtable', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({ action: 'search', email })
+          });
+          const d = await r.json();
+          const existingClicks = (d.fields && d.fields['Resources Clicked']) || '';
+          const existingCount  = (d.fields && d.fields['Total Resources Clicked']) || 0;
+          const newEntry  = resourceName + ' — ' + new Date().toISOString();
+          const newClicks = existingClicks ? existingClicks + '\n' + newEntry : newEntry;
+          await fetch('/api/airtable', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              action: 'patch',
+              recordId,
+              fields: {
+                'Resources Clicked': newClicks,
+                'Total Resources Clicked': Number(existingCount) + 1
+              }
+            })
+          });
+        } catch (_) {}
+      })();
     }
 
     async function atFetch(email) {
