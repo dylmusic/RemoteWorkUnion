@@ -1462,14 +1462,14 @@
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
             <li class="prog-item-resource">
-              <a href="https://remoteworkunion.com/work">
+              <a href="https://remoteworkunion.com/work" onclick="trackResourceClick('Learn More')">
                 <span class="prog-resource-icon">📝</span>
                 Learn More
                 <span class="prog-resource-arrow">→</span>
               </a>
             </li>
             <li class="prog-item-resource">
-              <a href="https://remoteworkunion.com/work#faq">
+              <a href="https://remoteworkunion.com/work#faq" onclick="trackResourceClick('Remote Work FAQ')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work FAQ
                 <span class="prog-resource-arrow">→</span>
@@ -1483,7 +1483,7 @@
               </a>
             </li>
             <li class="prog-item-resource">
-              <a href="/blog" onclick="gtag('event','blog_opened')">
+              <a href="/blog" onclick="gtag('event','blog_opened'); trackResourceClick('Remote Work Union Blog')">
                 <span class="prog-resource-icon">📝</span>
                 Remote Work Union Blog
                 <span class="prog-resource-arrow">→</span>
@@ -1613,6 +1613,25 @@
           body: JSON.stringify({ action: 'patch', recordId: atId, fields })
         });
       } catch (_) {}
+    }
+
+    function trackResourceClick(resourceName) {
+      const email = localStorage.getItem('rwu_email');
+      if (!email) return;
+      const recordId = atId || localStorage.getItem('rwu_record_id');
+      if (!recordId) return;
+      const appendValue = resourceName + ' — ' + new Date().toISOString();
+      fetch('/api/airtable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          action: 'appendField',
+          recordId: recordId,
+          fieldName: 'Resources Clicked',
+          appendValue: appendValue
+        })
+      }).catch(() => {});
     }
 
     async function atFetch(email) {
@@ -1881,7 +1900,7 @@
       if (email) {
         progResumeGuide.className = 'prog-item-resource';
         progResumeGuide.innerHTML =
-          '<a href="/blog/remote-work-resume-guide" onclick="gtag(\'event\',\'resume_guide_opened\')">' +
+          '<a href="/blog/remote-work-resume-guide" onclick="gtag(\'event\',\'resume_guide_opened\'); trackResourceClick(\'Resume Guide &amp; Optimizer\')">' +
           '<span class="prog-resource-icon">📝</span>' +
           'Resume Guide &amp; Optimizer' +
           '<span class="prog-resource-arrow">→</span>' +

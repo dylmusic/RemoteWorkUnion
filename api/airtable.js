@@ -105,6 +105,43 @@ module.exports = async (req, res) => {
       return res.status(atRes.status).json(data);
     }
 
+    // ── APPEND FIELD ─────────────────────────────────────────────────────────
+    if (action === 'appendField') {
+      if (!recordId || !body.fieldName || body.appendValue == null) {
+        console.error('[airtable] appendField called with missing params');
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+      const getUrl = `${AT_URL}/${recordId}?fields[]=${encodeURIComponent(body.fieldName)}`;
+      const getRes = await fetch(getUrl, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const getData = await getRes.json();
+      console.log('[airtable] appendField get status:', getRes.status);
+
+      const existing = (getData.fields && getData.fields[body.fieldName]) || '';
+      const newValue = existing ? existing + '\n' + body.appendValue : body.appendValue;
+
+      const patchUrl = `${AT_URL}/${recordId}`;
+      const patchFields = {
+        [body.fieldName]: newValue,
+        'Last Activity Date': new Date().toISOString(),
+      };
+      const atRes = await fetch(patchUrl, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fields: patchFields }),
+      });
+      const data = await atRes.json();
+      console.log('[airtable] appendField patch status:', atRes.status);
+      if (!atRes.ok) {
+        console.error('[airtable] appendField patch failed:', JSON.stringify(data));
+      }
+      return res.status(atRes.status).json(data);
+    }
+
     console.error('[airtable] unknown action:', action);
     return res.status(400).json({ error: 'Invalid action' });
 
