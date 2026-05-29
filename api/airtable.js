@@ -4,19 +4,44 @@ const AT_URL = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABL
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') {
-    console.log('[airtable] rejected non-POST method:', req.method);
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
 
   const token = process.env.AIRTABLE_TOKEN;
   if (!token) {
     console.error('[airtable] AIRTABLE_TOKEN env var is not set');
     return res.status(500).json({ error: 'Configuration error' });
+  }
+
+  // ── GET: fetch record by ?email= query param ──────────────────────────────
+  if (req.method === 'GET') {
+    const emailParam = (req.query && req.query.email) || '';
+    if (!emailParam) {
+      console.error('[airtable] GET called without email param');
+      return res.status(400).json({ error: 'Missing email' });
+    }
+    const sanitized = emailParam.replace(/"/g, '');
+    const formula = encodeURIComponent(`({Email}="${sanitized}")`);
+    const url = `${AT_URL}?filterByFormula=${formula}&maxRecords=1`;
+    console.log('[airtable] GET search URL:', url);
+    try {
+      const searchRes = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+      const searchData = await searchRes.json();
+      console.log('[airtable] GET search status:', searchRes.status, '| records found:', (searchData.records || []).length);
+      const record = searchData.records && searchData.records[0];
+      if (!record) return res.status(200).json({});
+      return res.status(200).json({ id: record.id, fields: record.fields });
+    } catch (err) {
+      console.error('[airtable] GET unhandled exception:', err.message);
+      return res.status(500).json({ error: 'Internal error' });
+    }
+  }
+
+  if (req.method !== 'POST') {
+    console.log('[airtable] rejected method:', req.method);
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const body = req.body || {};

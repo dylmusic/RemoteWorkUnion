@@ -1620,21 +1620,29 @@
       if (!email) return;
       const recordId = atId || localStorage.getItem('rwu_record_id');
       if (!recordId) return;
-      // Fire-and-forget: read current record first, then patch with appended values
+      // Fire-and-forget: GET current record, then PATCH with appended values
       (async () => {
         try {
-          const r = await fetch('/api/airtable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({ action: 'search', email })
+          // Step 1: fetch current record
+          console.log('[trackResourceClick] GET record for', email);
+          const r = await fetch('/api/airtable?email=' + encodeURIComponent(email), {
+            keepalive: true
           });
           const d = await r.json();
+          console.log('[trackResourceClick] fetched record:', JSON.stringify(d));
+
           const existingClicks = (d.fields && d.fields['Resources Clicked']) || '';
           const existingCount  = (d.fields && d.fields['Total Resources Clicked']) || 0;
+          console.log('[trackResourceClick] existing clicks:', JSON.stringify(existingClicks));
+          console.log('[trackResourceClick] existing count:', existingCount);
+
+          // Step 2: build appended values
           const newEntry  = resourceName + ' — ' + new Date().toISOString();
           const newClicks = existingClicks ? existingClicks + '\n' + newEntry : newEntry;
-          await fetch('/api/airtable', {
+          console.log('[trackResourceClick] new clicks value:', JSON.stringify(newClicks));
+
+          // Step 3: PATCH all three fields in one request
+          const patchRes = await fetch('/api/airtable', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             keepalive: true,
@@ -1647,7 +1655,11 @@
               }
             })
           });
-        } catch (_) {}
+          const patchData = await patchRes.json();
+          console.log('[trackResourceClick] PATCH response:', JSON.stringify(patchData));
+        } catch (err) {
+          console.error('[trackResourceClick] error:', err);
+        }
       })();
     }
 
