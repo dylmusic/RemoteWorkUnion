@@ -1618,18 +1618,22 @@
     function trackResourceClick(resourceName) {
       const email = localStorage.getItem('rwu_email');
       if (!email) return;
-      const recordId = atId || localStorage.getItem('rwu_record_id');
-      if (!recordId) return;
-      // Fire-and-forget: GET current record, then PATCH with appended values
+      // Fire-and-forget: every click independently GETs a fresh record then PATCHes
       (async () => {
         try {
-          // Step 1: fetch current record
+          // Step 1: fresh GET — no cached record ID or field values used
           console.log('[trackResourceClick] GET record for', email);
           const r = await fetch('/api/airtable?email=' + encodeURIComponent(email), {
             keepalive: true
           });
           const d = await r.json();
           console.log('[trackResourceClick] fetched record:', JSON.stringify(d));
+
+          const recordId = d.id;
+          if (!recordId) {
+            console.warn('[trackResourceClick] no record ID in response, aborting');
+            return;
+          }
 
           const existingClicks = (d.fields && d.fields['Resources Clicked']) || '';
           const existingCount  = (d.fields && d.fields['Total Resources Clicked']) || 0;
@@ -1641,7 +1645,7 @@
           const newClicks = existingClicks ? existingClicks + '\n' + newEntry : newEntry;
           console.log('[trackResourceClick] new clicks value:', JSON.stringify(newClicks));
 
-          // Step 3: PATCH all three fields in one request
+          // Step 3: PATCH all three fields in one request using ID from GET response
           const patchRes = await fetch('/api/airtable', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
