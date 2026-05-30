@@ -17,6 +17,21 @@
   </url>
   <!-- Individual article URLs — add below as /blog/article-slug -->
   <url>
+    <loc>https://www.remoteworkunion.com/blog/what-ai-training-jobs-actually-are-and-how-remote-workers-get-paid</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/how-to-get-paid-to-train-ai-for-companies-like-openai-anthropic-google-and-meta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/the-best-remote-ai-jobs-for-writers-marketers-lawyers-finance-pros-and-engineers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.remoteworkunion.com/blog/remote-work-resume-guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
