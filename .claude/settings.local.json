@@ -100,7 +100,9 @@
       "Bash(cp ~/Downloads/rwu_article_25_handshake_ai_package/images/02_handshake_ai_workflow_1200x630.png /Users/dylanrhodes/Documents/remoteworkunion/blog/images/article_25_image_02_workflow.png)",
       "Bash(cp ~/Downloads/rwu_article_25_handshake_ai_package/images/03_remote_ai_roles_matrix_1200x630.png /Users/dylanrhodes/Documents/remoteworkunion/blog/images/article_25_image_03_roles_matrix.png)",
       "Bash(cp ~/Downloads/rwu_article_25_handshake_ai_package/images/04_referral_engine_1200x630.png /Users/dylanrhodes/Documents/remoteworkunion/blog/images/article_25_image_04_referral_engine.png)",
-      "Bash(cp ~/Downloads/rwu_article_25_handshake_ai_package/images/05_application_checklist_1200x630.png /Users/dylanrhodes/Documents/remoteworkunion/blog/images/article_25_image_05_application_checklist.png)"
+      "Bash(cp ~/Downloads/rwu_article_25_handshake_ai_package/images/05_application_checklist_1200x630.png /Users/dylanrhodes/Documents/remoteworkunion/blog/images/article_25_image_05_application_checklist.png)",
+      "Bash(sed -n '2188,2196p' /Users/dylanrhodes/Documents/remoteworkunion/index.html)",
+      "Bash(sed -n '2415,2422p' /Users/dylanrhodes/Documents/remoteworkunion/index.html)"
     ],
     "additionalDirectories": [
       "/Users/dylanrhodes/Downloads/RemoteWorkUnion_Articles_1-3_PDF_and_Images/images",
