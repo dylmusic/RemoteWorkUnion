@@ -66,4 +66,19 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/what-remote-ai-research-jobs-are-and-how-to-find-them</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/the-best-online-jobs-from-home-for-people-with-real-world-expertise</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/how-to-apply-for-remote-ai-training-jobs-and-avoid-low-paying-platforms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
