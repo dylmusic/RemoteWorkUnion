@@ -2190,6 +2190,7 @@
 
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
+      _rwuUpdateBadge();
       atCreateOrRestore(val);
       gtag('event', 'email_signup', { method: 'landing_page' });
 
@@ -2416,6 +2417,7 @@
       progEmailSubmit.textContent = '...';
       progEmailSubmit.disabled = true;
       localStorage.setItem('rwu_email', val);
+      _rwuUpdateBadge();
       try {
         await fetch('https://app.kit.com/forms/9465424/subscriptions', {
           method: 'POST',
@@ -2498,15 +2500,23 @@
     });
 
     // ── live member count badge ────────────────────────────────
+    let _rwuCount = 0;
+    function _rwuUpdateBadge() {
+      const txt = document.getElementById('member-count-text');
+      if (!txt || _rwuCount <= 0) return;
+      const signedIn = !!localStorage.getItem('rwu_email');
+      txt.textContent = signedIn
+        ? `${_rwuCount.toLocaleString()} Remote Workers`
+        : `Join ${_rwuCount.toLocaleString()} Remote Workers`;
+    }
     (async () => {
       try {
         const r = await fetch('/api/airtable?count=true');
         if (!r.ok) return;
         const d = await r.json();
         if (typeof d.count === 'number' && d.count > 0) {
-          const badge = document.getElementById('member-count-badge');
-          const txt = document.getElementById('member-count-text');
-          if (txt) txt.textContent = `Join ${d.count.toLocaleString()} Remote Workers`;
+          _rwuCount = d.count;
+          _rwuUpdateBadge();
         }
       } catch (_) {}
     })();
