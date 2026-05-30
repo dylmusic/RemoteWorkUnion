@@ -1031,18 +1031,28 @@
     .learn-more-link:hover { color: #fff; }
 
     .member-count-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
       margin-top: 14px;
       font-size: 12px;
       font-weight: 500;
-      color: rgba(255,255,255,0.65);
-      padding: 5px 14px;
+      color: rgba(255,255,255,0.8);
+      padding: 6px 14px 6px 10px;
       border-radius: 100px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(74,222,128,0.1);
+      border: 1px solid rgba(74,222,128,0.28);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       letter-spacing: 0.01em;
+    }
+    .member-count-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: dotPulse 2s ease-in-out infinite;
     }
 
 
@@ -1263,7 +1273,7 @@
     <p class="sub">Join Remote Work Union For Free</p>
     <button class="apply-now-link" id="apply-now">Apply For Jobs Now &rarr;</button>
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
-    <span class="member-count-badge" id="member-count-badge">Join thousands of remote workers</span>
+    <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join thousands of remote workers</span></span>
 
     <div class="spacer-md"></div>
 
@@ -2495,7 +2505,8 @@
         const d = await r.json();
         if (typeof d.count === 'number' && d.count > 0) {
           const badge = document.getElementById('member-count-badge');
-          if (badge) badge.textContent = `Join ${d.count.toLocaleString()} Other Remote Workers`;
+          const txt = document.getElementById('member-count-text');
+          if (txt) txt.textContent = `Join ${d.count.toLocaleString()} Remote Workers`;
         }
       } catch (_) {}
     })();
