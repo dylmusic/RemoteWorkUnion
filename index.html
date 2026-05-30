@@ -549,6 +549,37 @@
       transition: color 0.2s;
     }
     .hidden-role-restore:hover { color: rgba(255,255,255,0.72); }
+
+    /* More Opportunities toggle */
+    .prog-more-toggle-li { list-style: none; }
+    .prog-more-toggle {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 12px;
+      color: rgba(255,255,255,0.42);
+      cursor: pointer;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .prog-more-toggle:hover { color: rgba(255,255,255,0.72); }
+    .prog-more-chevron {
+      display: inline-block;
+      font-size: 9px;
+      transition: transform 0.25s;
+    }
+    /* RentAHuman low-pay warning */
+    .prog-rh-warning-li { list-style: none; padding-left: 30px; }
+    .prog-rh-caution {
+      display: block;
+      font-size: 11px;
+      color: rgba(245,158,11,0.85);
+      line-height: 1.4;
+      padding: 3px 0 6px;
+    }
     .prog-header {
       font-size: 17px;
       font-weight: 700;
@@ -1478,12 +1509,22 @@
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
             </li>
-            <li class="prog-item anim-in" id="prog-rh" style="animation-delay:0.85s">
+            <!-- ── More Opportunities toggle ─────────────────── -->
+            <li class="prog-more-toggle-li" id="prog-more-toggle-li">
+              <button class="prog-more-toggle" id="prog-more-toggle">
+                <span class="prog-more-chevron" id="prog-more-chevron">&#9658;</span>
+                ➕ More Opportunities
+              </button>
+            </li>
+            <li class="prog-item clickable" id="prog-rh" style="display:none">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to RentAHuman AI
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-rh-next">Next &rarr;</button>
+            </li>
+            <li class="prog-rh-warning-li" id="prog-rh-warning-li" style="display:none">
+              <span class="prog-rh-caution">⚠️ Low pay warning — single $13/hr project, not a recurring platform</span>
             </li>
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
@@ -1840,6 +1881,7 @@
     }
 
     let pendingAdvance = null;
+    let moreOppsOpen = false;
 
     function checkAnimate(cb, el, undoBtn) {
       if (el.classList.contains('checked')) return;
@@ -1907,7 +1949,6 @@
         { key: 'handshake' },
         { key: 'outlier' },
         { key: 'mercor' },
-        { key: 'rentahuman' },
       ];
       const visible   = stepMap.filter(s => !hidden.includes(s.key));
       const total     = visible.length + 1;
@@ -1935,7 +1976,6 @@
         { el: progHs, key: 'handshake',  minStep: 2 },
         { el: progMc, key: 'mercor',     minStep: 3 },
         { el: progOt, key: 'outlier',    minStep: 4 },
-        { el: progRh, key: 'rentahuman', minStep: 5 },
       ];
       items.forEach(({ el, key, minStep }) => {
         if (hidden.includes(key)) { el.style.display = 'none'; return; }
@@ -1948,6 +1988,20 @@
           el.classList.add('done');
         }
       });
+      // RentAHuman lives in the More Opportunities dropdown — update classes but respect toggle state
+      const rhWarnLi = document.getElementById('prog-rh-warning-li');
+      if (hidden.includes('rentahuman')) {
+        progRh.style.display = 'none';
+        if (rhWarnLi) rhWarnLi.style.display = 'none';
+      } else {
+        const rhVisible = moreOppsOpen ? '' : 'none';
+        progRh.style.display = rhVisible;
+        if (rhWarnLi) rhWarnLi.style.display = rhVisible;
+        progRh.classList.remove('done', 'skipped');
+        progRh.classList.add('clickable');
+        if (skipped.includes('rentahuman')) progRh.classList.add('skipped');
+        else if (applied.includes('rentahuman')) progRh.classList.add('done');
+      }
       refreshHiddenRoles();
       updateNextButton();
       applyNowBtn.textContent = 'Learn More →';
@@ -1991,8 +2045,6 @@
           isIncomplete: !hidden.includes('mercor') && !skipped.includes('mercor') && !applied.includes('mercor') },
         { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && !applied.includes('outlier') },
-        { nextBtn: progRhNext, arrow: progRh.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('rentahuman') && !skipped.includes('rentahuman') && !applied.includes('rentahuman') },
       ];
       let assigned = false;
       candidates.forEach(({ nextBtn, arrow, isIncomplete }) => {
@@ -2088,6 +2140,18 @@
 
     hiddenRolesToggle.addEventListener('click', () => {
       hiddenRolesSection.classList.toggle('open');
+    });
+
+    const progMoreChevron = document.getElementById('prog-more-chevron');
+    const progRhWarningLi = document.getElementById('prog-rh-warning-li');
+    document.getElementById('prog-more-toggle').addEventListener('click', () => {
+      moreOppsOpen = !moreOppsOpen;
+      const hidden = getHidden();
+      if (!hidden.includes('rentahuman')) {
+        progRh.style.display = moreOppsOpen ? '' : 'none';
+        progRhWarningLi.style.display = moreOppsOpen ? '' : 'none';
+      }
+      progMoreChevron.style.transform = moreOppsOpen ? 'rotate(90deg)' : '';
     });
 
     hiddenRolesList.addEventListener('click', (e) => {
