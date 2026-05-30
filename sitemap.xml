@@ -51,4 +51,19 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/how-to-turn-your-existing-work-experience-into-a-remote-ai-training-job</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/remote-work-jobs-that-pay-more-than-surveys-data-entry-and-gig-apps</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.remoteworkunion.com/blog/how-to-start-working-online-from-home-without-a-tech-background</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
