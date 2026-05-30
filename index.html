@@ -556,8 +556,8 @@
       background: none;
       border: none;
       font-family: inherit;
-      font-size: 12px;
-      color: rgba(255,255,255,0.42);
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
       cursor: pointer;
       padding: 4px 0;
       display: flex;
@@ -565,21 +565,47 @@
       gap: 6px;
       transition: color 0.2s;
     }
-    .prog-more-toggle:hover { color: rgba(255,255,255,0.72); }
+    .prog-more-toggle:hover { color: rgba(255,255,255,0.62); }
     .prog-more-chevron {
       display: inline-block;
       font-size: 9px;
       transition: transform 0.25s;
     }
-    /* RentAHuman low-pay warning */
-    .prog-rh-warning-li { list-style: none; padding-left: 30px; }
-    .prog-rh-caution {
-      display: block;
+    /* RentAHuman inline warning tooltip */
+    .rh-warn-icon {
+      position: relative;
       font-size: 11px;
-      color: rgba(245,158,11,0.85);
-      line-height: 1.4;
-      padding: 3px 0 6px;
+      cursor: help;
+      opacity: 0.75;
+      display: inline-flex;
+      align-items: center;
+      margin-left: 4px;
+      vertical-align: middle;
     }
+    .rh-warn-tooltip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(100% + 7px);
+      background: rgba(12, 16, 32, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.82);
+      font-size: 11px;
+      line-height: 1.45;
+      padding: 7px 11px;
+      border-radius: 9px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 30;
+      width: 210px;
+      white-space: normal;
+      text-align: left;
+    }
+    .rh-warn-icon:hover .rh-warn-tooltip,
+    .rh-warn-icon.open .rh-warn-tooltip { opacity: 1; }
     .prog-header {
       font-size: 17px;
       font-weight: 700;
@@ -1513,18 +1539,15 @@
             <li class="prog-more-toggle-li" id="prog-more-toggle-li">
               <button class="prog-more-toggle" id="prog-more-toggle">
                 <span class="prog-more-chevron" id="prog-more-chevron">&#9658;</span>
-                ➕ More Opportunities
+                More Opportunities
               </button>
             </li>
             <li class="prog-item clickable" id="prog-rh" style="display:none">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
-              Apply to RentAHuman AI
+              Apply to RentAHuman AI<span class="rh-warn-icon" id="rh-warn-icon" tabindex="0">&#9888;<span class="rh-warn-tooltip">Low pay warning &mdash; single $13/hr project, not a recurring platform</span></span>
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-rh-next">Next &rarr;</button>
-            </li>
-            <li class="prog-rh-warning-li" id="prog-rh-warning-li" style="display:none">
-              <span class="prog-rh-caution">⚠️ Low pay warning — single $13/hr project, not a recurring platform</span>
             </li>
             <!-- ── Resources section ─────────────────────────── -->
             <li class="prog-resource-divider">📚 Resources</li>
@@ -1989,14 +2012,11 @@
         }
       });
       // RentAHuman lives in the More Opportunities dropdown — update classes but respect toggle state
-      const rhWarnLi = document.getElementById('prog-rh-warning-li');
       if (hidden.includes('rentahuman')) {
         progRh.style.display = 'none';
-        if (rhWarnLi) rhWarnLi.style.display = 'none';
       } else {
         const rhVisible = moreOppsOpen ? '' : 'none';
         progRh.style.display = rhVisible;
-        if (rhWarnLi) rhWarnLi.style.display = rhVisible;
         progRh.classList.remove('done', 'skipped');
         progRh.classList.add('clickable');
         if (skipped.includes('rentahuman')) progRh.classList.add('skipped');
@@ -2143,16 +2163,25 @@
     });
 
     const progMoreChevron = document.getElementById('prog-more-chevron');
-    const progRhWarningLi = document.getElementById('prog-rh-warning-li');
     document.getElementById('prog-more-toggle').addEventListener('click', () => {
       moreOppsOpen = !moreOppsOpen;
       const hidden = getHidden();
       if (!hidden.includes('rentahuman')) {
         progRh.style.display = moreOppsOpen ? '' : 'none';
-        progRhWarningLi.style.display = moreOppsOpen ? '' : 'none';
       }
       progMoreChevron.style.transform = moreOppsOpen ? 'rotate(90deg)' : '';
     });
+
+    // Tooltip tap support for mobile
+    (function () {
+      const icon = document.getElementById('rh-warn-icon');
+      if (!icon) return;
+      icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        icon.classList.toggle('open');
+      });
+      document.addEventListener('click', () => icon.classList.remove('open'));
+    })();
 
     hiddenRolesList.addEventListener('click', (e) => {
       const btn = e.target.closest('.hidden-role-restore');
