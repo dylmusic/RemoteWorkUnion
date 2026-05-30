@@ -15,9 +15,32 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: 'Configuration error' });
   }
 
-  // ── GET: fetch record by ?email= query param ──────────────────────────────
+  // ── GET: fetch record by ?email= query param, or count all with ?count=true ─
   if (req.method === 'GET') {
     const emailParam = (req.query && req.query.email) || '';
+    const isCount = req.query && req.query.count === 'true';
+
+    if (isCount) {
+      try {
+        let total = 0;
+        let offset = null;
+        do {
+          let url = `${AT_URL}?pageSize=100&fields[]=Email`;
+          if (offset) url += `&offset=${encodeURIComponent(offset)}`;
+          const r = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+          if (!r.ok) throw new Error(`Airtable status ${r.status}`);
+          const d = await r.json();
+          total += (d.records || []).length;
+          offset = d.offset || null;
+        } while (offset);
+        console.log('[airtable] count:', total);
+        return res.status(200).json({ count: total });
+      } catch (err) {
+        console.error('[airtable] count error:', err.message);
+        return res.status(500).json({ error: 'Count error' });
+      }
+    }
+
     if (!emailParam) {
       console.error('[airtable] GET called without email param');
       return res.status(400).json({ error: 'Missing email' });
