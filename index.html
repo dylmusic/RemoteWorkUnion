@@ -1264,6 +1264,62 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
+    /* Blog highlight cards */
+    .blog-highlight {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 32px;
+    }
+    .blog-highlight-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 12px;
+    }
+    .blog-highlight-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .blog-highlight-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .blog-highlight-card:hover { background: rgba(255,255,255,0.11); }
+    .blog-highlight-thumb {
+      width: 64px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      object-fit: cover;
+    }
+    .blog-highlight-text { flex: 1; min-width: 0; }
+    .blog-highlight-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-highlight-cta {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
@@ -1638,6 +1694,9 @@
         <span>Jobs Paying $50–$200/hr</span>
       </li>
     </ul>
+
+    <!-- Blog highlight cards -->
+    <div class="blog-highlight" id="blog-highlight" aria-label="From the blog"></div>
 
     <!-- Tagline -->
     <p class="tagline">Built for remote workers. By remote workers.</p>
@@ -2618,5 +2677,63 @@
 Remote work jobs. Work from home jobs. AI training jobs. Data annotation jobs. Data labeling jobs. Prompt writing jobs. RLHF jobs. Reinforcement learning from human feedback. AI research jobs remote. Machine learning jobs remote. Outlier AI jobs. Handshake AI jobs. Mercor jobs. Scale AI jobs. Remotasks jobs. Appen jobs. Lionbridge jobs. AI content jobs. AI feedback jobs. Evaluate AI responses. Rate AI outputs. AI model training remote. Prompt engineering jobs. ChatGPT trainer jobs. LLM training jobs. Large language model jobs. Human AI trainer. AI quality assurance remote. Data collection jobs remote. Transcription jobs remote. Remote annotation jobs. Computer vision annotation. Image labeling jobs. Video annotation jobs. Audio transcription remote. Natural language processing jobs. NLP jobs remote. Remote tech jobs. Remote marketing jobs. Remote customer service jobs. Remote entry level jobs. High paying remote jobs. Flexible remote work. Part time remote jobs. Full time remote jobs. Freelance AI jobs. Contract AI work. Independent contractor remote jobs. Work from anywhere. Digital nomad jobs. Location independent work. Remote work newsletter. Remote work community. Remote work resources. How to find remote work. How to get hired remotely. Remote job interview tips. Resume tips for remote jobs. Best remote companies hiring. Top AI companies hiring remote. AI companies that hire remotely. Get paid to train AI. Get paid to write prompts. Get paid to annotate data. Earn money from home AI. Side hustle AI training. Remote side hustle. Online jobs from home. Legitimate work from home. No experience remote jobs. Beginner remote jobs. Entry level AI jobs. Entry level data annotation. Remote jobs that pay well.
   </div>
   <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    (function() {
+      var articles = [
+        { href: '/blog/remote-workers-making-50-200-ai-training-from-home', img: '/blog/images/01-main-ai-training-from-home.png', title: 'How Remote Workers Are Making Up to $50–$200/hr Training AI From Home' },
+        { href: '/blog/best-remote-work-from-home-jobs-not-customer-support-sales', img: '/blog/images/02-main-remote-jobs-not-support-sales.png', title: 'The Best Remote Work From Home Jobs That Aren\'t Customer Support or Sales' },
+        { href: '/blog/how-to-find-online-jobs-from-home-that-pay-well', img: '/blog/images/03-main-online-jobs-that-pay-well.png', title: 'How to Find Online Jobs From Home That Actually Pay Well' },
+        { href: '/blog/what-ai-training-jobs-actually-are-and-how-remote-workers-get-paid', img: '/blog/images/04-main-what-ai-training-jobs-are.png', title: 'What AI Training Jobs Actually Are and How Remote Workers Get Paid' },
+        { href: '/blog/how-to-get-paid-to-train-ai-for-companies-like-openai-anthropic-google-and-meta', img: '/blog/images/05-main-get-paid-to-train-ai.png', title: 'How to Get Paid to Train AI for Companies Like OpenAI, Anthropic, Google, and Meta' },
+        { href: '/blog/the-best-remote-ai-jobs-for-writers-marketers-lawyers-finance-pros-and-engineers', img: '/blog/images/06-main-best-remote-ai-jobs-by-background.png', title: 'The Best Remote AI Jobs for Writers, Marketers, Lawyers, Finance Pros, and Engineers' },
+        { href: '/blog/how-to-turn-your-existing-work-experience-into-a-remote-ai-training-job', img: '/blog/images/07-main-turn-existing-work-experience-into-ai-training.png', title: 'How to Turn Your Existing Work Experience Into a Remote AI Training Job' },
+        { href: '/blog/remote-work-jobs-that-pay-more-than-surveys-data-entry-and-gig-apps', img: '/blog/images/08-main-remote-jobs-better-than-surveys-data-entry-gig-apps.png', title: 'Remote Work Jobs That Pay More Than Surveys, Data Entry, and Gig Apps' },
+        { href: '/blog/how-to-start-working-online-from-home-without-a-tech-background', img: '/blog/images/09-main-start-working-online-from-home-without-tech-background.png', title: 'How to Start Working Online From Home Without a Tech Background' },
+        { href: '/blog/what-remote-ai-research-jobs-are-and-how-to-find-them', img: '/blog/images/10-main-what-remote-ai-research-jobs-are-and-how-to-find-them.png', title: 'What Remote AI Research Jobs Are and How to Find Them' },
+        { href: '/blog/the-best-online-jobs-from-home-for-people-with-real-world-expertise', img: '/blog/images/11-main-best-online-jobs-from-home-for-people-with-real-world-expertise.png', title: 'The Best Online Jobs From Home for People With Real-World Expertise' },
+        { href: '/blog/how-to-apply-for-remote-ai-training-jobs-and-avoid-low-paying-platforms', img: '/blog/images/12-main-how-to-apply-for-remote-ai-training-jobs-and-avoid-low-paying-platforms.png', title: 'How to Apply for Remote AI Training Jobs and Avoid Low-Paying Platforms' },
+        { href: '/blog/remote-ai-training-application-stand-out', img: '/blog/images/13-main-remote-ai-training-application-stand-out.png', title: 'What Makes a Remote AI Training Application Stand Out?' },
+        { href: '/blog/how-to-prepare-ai-trainer-interview-no-ai-experience', img: '/blog/images/14-main-how-to-prepare-ai-trainer-interview-no-ai-experience.png', title: 'How to Prepare for an AI Trainer Interview With No AI Experience' },
+        { href: '/blog/best-remote-work-sites-ai-training-expert-review-ai-research', img: '/blog/images/15-main-best-remote-work-sites-ai-training.png', title: 'The Best Remote Work Sites for AI Training, Expert Review, and AI Research' },
+        { href: '/blog/what-remote-ai-jobs-pay-100-per-hour', img: '/blog/images/16-main-what-remote-ai-jobs-pay-100-per-hour.png', title: 'What Remote AI Jobs Pay $100+/hr?' },
+        { href: '/blog/why-ai-companies-need-human-reviewers', img: '/blog/images/17-main-why-ai-companies-need-human-reviewers.png', title: 'Why AI Companies Still Need Humans to Review, Rank, and Improve Model Answers' },
+        { href: '/blog/how-to-get-a-mercor-remote-job', img: '/blog/images/18-main-how-to-get-a-mercor-remote-job.png', title: 'How to Get a Mercor Remote Job: Application, Interview, and Referral Guide' },
+        { href: '/blog/is-mercor-legit', img: '/blog/images/article_19_main_is-mercor-legit.png', title: 'Is Mercor Legit? What Remote Workers Should Know Before Applying' },
+        { href: '/blog/how-to-pass-mercor-ai-interview-remote-work', img: '/blog/images/article20_main_mercor-ai-interview.png', title: 'How to Pass the Mercor AI Interview and Get Matched With Remote Work' },
+        { href: '/blog/mercor-vs-outlier-vs-handshake-ai', img: '/blog/images/article21_main_mercor-vs-outlier-vs-handshake-ai.png', title: 'Mercor vs Outlier vs Handshake AI: Which Remote AI Platform Should You Try First?' },
+        { href: '/blog/is-outlier-ai-legit', img: '/blog/images/article22-main-outlier-ai-legit-remote-work-union.png', title: 'Is Outlier AI Legit? What Remote Workers Should Know Before Applying' },
+        { href: '/blog/how-outlier-ai-works-remote-ai-training-jobs-pay-application-tips', img: '/blog/images/23-main-outlier-ai-remote-training-jobs.png', title: 'How Outlier AI Works: Remote AI Training Jobs, Pay, and Application Tips' },
+        { href: '/blog/is-handshake-ai-legit', img: '/blog/images/article_24_main_is-handshake-ai-legit.png', title: 'Is Handshake AI Legit? What Remote Workers Should Know Before Applying' },
+        { href: '/blog/how-handshake-ai-works-ai-fellowships-referrals-remote-work', img: '/blog/images/article_25_main_how-handshake-ai-works.png', title: 'How Handshake AI Works: AI Fellowships, Referrals, and Remote Work' },
+        { href: '/blog/how-to-find-remote-work-jobs-that-pay-50-200-hr-from-home', img: '/blog/images/article_26_main_social_1200x630.png', title: 'How to Find Remote Work Jobs That Pay $50–$200/hr From Home' },
+        { href: '/blog/best-work-from-home-jobs-no-coding-experience', img: '/blog/images/article_27_main_social_1200x630.png', title: 'The Best Work From Home Jobs for Smart People With No Coding Experience' },
+        { href: '/blog/how-to-get-paid-online-ai-training-research-expert-review', img: '/blog/images/article28-main-social-share-1200x630.png', title: 'How to Get Paid Online for AI Training, Research, and Expert Review' },
+        { href: '/blog/remote-jobs-from-home-real-opportunities-vs-scams', img: '/blog/images/article_29_main_social_share.png', title: 'Remote Jobs From Home: Real Opportunities vs. Scams' },
+        { href: '/blog/make-money-online-ai-skills-no-coding', img: '/blog/images/article_30_main_social_1200x630.png', title: 'How to Make Money Online With AI Skills Even If You\'re Not a Developer' },
+        { href: '/blog/best-online-jobs-writing-law-finance-medicine-coding', img: '/blog/images/article_31_main_social_share_1200x630.png', title: 'The Best Online Jobs for People Who Know Writing, Law, Finance, Medicine, or Coding' },
+        { href: '/blog/how-to-find-remote-ai-jobs-real-world-experience', img: '/blog/images/article32_main_hero_remote_ai_jobs_real_world_experience_1200x630.png', title: 'How to Find Remote AI Jobs That Use Your Real-World Experience' },
+        { href: '/blog/why-ai-training-is-one-of-the-best-remote-work-opportunities', img: '/blog/images/article_33_main_social_share_1200x630.png', title: 'Why AI Training Is Becoming One of the Best Remote Work Opportunities' }
+      ];
+
+      var el = document.getElementById('blog-highlight');
+      if (!el) return;
+
+      // Pick 2 random articles
+      var shuffled = articles.slice().sort(function() { return Math.random() - 0.5; });
+      var picks = shuffled.slice(0, 2);
+
+      var html = '<p class="blog-highlight-label">From the Blog</p><div class="blog-highlight-cards">';
+      picks.forEach(function(a) {
+        html += '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'blog_highlight_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'})">'
+          + '<img class="blog-highlight-thumb" src="' + a.img + '" alt="" loading="lazy" width="64" height="40">'
+          + '<div class="blog-highlight-text">'
+          + '<p class="blog-highlight-title">' + a.title + '</p>'
+          + '<span class="blog-highlight-cta">Read →</span>'
+          + '</div></a>';
+      });
+      html += '</div>';
+      el.innerHTML = html;
+    })();
+  </script>
 </body>
 </html>
