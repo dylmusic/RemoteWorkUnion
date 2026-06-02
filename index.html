@@ -1267,7 +1267,6 @@
     /* Blog highlight cards */
     .blog-highlight {
       width: 100%;
-      max-width: 320px;
       margin-top: 32px;
     }
     .blog-highlight-label {
@@ -1297,8 +1296,7 @@
     .blog-highlight-card:hover { background: rgba(255,255,255,0.11); }
     .blog-highlight-thumb {
       width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
     .blog-highlight-title {
@@ -1308,8 +1306,8 @@
       line-height: 1.4;
       padding: 8px 9px 10px;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
-      line-clamp: 3;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
