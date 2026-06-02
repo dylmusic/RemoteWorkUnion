@@ -1279,46 +1279,39 @@
       margin-bottom: 12px;
     }
     .blog-highlight-cards {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
     .blog-highlight-card {
       display: flex;
-      gap: 12px;
-      align-items: flex-start;
+      flex-direction: column;
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 12px;
-      padding: 12px;
+      overflow: hidden;
       text-decoration: none;
       color: inherit;
       transition: background 0.2s;
     }
     .blog-highlight-card:hover { background: rgba(255,255,255,0.11); }
     .blog-highlight-thumb {
-      width: 64px;
-      height: 40px;
-      flex-shrink: 0;
-      border-radius: 7px;
+      width: 100%;
+      aspect-ratio: 16/9;
       object-fit: cover;
+      display: block;
     }
-    .blog-highlight-text { flex: 1; min-width: 0; }
     .blog-highlight-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      color: rgba(255,255,255,0.9);
+      color: rgba(255,255,255,0.88);
       line-height: 1.4;
-      margin-bottom: 4px;
+      padding: 8px 9px 10px;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
-    }
-    .blog-highlight-cta {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
     }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
@@ -2725,11 +2718,9 @@ Remote work jobs. Work from home jobs. AI training jobs. Data annotation jobs. D
       var html = '<p class="blog-highlight-label">From the Blog</p><div class="blog-highlight-cards">';
       picks.forEach(function(a) {
         html += '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'blog_highlight_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'})">'
-          + '<img class="blog-highlight-thumb" src="' + a.img + '" alt="" loading="lazy" width="64" height="40">'
-          + '<div class="blog-highlight-text">'
+          + '<img class="blog-highlight-thumb" src="' + a.img + '" alt="" loading="lazy" width="320" height="180">'
           + '<p class="blog-highlight-title">' + a.title + '</p>'
-          + '<span class="blog-highlight-cta">Read →</span>'
-          + '</div></a>';
+          + '</a>';
       });
       html += '</div>';
       el.innerHTML = html;
