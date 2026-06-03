@@ -611,7 +611,15 @@
       font-weight: 700;
       letter-spacing: -0.3px;
       align-self: center;
-      margin-bottom: 14px;
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+    .prog-complete-msg {
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+      text-align: center;
+      margin: 5px 0 0;
+      display: none;
     }
     .prog-sub {
       font-size: 12px;
@@ -1533,6 +1541,7 @@
           <div class="prog-bar-wrap">
             <div class="prog-bar-labels"><span>Your Progress</span><span id="prog-pct">0% Complete</span></div>
             <div class="prog-bar-track"><div class="prog-bar-fill" id="prog-bar-fill"></div></div>
+            <p class="prog-complete-msg" id="prog-complete-msg">More opportunities coming soon &mdash; check back regularly.</p>
           </div>
           <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-opps-link" onclick="gtag('event','view_opportunities_x')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -2023,6 +2032,8 @@
       const pct = total ? Math.round((completed / total) * 100) : 0;
       progPct.textContent = pct + '% Complete';
       requestAnimationFrame(() => requestAnimationFrame(() => { progBarFill.style.width = pct + '%'; }));
+      const completeMsg = document.getElementById('prog-complete-msg');
+      if (completeMsg) completeMsg.style.display = pct === 100 ? '' : 'none';
     }
 
     function refreshDashboard() {
