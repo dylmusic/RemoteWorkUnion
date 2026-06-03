@@ -2749,8 +2749,15 @@
       if (!val || !val.includes('@')) return;
       progEmailSubmit.textContent = '...';
       progEmailSubmit.disabled = true;
+
+      // Clear all local state — new email always starts a fresh account
+      ['rwu_email','rwu_step','rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id'].forEach(k => localStorage.removeItem(k));
+      atId = null;
+
       localStorage.setItem('rwu_email', val);
+      localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
+
       try {
         await fetch('https://app.kit.com/forms/9465424/subscriptions', {
           method: 'POST',
@@ -2758,13 +2765,17 @@
           body: JSON.stringify({ email_address: val })
         });
       } catch (_) {}
-      atPatch({ 'Email': val });
+
+      await atCreate(val);
+
       progEmailSubmit.textContent = 'Update →';
       progEmailSubmit.disabled = false;
       progEmailInput.value = '';
       progEmailWrap.classList.remove('open');
       progEmailOk.style.display = 'block';
       setTimeout(() => { progEmailOk.style.display = 'none'; }, 2500);
+
+      refreshDashboard();
     });
 
     // ── skip / hide / apply-now ──────────────────────────────
