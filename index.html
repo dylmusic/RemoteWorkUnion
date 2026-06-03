@@ -1413,8 +1413,6 @@
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
             <span class="step-dot"></span>
-            <span class="step-dot"></span>
-            <span class="step-dot"></span>
           </div>
           <p class="hs-tag">&#10003; You&rsquo;re in!</p>
           <p class="hs-headline">Apply for Handshake AI</p>
@@ -1442,10 +1440,8 @@
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
-            <span class="step-dot"></span>
-            <span class="step-dot"></span>
           </div>
-          <p class="hs-tag">&#10003; Step 3 of 5</p>
+          <p class="hs-tag">&#10003; Bonus Opportunity</p>
           <p class="hs-headline">Apply to Outlier AI</p>
           <p class="hs-subline">Work remotely training AI models for top tech companies</p>
           <span class="hs-salary">Earn $20&ndash;$50/hr</span>
@@ -1470,11 +1466,9 @@
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
-            <span class="step-dot done"></span>
             <span class="step-dot current"></span>
-            <span class="step-dot"></span>
           </div>
-          <p class="hs-tag">&#10003; Step 4 of 5</p>
+          <p class="hs-tag">&#10003; Step 3 of 3</p>
           <p class="hs-headline">Apply to Mercor AI</p>
           <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
           <span class="hs-salary">Earn $50&ndash;$200/hr</span>
@@ -1576,13 +1570,6 @@
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
             </li>
-            <li class="prog-item anim-in" id="prog-ot" style="animation-delay:0.65s">
-              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
-              Apply to Outlier AI
-              <span class="prog-skipped-badge">⚠ Skipped</span>
-              <span class="prog-item-arrow">→</span>
-              <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
-            </li>
             <!-- ── More Opportunities toggle ─────────────────── -->
             <li class="prog-more-toggle-li" id="prog-more-toggle-li">
               <button class="prog-more-toggle" id="prog-more-toggle">
@@ -1590,9 +1577,16 @@
                 More Opportunities
               </button>
             </li>
+            <li class="prog-item clickable" id="prog-ot" style="display:none">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Apply to Outlier AI<span class="rh-warn-icon" id="ot-warn-icon" tabindex="0">&#9888;<span class="rh-warn-tooltip">Low work warning &mdash; low hire rate and limited work opportunities</span></span>
+              <span class="prog-skipped-badge">⚠ Skipped</span>
+              <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-ot-next">Next &rarr;</button>
+            </li>
             <li class="prog-item clickable" id="prog-rh" style="display:none">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
-              Apply to RentAHuman AI<span class="rh-warn-icon" id="rh-warn-icon" tabindex="0">&#9888;<span class="rh-warn-tooltip">Low pay warning &mdash; single $13/hr project, not a recurring platform</span></span>
+              Apply to RentAHuman AI<span class="rh-warn-icon" id="rh-warn-icon" tabindex="0">&#9888;<span class="rh-warn-tooltip">Low pay warning &mdash; single $10/hr project, not a recurring platform</span></span>
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-rh-next">Next &rarr;</button>
@@ -1717,7 +1711,7 @@
   </div>
 
   <script>
-    const TOTAL_STEPS = 5;
+    const TOTAL_STEPS = 3;
 
     let atId = localStorage.getItem('rwu_record_id') || null;
 
@@ -1945,12 +1939,10 @@
     }
 
     function showProgress() {
-      fadeOut(rhApply, () => {
+      fadeOut(mcApply, () => {
         progBarFill.style.width = '0%';
         showView(hsProgress);
         setTimeout(refreshDashboard, 50);
-        localStorage.setItem('rwu_step', '5');
-        atPatch({ 'Current Step': 5 });
       });
     }
 
@@ -2021,7 +2013,6 @@
       const applied = getApplied();
       const stepMap = [
         { key: 'handshake' },
-        { key: 'outlier' },
         { key: 'mercor' },
       ];
       const visible   = stepMap.filter(s => !hidden.includes(s.key));
@@ -2049,7 +2040,6 @@
       const items = [
         { el: progHs, key: 'handshake',  minStep: 2 },
         { el: progMc, key: 'mercor',     minStep: 3 },
-        { el: progOt, key: 'outlier',    minStep: 4 },
       ];
       items.forEach(({ el, key, minStep }) => {
         if (hidden.includes(key)) { el.style.display = 'none'; return; }
@@ -2062,12 +2052,21 @@
           el.classList.add('done');
         }
       });
+      // Outlier lives in the More Opportunities dropdown — update classes but respect toggle state
+      if (hidden.includes('outlier')) {
+        progOt.style.display = 'none';
+      } else {
+        progOt.style.display = moreOppsOpen ? '' : 'none';
+        progOt.classList.remove('done', 'skipped');
+        progOt.classList.add('clickable');
+        if (skipped.includes('outlier')) progOt.classList.add('skipped');
+        else if (applied.includes('outlier')) progOt.classList.add('done');
+      }
       // RentAHuman lives in the More Opportunities dropdown — update classes but respect toggle state
       if (hidden.includes('rentahuman')) {
         progRh.style.display = 'none';
       } else {
-        const rhVisible = moreOppsOpen ? '' : 'none';
-        progRh.style.display = rhVisible;
+        progRh.style.display = moreOppsOpen ? '' : 'none';
         progRh.classList.remove('done', 'skipped');
         progRh.classList.add('clickable');
         if (skipped.includes('rentahuman')) progRh.classList.add('skipped');
@@ -2114,8 +2113,6 @@
           isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && !applied.includes('handshake') },
         { nextBtn: progMcNext, arrow: progMc.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('mercor') && !skipped.includes('mercor') && !applied.includes('mercor') },
-        { nextBtn: progOtNext, arrow: progOt.querySelector('.prog-item-arrow'),
-          isIncomplete: !hidden.includes('outlier') && !skipped.includes('outlier') && !applied.includes('outlier') },
       ];
       let assigned = false;
       candidates.forEach(({ nextBtn, arrow, isIncomplete }) => {
@@ -2217,6 +2214,9 @@
     document.getElementById('prog-more-toggle').addEventListener('click', () => {
       moreOppsOpen = !moreOppsOpen;
       const hidden = getHidden();
+      if (!hidden.includes('outlier')) {
+        progOt.style.display = moreOppsOpen ? '' : 'none';
+      }
       if (!hidden.includes('rentahuman')) {
         progRh.style.display = moreOppsOpen ? '' : 'none';
       }
@@ -2224,6 +2224,15 @@
     });
 
     // Tooltip tap support for mobile
+    (function () {
+      const icon = document.getElementById('ot-warn-icon');
+      if (!icon) return;
+      icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        icon.classList.toggle('open');
+      });
+      document.addEventListener('click', () => icon.classList.remove('open'));
+    })();
     (function () {
       const icon = document.getElementById('rh-warn-icon');
       if (!icon) return;
@@ -2435,14 +2444,14 @@
       addApplied('mercor');
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
-      setTimeout(fromDash ? goToDashboard : showOutlier, 600);
+      setTimeout(fromDash ? goToDashboard : showProgress, 600);
     });
 
     mcAlready.addEventListener('click', () => {
       gtag('event', 'step_already_applied', { platform: 'mercor' });
       unskipStep('mercor');
       addApplied('mercor');
-      checkAnimate(fromDash ? goToDashboard : showOutlier, mcCb, mcUndo);
+      checkAnimate(fromDash ? goToDashboard : showProgress, mcCb, mcUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
     });
