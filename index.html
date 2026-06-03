@@ -375,36 +375,31 @@
       text-align: left;
     }
     .card-process-toggle {
-      background: none;
+      background: #10B981;
       border: none;
       font-family: inherit;
       font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.1px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
+      color: #fff;
       cursor: pointer;
-      padding: 0;
-      width: 100%;
-      display: flex;
+      padding: 5px 12px;
+      border-radius: 100px;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      transition: color 0.2s;
+      gap: 5px;
+      transition: background 0.15s, transform 0.1s;
     }
-    .card-process-toggle::before,
-    .card-process-toggle::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255,255,255,0.18);
-    }
-    .card-process-toggle:hover { color: rgba(255,255,255,0.88); }
+    .card-process-toggle:hover { background: #059669; }
+    .card-process-toggle:active { transform: scale(0.97); }
     .card-process-chevron {
-      display: inline-block;
-      font-size: 8px;
-      transition: transform 0.25s;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1;
     }
-    .card-process.open .card-process-chevron { transform: rotate(90deg); }
+    .card-process-chevron::before { content: '+'; }
+    .card-process.open .card-process-chevron::before { content: '−'; }
     .card-process-body {
       max-height: 0;
       overflow: hidden;
@@ -1550,7 +1545,7 @@
           <p class="hs-subline">Work Remote For Top AI Companies</p>
           <div class="card-process" id="hs-process">
             <button class="card-process-toggle" onclick="document.getElementById('hs-process').classList.toggle('open')">
-              <span class="card-process-chevron">&#9658;</span> View Process
+              <span class="card-process-chevron"></span> View Process
             </button>
             <div class="card-process-body">
               <p class="card-process-time">⏱ 5 minutes &middot; Just submit your resume</p>
@@ -1617,7 +1612,7 @@
           <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
           <div class="card-process" id="mc-process">
             <button class="card-process-toggle" onclick="document.getElementById('mc-process').classList.toggle('open')">
-              <span class="card-process-chevron">&#9658;</span> View Process
+              <span class="card-process-chevron"></span> View Process
             </button>
             <div class="card-process-body">
               <p class="card-process-time">⏱ 30min&ndash;1 hour &middot; Requires AI video interview</p>
