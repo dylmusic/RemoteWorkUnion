@@ -687,15 +687,52 @@
       margin-bottom: 18px;
     }
     .prog-complete-msg {
-      font-size: 10px;
-      color: rgba(255,255,255,0.38);
+      position: relative;
       text-align: center;
       margin: 4px 0 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       display: none;
     }
+    .prog-complete-btn {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 10px;
+      color: rgba(255,255,255,0.38);
+      cursor: pointer;
+      padding: 0;
+      white-space: nowrap;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-color: rgba(255,255,255,0.18);
+      transition: color 0.2s;
+    }
+    .prog-complete-btn:hover { color: rgba(255,255,255,0.62); }
+    .prog-complete-popup {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(12, 16, 32, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      white-space: nowrap;
+      z-index: 20;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      display: none;
+    }
+    .prog-complete-popup.open { display: block; }
+    .prog-complete-link {
+      color: #4ade80;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .prog-complete-link:hover { text-decoration: underline; }
     .prog-sub {
       font-size: 12px;
       color: rgba(255,255,255,0.55);
@@ -1644,7 +1681,10 @@
           <div class="prog-bar-wrap">
             <div class="prog-bar-labels"><span>Your Progress</span><span id="prog-pct">0% Complete</span></div>
             <div class="prog-bar-track"><div class="prog-bar-fill" id="prog-bar-fill"></div></div>
-            <p class="prog-complete-msg" id="prog-complete-msg">More opportunities coming soon &mdash; check back regularly.</p>
+            <div class="prog-complete-msg" id="prog-complete-msg">
+              <button class="prog-complete-btn" id="prog-complete-btn">More opportunities coming soon</button>
+              <div class="prog-complete-popup" id="prog-complete-popup">Apply to more: <a class="prog-complete-link" id="prog-complete-mercor-link" href="#">Go to Mercor</a> and sort by newest jobs</div>
+            </div>
           </div>
           <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-opps-link" onclick="gtag('event','view_opportunities_x')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -2356,6 +2396,24 @@
         icon.classList.toggle('open');
       });
       document.addEventListener('click', () => icon.classList.remove('open'));
+    })();
+
+    // ── More opportunities popup ──────────────────────────────
+    (function() {
+      const btn   = document.getElementById('prog-complete-btn');
+      const popup = document.getElementById('prog-complete-popup');
+      const link  = document.getElementById('prog-complete-mercor-link');
+      if (!btn || !popup || !link) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        popup.classList.toggle('open');
+      });
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        popup.classList.remove('open');
+        goToCard(mcApply);
+      });
+      document.addEventListener('click', () => popup.classList.remove('open'));
     })();
 
     hiddenRolesList.addEventListener('click', (e) => {
