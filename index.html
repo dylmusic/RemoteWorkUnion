@@ -379,15 +379,26 @@
       border: none;
       font-family: inherit;
       font-size: 11px;
-      color: rgba(255,255,255,0.48);
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
       cursor: pointer;
       padding: 0;
+      width: 100%;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 10px;
       transition: color 0.2s;
     }
-    .card-process-toggle:hover { color: rgba(255,255,255,0.75); }
+    .card-process-toggle::before,
+    .card-process-toggle::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.18);
+    }
+    .card-process-toggle:hover { color: rgba(255,255,255,0.88); }
     .card-process-chevron {
       display: inline-block;
       font-size: 8px;
