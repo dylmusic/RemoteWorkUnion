@@ -369,8 +369,48 @@
       font-size: 14px;
       color: rgba(255,255,255,0.7);
     }
+    .card-process {
+      margin-top: 16px;
+      width: 100%;
+      text-align: left;
+    }
+    .card-process-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 10px;
+    }
+    .card-process-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .card-process-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.4;
+    }
+    .card-process-steps li .step-num {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
     .hs-salary {
-      margin-top: 12px;
+      margin-top: 16px;
       display: inline-block;
       padding: 4px 14px;
       border-radius: 100px;
@@ -1425,6 +1465,14 @@
           <p class="hs-tag">&#10003; You&rsquo;re in!</p>
           <p class="hs-headline">Apply for Handshake AI</p>
           <p class="hs-subline">Work Remote For Top AI Companies</p>
+          <div class="card-process">
+            <p class="card-process-label">⏱ Takes 5 minutes &middot; Just submit your resume</p>
+            <ol class="card-process-steps">
+              <li><span class="step-num">1</span><span>Sign up on Handshake with our referral</span></li>
+              <li><span class="step-num">2</span><span>Submit your resume (use our Resume Optimizer)</span></li>
+              <li><span class="step-num">3</span><span>Receive offers to your email (takes 1&ndash;4 weeks)</span></li>
+            </ol>
+          </div>
           <span class="hs-salary">Earn $50&ndash;$200/hr</span>
           <a class="hs-cta" id="hs-cta" href="https://joinhandshake.com/move-program/referral?referralCode=F74188&utm_source=referral" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
           <button class="hs-confirm-btn" id="hs-confirm">✅ I finished applying &mdash; confirm!</button>
@@ -1479,6 +1527,16 @@
           <p class="hs-tag">&#10003; Step 3 of 3</p>
           <p class="hs-headline">Apply to Mercor AI</p>
           <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
+          <div class="card-process">
+            <p class="card-process-label">⏱ Takes 30min&ndash;1 hour &middot; Requires AI video interview</p>
+            <ol class="card-process-steps">
+              <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
+              <li><span class="step-num">2</span><span>Find roles that are the best fit for you</span></li>
+              <li><span class="step-num">3</span><span>Submit your resume on Mercor</span></li>
+              <li><span class="step-num">4</span><span>Complete Mercor AI Interview (guide coming soon)</span></li>
+              <li><span class="step-num">5</span><span>Apply for 10+ roles (1-click apply after your first application)</span></li>
+            </ol>
+          </div>
           <span class="hs-salary">Earn $50&ndash;$200/hr</span>
           <a class="hs-cta" id="mc-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
           <button class="hs-confirm-btn" id="mc-confirm">✅ I finished applying &mdash; confirm!</button>
