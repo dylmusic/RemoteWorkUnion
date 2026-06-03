@@ -1879,7 +1879,7 @@
       try {
         const r = await fetch('/api/airtable', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
           body: JSON.stringify({ action: 'create', fields: {
             'Email': email,
             'Joined Date': today(),
@@ -1904,7 +1904,7 @@
       try {
         await fetch('/api/airtable', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
           body: JSON.stringify({ action: 'patch', recordId: atId, fields })
         });
       } catch (_) {}
@@ -1917,7 +1917,8 @@
         // Step 1: fresh GET — no cached record ID or field values used
         console.log('[trackResourceClick] GET record for', email);
         const r = await fetch('/api/airtable?email=' + encodeURIComponent(email), {
-          keepalive: true
+          keepalive: true,
+          headers: { 'x-rwu-secret': 'RWU2026SECRET' }
         });
         const d = await r.json();
         console.log('[trackResourceClick] fetched record:', JSON.stringify(d));
@@ -1941,7 +1942,7 @@
         // Step 3: PATCH all three fields in one request using ID from GET response
         const patchRes = await fetch('/api/airtable', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
           keepalive: true,
           body: JSON.stringify({
             action: 'patch',
@@ -1969,7 +1970,7 @@
       try {
         const r = await fetch('/api/airtable', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
           body: JSON.stringify({ action: 'search', email })
         });
         const d = await r.json();
@@ -2855,7 +2856,7 @@
     }
     (async () => {
       try {
-        const r = await fetch('/api/airtable?count=true');
+        const r = await fetch('/api/airtable?count=true', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } });
         if (!r.ok) return;
         const d = await r.json();
         if (typeof d.count === 'number' && d.count > 0) {
