@@ -2184,10 +2184,11 @@
         { key: 'handshake' },
         { key: 'mercor' },
       ];
-      const visible   = stepMap.filter(s => !hidden.includes(s.key));
-      const total     = visible.length + 1;
+      const visible     = stepMap.filter(s => !hidden.includes(s.key));
+      const active      = visible.filter(s => !skipped.includes(s.key));
+      const total       = active.length + 1;
       const newsletterDone = (localStorage.getItem('rwu_email') && step >= 1) ? 1 : 0;
-      const completed = newsletterDone + visible.filter(s => !skipped.includes(s.key) && applied.includes(s.key)).length;
+      const completed   = newsletterDone + active.filter(s => applied.includes(s.key)).length;
       const pct = total ? Math.round((completed / total) * 100) : 0;
       progPct.textContent = pct + '% Complete';
       requestAnimationFrame(() => requestAnimationFrame(() => { progBarFill.style.width = pct + '%'; }));
