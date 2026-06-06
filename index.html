@@ -1712,7 +1712,7 @@
             <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
             <span class="resume-nudge-text">💡 Optimize your resume and resubmit to Handshake &amp; Mercor for better matches</span>
             <div class="resume-nudge-actions">
-              <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_nudge_click')">Optimize Now →</a>
+              <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_nudge_click');if(localStorage.getItem('rwu_email'))trackResourceClick('Resume Optimize Banner');">Optimize Now →</a>
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
