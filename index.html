@@ -1448,7 +1448,7 @@
     .resume-nudge-text { flex: 1; font-size: 12px; font-weight: 600; color: #fff; line-height: 1.3; font-family: 'Inter',sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .resume-nudge-info { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; background: #fff; color: #CC5500; border: none; border-radius: 50%; font-size: 10px; font-weight: 800; font-family: 'Inter',sans-serif; cursor: pointer; flex-shrink: 0; line-height: 1; }
     .resume-nudge-tooltip { position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%); background: rgba(12,18,28,0.93); color: #fff; font-size: 11px; font-family: 'Inter',sans-serif; padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 20; }
-    .resume-nudge-info:hover .resume-nudge-tooltip, .resume-nudge-info.info-open .resume-nudge-tooltip { opacity: 1; }
+    .resume-nudge:hover .resume-nudge-tooltip, .resume-nudge.tooltip-open .resume-nudge-tooltip { opacity: 1; }
     .resume-nudge-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .resume-nudge-btn { display: inline-flex; align-items: center; padding: 5px 12px; background: rgba(255,255,255,0.22); color: #fff; font-family: 'Inter',sans-serif; font-size: 11px; font-weight: 700; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
     .resume-nudge-btn:hover { background: rgba(255,255,255,0.34); }
@@ -1719,10 +1719,9 @@
           </a>
           <!-- Resume nudge banner — only visible at 100% progress, dismissible -->
           <div class="resume-nudge" id="resume-nudge" role="alert">
+            <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
             <span class="resume-nudge-text">📝 Optimize your resume and resubmit</span>
-            <button class="resume-nudge-info" id="resume-nudge-info" aria-label="More info">?
-              <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
-            </button>
+            <button class="resume-nudge-info" id="resume-nudge-info" aria-label="More info">?</button>
             <div class="resume-nudge-actions">
               <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_nudge_click');if(localStorage.getItem('rwu_email'))trackResourceClick('Resume Optimize Banner');">Optimize With AI →</a>
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
@@ -2917,15 +2916,12 @@
         nudgeBanner.classList.remove('visible');
         gtag('event', 'resume_nudge_dismissed');
       });
-      if (nudgeInfoBtn) {
-        nudgeInfoBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          nudgeInfoBtn.classList.toggle('info-open');
-        });
-        document.addEventListener('click', (e) => {
-          if (!nudgeInfoBtn.contains(e.target)) nudgeInfoBtn.classList.remove('info-open');
-        });
-      }
+      nudgeBanner.addEventListener('click', (e) => {
+        if (!nudgeDismissBtn.contains(e.target)) nudgeBanner.classList.toggle('tooltip-open');
+      });
+      document.addEventListener('click', (e) => {
+        if (!nudgeBanner.contains(e.target)) nudgeBanner.classList.remove('tooltip-open');
+      });
     }
 
     // ── live member count badge ────────────────────────────────
