@@ -38,13 +38,21 @@ body {
 .blog-nav-back:hover { color: #fff; }
 
 .blog-nav-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 100px;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255,255,255,0.38);
+  color: rgba(255,255,255,0.75);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
-.blog-nav-home:hover { color: rgba(255,255,255,0.65); }
+.blog-nav-home:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.blog-nav-logo { height: 22px; width: auto; display: block; border-radius: 3px; }
 
 /* ── Page header ────────────────────────────────────────────── */
 .blog-header {
