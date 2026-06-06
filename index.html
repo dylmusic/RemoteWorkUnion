@@ -2021,13 +2021,15 @@
           localStorage.setItem('rwu_hidden',  f['Hidden Steps']  || '');
           atPatch({ 'Last Activity Date': new Date().toISOString() });
           if (!f['Country']) {
+            let detectedCountry = 'Unknown';
             try {
               const geoRes = await fetch('https://ipapi.co/json/');
               if (geoRes.ok) {
                 const geo = await geoRes.json();
-                if (geo && geo.country_name) atPatch({ 'Country': geo.country_name });
+                if (geo && !geo.error && geo.country_name) detectedCountry = geo.country_name;
               }
             } catch (_) {}
+            atPatch({ 'Country': detectedCountry });
           }
           gtag('event', 'dashboard_load', { user_type: 'returning' });
         }

@@ -111,7 +111,7 @@ module.exports = async (req, res) => {
       }
       console.log('[airtable] creating record at:', AT_URL);
 
-      let country = null;
+      let country = 'Unknown';
       try {
         const rawIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
         if (rawIp) {
@@ -126,10 +126,9 @@ module.exports = async (req, res) => {
       } catch (geoErr) {
         console.warn('[airtable] geo lookup failed (non-blocking):', geoErr.message);
       }
-      console.log('[airtable] detected country:', country || '(none)');
+      console.log('[airtable] detected country:', country);
 
-      const createFields = { ...fields, 'Last Activity Date': new Date().toISOString() };
-      if (country) createFields['Country'] = country;
+      const createFields = { ...fields, 'Last Activity Date': new Date().toISOString(), 'Country': country };
       const atRes = await fetch(AT_URL, {
         method: 'POST',
         headers: {
