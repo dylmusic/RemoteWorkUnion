@@ -1454,7 +1454,7 @@
     .resume-nudge-btn:hover { background: rgba(255,255,255,0.34); }
     .resume-nudge-dismiss { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0; width: 20px; height: 20px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; align-self: center; }
     .resume-nudge-dismiss:hover { color: #fff; }
-    @media (max-width: 480px) { .resume-nudge { height: auto; padding: 8px 10px; } .resume-nudge-text { white-space: normal; } }
+    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 8px; gap: 6px; } .resume-nudge-info { display: none; } .resume-nudge-btn { font-size: 10px; padding: 4px 8px; } }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
@@ -2926,9 +2926,13 @@
         if (!nudgeBanner.contains(e.target)) nudgeBanner.classList.remove('tooltip-open');
       });
       nudgeBanner.addEventListener('click', () => {
-        if (localStorage.getItem('rwu_email')) trackResourceClick('Resume Optimize Banner');
-        gtag('event', 'resume_nudge_click');
-        window.location.href = '/blog/remote-work-resume-guide';
+        if (window.matchMedia('(hover: none)').matches) {
+          nudgeBanner.classList.toggle('tooltip-open');
+        } else {
+          if (localStorage.getItem('rwu_email')) trackResourceClick('Resume Optimize Banner');
+          gtag('event', 'resume_nudge_click');
+          window.location.href = '/blog/remote-work-resume-guide';
+        }
       });
     }
 
