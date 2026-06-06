@@ -1443,7 +1443,7 @@
     .prog-rec { display: none; width: 100%; margin-bottom: 14px; }
     .prog-rec.visible { display: block; }
     .prog-rec-heading { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 10px; }
-    .resume-nudge { display: none; position: relative; box-sizing: border-box; background: #FF6B00; border-radius: 10px; padding: 0 10px; margin-top: 14px; margin-bottom: 12px; width: 100%; height: 36px; flex-direction: row; align-items: center; gap: 8px; }
+    .resume-nudge { display: none; position: relative; box-sizing: border-box; background: #FF6B00; border-radius: 10px; padding: 0 10px; margin-top: 14px; margin-bottom: 12px; width: 100%; height: 36px; flex-direction: row; align-items: center; gap: 8px; cursor: pointer; }
     .resume-nudge.visible { display: flex; }
     .resume-nudge-text { flex: 1; font-size: 12px; font-weight: 600; color: #fff; line-height: 1; font-family: 'Inter',sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; align-self: center; }
     .resume-nudge-info { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; background: #fff; color: #CC5500; border: none; border-radius: 50%; font-size: 10px; font-weight: 800; font-family: 'Inter',sans-serif; cursor: pointer; flex-shrink: 0; line-height: 1; align-self: center; padding: 0; }
@@ -1723,7 +1723,7 @@
             <span class="resume-nudge-text">📝 Optimize your resume and resubmit</span>
             <button class="resume-nudge-info" id="resume-nudge-info" aria-label="More info">?</button>
             <div class="resume-nudge-actions">
-              <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_nudge_click');if(localStorage.getItem('rwu_email'))trackResourceClick('Resume Optimize Banner');">Optimize With AI →</a>
+              <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="event.stopPropagation();gtag('event','resume_nudge_click');if(localStorage.getItem('rwu_email'))trackResourceClick('Resume Optimize Banner');">Optimize With AI →</a>
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
@@ -2916,11 +2916,19 @@
         nudgeBanner.classList.remove('visible');
         gtag('event', 'resume_nudge_dismissed');
       });
-      nudgeBanner.addEventListener('click', (e) => {
-        if (!nudgeDismissBtn.contains(e.target)) nudgeBanner.classList.toggle('tooltip-open');
-      });
+      if (nudgeInfoBtn) {
+        nudgeInfoBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          nudgeBanner.classList.toggle('tooltip-open');
+        });
+      }
       document.addEventListener('click', (e) => {
         if (!nudgeBanner.contains(e.target)) nudgeBanner.classList.remove('tooltip-open');
+      });
+      nudgeBanner.addEventListener('click', () => {
+        if (localStorage.getItem('rwu_email')) trackResourceClick('Resume Optimize Banner');
+        gtag('event', 'resume_nudge_click');
+        window.location.href = '/blog/remote-work-resume-guide';
       });
     }
 
