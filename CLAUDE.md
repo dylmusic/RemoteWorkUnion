@@ -10,6 +10,16 @@ Live at `https://www.remoteworkunion.com/`.
 3. Add the URL to `/sitemap.xml` and update the blog `<lastmod>` date
 4. Delete the source package folder(s) and zip(s) from `/Users/dylanrhodes/Downloads/`
 
+## Deploying new static files to Vercel — CRITICAL
+`vercel.json` has an explicit `builds` whitelist. Any new file added to the project root that needs to be publicly accessible (images, SVGs, fonts, etc.) **MUST** be added to the `builds` array in `vercel.json` or Vercel will 404 it silently. Always check `vercel.json` when adding new root-level static assets.
+
+Example entry to add:
+```json
+{ "src": "logo.svg", "use": "@vercel/static" }
+```
+
+Files inside `blog/` are already covered by the `blog/**` glob — only root-level files need explicit entries.
+
 ## Constants
 - Google Analytics: `G-J84MSTXMXF`
 - Twitter: `@RemoteWorkUnion`
