@@ -28,11 +28,22 @@ Files inside `blog/` are already covered by the `blog/**` glob — only root-lev
 - Published date ISO format: `2026-06-04T00:00:00Z` (use today's date)
 - Display date format: `June 4, 2026`
 
+## Dynamic nav buttons
+
+### Blog pages (all `blog/*.html`)
+The top-right nav anchor has `id="blog-nav-home-btn"`, its label is wrapped in `<span>`, and an inline `<script>` immediately after the `</a>` (inside `<nav class="blog-nav">`) sets the span to `Join Free` when `localStorage.getItem('rwu_email')` is falsy. The href always points to `https://www.remoteworkunion.com/`. Logo + label in both states. See `blog/article-template.html` for the exact markup.
+
+### work.html
+The Join Free link has `id="nav-cta-btn"` and an inline `<script>` immediately after `</nav>` checks `localStorage.rwu_email` — if present, swaps href to `https://www.remoteworkunion.com/`, injects `logo.svg + "Dashboard →"`, and applies `display:inline-flex`.
+
 ## Images
 - Destination: `/blog/images/`
 - Source: usually in `/Users/dylanrhodes/Downloads/RemoteWorkUnion_Article[NN]_*/`
 - Naming convention (newer articles): `article[NN]_main_1200x630.png`, `article[NN]_[descriptor]_1200x630.png`
 - All images: 1200×630px
+
+### og/twitter image dimensions
+`og:image:width`, `og:image:height`, `twitter:image:width`, and `twitter:image:height` must match the **actual pixel dimensions** of the image file — do not assume 1200×630. Always include all four tags explicitly. Run `sips -g pixelWidth -g pixelHeight <file>` to confirm dimensions before setting.
 
 ## Article card HTML (for index.html)
 ```html
@@ -171,6 +182,24 @@ Inline style classes to include in every article:
 | 84 | google-ai-training-jobs | Google AI Training Jobs: What Remote Job Seekers Should Know Before Applying |
 | 85 | microsoft-ai-training-jobs | Microsoft AI Training Jobs: How to Search for Remote AI Evaluation Roles |
 | 86 | claude-ai-training-jobs-human-reviewers-improve-ai-answers | Claude AI Training Jobs: How Human Reviewers Help Improve AI Answers |
+
+### Articles 87–100 (published June 6, 2026)
+| # | Slug | Title |
+|---|------|-------|
+| 87 | gemini-ai-training-jobs | Gemini AI Training Jobs: How to Find Remote Roles Around Google's AI Ecosystem |
+| 88 | ai-mode-jobs-remote-workers | AI Mode Jobs: What Search, Assistants, and AI Browsers Mean for Remote Workers |
+| 89 | ask-ai-jobs-improve-ai-answer-quality | Ask AI Jobs: How People Are Getting Paid to Improve AI Answer Quality |
+| 90 | how-ai-detectors-work-human-review | How AI Detectors Work and Why Human Review Still Matters |
+| 91 | ai-humanizer-jobs | AI Humanizer Jobs: What This Search Trend Means for Writers and Reviewers |
+| 92 | ai-model-training-jobs-compare-generalist-expert-coding-projects | AI Model Training Jobs: How to Compare Generalist, Expert, and Coding Projects |
+| 93 | free-ai-training-vs-paid-ai-training-work | Free AI Training vs Paid AI Training Work: What Job Seekers Should Understand |
+| 94 | corporate-ai-training-programs-vs-remote-ai-training-jobs | Corporate AI Training Programs vs Remote AI Training Jobs: What's the Difference? |
+| 95 | mercor-ai-jobs-how-to-search-apply-avoid-generic-applications | Mercor AI Jobs: How to Search, Apply, and Avoid Generic Applications |
+| 96 | mercor-careers-vs-mercor-contract-projects | Mercor Careers vs Mercor Contract Projects: What Applicants Should Know |
+| 97 | mercor-reddit-reviews | Mercor Reddit Reviews: How to Read Platform Feedback Without Getting Misled |
+| 98 | mercor-founders-company-legitimacy-job-seeker-guide | Mercor Founders, Company, and Legitimacy: A Job Seeker's Research Guide |
+| 99 | surge-ai-jobs | Surge AI Jobs: What Remote AI Training Applicants Should Know |
+| 100 | micro1-ai-jobs-expert-ai-training-opportunities | micro1 AI Jobs: How Expert AI Training Opportunities Work |
 
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
