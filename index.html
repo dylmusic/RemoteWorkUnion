@@ -1454,7 +1454,8 @@
     .resume-nudge-btn:hover { background: rgba(255,255,255,0.34); }
     .resume-nudge-dismiss { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0; width: 20px; height: 20px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; align-self: center; }
     .resume-nudge-dismiss:hover { color: #fff; }
-    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 8px; gap: 6px; } .resume-nudge-info { display: none; } .resume-nudge-btn { font-size: 10px; padding: 4px 8px; } }
+    .resume-nudge-text--short { display: none; }
+    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 8px; gap: 6px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-btn { font-size: 10px; padding: 4px 8px; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline; } }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
@@ -1720,7 +1721,8 @@
           <!-- Resume nudge banner — only visible at 100% progress, dismissible -->
           <div class="resume-nudge" id="resume-nudge" role="alert">
             <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
-            <span class="resume-nudge-text">📝 Optimize your resume and resubmit</span>
+            <span class="resume-nudge-text resume-nudge-text--full">📝 Optimize your resume and resubmit</span>
+            <span class="resume-nudge-text resume-nudge-text--short">📝 Resume</span>
             <button class="resume-nudge-info" id="resume-nudge-info" aria-label="More info">?</button>
             <div class="resume-nudge-actions">
               <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="event.stopPropagation();gtag('event','resume_nudge_click');if(localStorage.getItem('rwu_email'))trackResourceClick('Resume Optimize Banner');">Optimize With AI →</a>
