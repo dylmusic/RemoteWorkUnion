@@ -111,24 +111,8 @@ module.exports = async (req, res) => {
       }
       console.log('[airtable] creating record at:', AT_URL);
 
-      let country = 'Unknown';
-      try {
-        const rawIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-        if (rawIp) {
-          const geoRes = await fetch(`https://ipapi.co/${rawIp}/country_name/`, { signal: AbortSignal.timeout(3000) });
-          if (geoRes.ok) {
-            const text = (await geoRes.text()).trim();
-            if (text && !text.toLowerCase().includes('undefined') && !text.toLowerCase().includes('error')) {
-              country = text;
-            }
-          }
-        }
-      } catch (geoErr) {
-        console.warn('[airtable] geo lookup failed (non-blocking):', geoErr.message);
-      }
-      console.log('[airtable] detected country:', country);
-
-      const createFields = { ...fields, 'Last Activity Date': new Date().toISOString(), 'Country': country };
+      const createFields = { ...fields, 'Last Activity Date': new Date().toISOString() };
+      if (!createFields['Country']) createFields['Country'] = 'Unknown';
       const atRes = await fetch(AT_URL, {
         method: 'POST',
         headers: {

@@ -1907,7 +1907,31 @@
 
     let atId = localStorage.getItem('rwu_record_id') || null;
 
+    async function tryGetCountry() {
+      const attempts = [
+        { url: 'https://ipwho.is/',       extract: d => (d && d.success !== false && d.country) ? d.country : null },
+        { url: 'https://ipapi.co/json/',  extract: d => (d && !d.error && d.country_name) ? d.country_name : null },
+        { url: 'https://api.country.is/', extract: d => (d && d.country) ? d.country : null },
+      ];
+      for (const { url, extract } of attempts) {
+        try {
+          const ctrl = new AbortController();
+          const result = await Promise.race([
+            fetch(url, { signal: ctrl.signal }).then(async r => {
+              if (!r.ok) return null;
+              const d = await r.json();
+              return extract(d);
+            }),
+            new Promise(resolve => setTimeout(() => { ctrl.abort(); resolve(null); }, 5000))
+          ]);
+          if (result) return result;
+        } catch (_) {}
+      }
+      return 'Unknown';
+    }
+
     async function atCreate(email) {
+      const country = await tryGetCountry();
       try {
         const r = await fetch('/api/airtable', {
           method: 'POST',
@@ -1915,7 +1939,8 @@
           body: JSON.stringify({ action: 'create', fields: {
             'Email': email,
             'Joined Date': today(),
-            'Current Step': 1
+            'Current Step': 1,
+            'Country': country
           }})
         });
         const d = await r.json();
@@ -2020,16 +2045,9 @@
           localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
           localStorage.setItem('rwu_hidden',  f['Hidden Steps']  || '');
           atPatch({ 'Last Activity Date': new Date().toISOString() });
-          if (!f['Country']) {
-            let detectedCountry = 'Unknown';
-            try {
-              const geoRes = await fetch('https://ipapi.co/json/');
-              if (geoRes.ok) {
-                const geo = await geoRes.json();
-                if (geo && !geo.error && geo.country_name) detectedCountry = geo.country_name;
-              }
-            } catch (_) {}
-            atPatch({ 'Country': detectedCountry });
+          if (!f['Country'] || f['Country'] === 'Unknown') {
+            const country = await tryGetCountry();
+            if (country !== 'Unknown') atPatch({ 'Country': country });
           }
           gtag('event', 'dashboard_load', { user_type: 'returning' });
         }
