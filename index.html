@@ -1443,6 +1443,17 @@
     .prog-rec { display: none; width: 100%; margin-bottom: 14px; }
     .prog-rec.visible { display: block; }
     .prog-rec-heading { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 10px; }
+    .resume-nudge { display: none; position: relative; background: #FF6B00; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; flex-direction: row; align-items: center; gap: 10px; }
+    .resume-nudge.visible { display: flex; }
+    .resume-nudge-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: rgba(12,18,28,0.93); color: #fff; font-size: 11px; font-family: 'Inter',sans-serif; padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 20; }
+    .resume-nudge:hover .resume-nudge-tooltip, .resume-nudge.tooltip-open .resume-nudge-tooltip { opacity: 1; }
+    .resume-nudge-text { flex: 1; font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; font-family: 'Inter',sans-serif; }
+    .resume-nudge-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .resume-nudge-btn { display: inline-flex; align-items: center; padding: 7px 14px; background: rgba(255,255,255,0.22); color: #fff; font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 700; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
+    .resume-nudge-btn:hover { background: rgba(255,255,255,0.34); }
+    .resume-nudge-dismiss { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 15px; cursor: pointer; padding: 2px 5px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; }
+    .resume-nudge-dismiss:hover { color: #fff; }
+    @media (max-width: 480px) { .resume-nudge { flex-wrap: wrap; } .resume-nudge-actions { width: 100%; justify-content: flex-end; } }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
@@ -1694,6 +1705,15 @@
             <div class="prog-complete-msg" id="prog-complete-msg">
               <button class="prog-complete-btn" id="prog-complete-btn">More opportunities coming soon</button>
               <div class="prog-complete-popup" id="prog-complete-popup">Apply to more: <a class="prog-complete-link" id="prog-complete-mercor-link" href="#">Go to Mercor</a> and sort by newest jobs</div>
+            </div>
+          </div>
+          <!-- Resume nudge banner — only visible at 100% progress, dismissible -->
+          <div class="resume-nudge" id="resume-nudge" role="alert">
+            <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
+            <span class="resume-nudge-text">💡 Optimize your resume and resubmit to Handshake &amp; Mercor for better matches</span>
+            <div class="resume-nudge-actions">
+              <a class="resume-nudge-btn" href="/blog/remote-work-resume-guide" onclick="gtag('event','resume_nudge_click')">Optimize Now →</a>
+              <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
           <!-- Recommended reading — only visible at 100% progress -->
@@ -2195,6 +2215,16 @@
       const completeMsg = document.getElementById('prog-complete-msg');
       if (completeMsg) completeMsg.style.display = pct === 100 ? 'block' : 'none';
 
+      // Show resume nudge at 100% unless dismissed
+      const nudgeEl = document.getElementById('resume-nudge');
+      if (nudgeEl) {
+        if (pct === 100 && !localStorage.getItem('rwu_nudge_dismissed')) {
+          nudgeEl.classList.add('visible');
+        } else {
+          nudgeEl.classList.remove('visible');
+        }
+      }
+
       // Show/populate recommended reading at 100%
       const recEl = document.getElementById('prog-rec');
       if (recEl) {
@@ -2204,7 +2234,7 @@
           if (grid && !grid.hasChildNodes() && window.rwuArticlePool) {
             var picks = window.rwuArticlePool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 2);
             grid.innerHTML = picks.map(function(a) {
-              return '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'prog_rec_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'})">'
+              return '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'prog_rec_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'});if(localStorage.getItem(\'rwu_email\'))trackResourceClick(' + JSON.stringify(a.title) + ');">'
                 + '<img class="blog-highlight-thumb" src="' + a.img + '" alt="" loading="lazy" width="320" height="180">'
                 + '<p class="blog-highlight-title"><span>' + a.title + '</span></p>'
                 + '</a>';
@@ -2872,6 +2902,24 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') disclaimerModal.classList.remove('open');
     });
+
+    // ── resume nudge dismiss + mobile tooltip ─────────────────
+    const nudgeDismissBtn = document.getElementById('resume-nudge-dismiss');
+    const nudgeBanner = document.getElementById('resume-nudge');
+    if (nudgeDismissBtn && nudgeBanner) {
+      nudgeDismissBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('rwu_nudge_dismissed', '1');
+        nudgeBanner.classList.remove('visible');
+        gtag('event', 'resume_nudge_dismissed');
+      });
+      nudgeBanner.addEventListener('click', () => {
+        nudgeBanner.classList.toggle('tooltip-open');
+      });
+      document.addEventListener('click', (e) => {
+        if (!nudgeBanner.contains(e.target)) nudgeBanner.classList.remove('tooltip-open');
+      });
+    }
 
     // ── live member count badge ────────────────────────────────
     let _rwuCount = 0;
