@@ -18,6 +18,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "logo.svg",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/airtable.js",
       "use": "@vercel/node"
     },
