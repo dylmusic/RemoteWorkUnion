@@ -4,6 +4,13 @@
 Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framework, no build step.
 Live at `https://www.remoteworkunion.com/`.
 
+## After EVERY change — always deploy
+Commit and push to GitHub. Vercel deploys automatically on push to `main`.
+```
+git add <files> && git commit -m "..." && git push origin main
+```
+Never stop at a local edit. Always push before reporting the task done.
+
 ## Every time you add a new article, do exactly 4 things:
 1. Create `/blog/[slug].html` (use article 46 as the template reference: `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`)
 2. Add an article card to `/blog/index.html` — insert before the previous newest article comment
