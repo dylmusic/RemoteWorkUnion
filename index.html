@@ -2267,7 +2267,7 @@
           if (grid && !grid.hasChildNodes() && window.rwuArticlePool) {
             var picks = window.rwuArticlePool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 2);
             grid.innerHTML = picks.map(function(a) {
-              return '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'prog_rec_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'});if(localStorage.getItem(\'rwu_email\'))trackResourceClick(' + JSON.stringify(a.title) + ');">'
+              return '<a class="blog-highlight-card" href="' + a.href + '" onclick="gtag(\'event\',\'prog_rec_click\',{article_slug:\'' + a.href.replace('/blog/', '') + '\'});if(localStorage.getItem(\'rwu_email\'))trackResourceClick(\'Recommended Reading\');">'
                 + '<img class="blog-highlight-thumb" src="' + a.img + '" alt="" loading="lazy" width="320" height="180">'
                 + '<p class="blog-highlight-title"><span>' + a.title + '</span></p>'
                 + '</a>';
