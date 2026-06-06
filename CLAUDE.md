@@ -4,10 +4,11 @@
 Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framework, no build step.
 Live at `https://www.remoteworkunion.com/`.
 
-## Every time you add a new article, do exactly 3 things:
+## Every time you add a new article, do exactly 4 things:
 1. Create `/blog/[slug].html` (use article 46 as the template reference: `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`)
 2. Add an article card to `/blog/index.html` — insert before the previous newest article comment
 3. Add the URL to `/sitemap.xml` and update the blog `<lastmod>` date
+4. Delete the source package folder(s) and zip(s) from `/Users/dylanrhodes/Downloads/`
 
 ## Constants
 - Google Analytics: `G-J84MSTXMXF`
@@ -130,6 +131,36 @@ Inline style classes to include in every article:
 | 54 | best-ai-model-evaluation-jobs | Best AI Model Evaluation Jobs for Writers, Researchers, and Domain Experts |
 | 55 | how-to-use-ai-skills-for-remote-work | How to Use AI Skills to Find Better Remote Work and Online Income |
 | 56 | best-ai-side-hustles-remote-workers | Best AI Side Hustles for Remote Workers |
+| 63 | best-remote-ai-jobs-coders-not-full-time-software-role | Best Remote AI Jobs for Coders Who Do Not Want a Full-Time Software Role |
+| 57 | best-remote-jobs-that-pay-for-judgment-instead-of-phone-calls | Best Remote Jobs That Pay for Judgment Instead of Phone Calls |
+| 58 | best-online-jobs-strong-writers-work-from-home | Best Online Jobs for Strong Writers Who Want to Work From Home |
+| 59 | best-remote-jobs-lawyers-paralegals-legal-researchers-ai | Best Remote AI Jobs for Lawyers, Paralegals, and Legal Researchers |
+| 60 | best-remote-ai-jobs-finance-accounting-business-analysts | Best Remote AI Jobs for Finance, Accounting, and Business Analysts |
+| 61 | best-remote-ai-jobs-teachers-tutors-education-experts | Best Remote AI Jobs for Teachers, Tutors, and Education Experts |
+| 62 | best-remote-ai-jobs-nurses-medical-writers-healthcare-experts | Best Remote AI Jobs for Nurses, Medical Writers, and Healthcare Experts |
+| 64 | best-ai-training-platforms-generalists-specialists-students | Best AI Training Platforms for Generalists, Specialists, and Students |
+| 65 | best-alternatives-to-data-entry-jobs-remote-workers | Best Alternatives to Data Entry Jobs for Remote Workers |
+| 66 | best-remote-jobs-fact-checking-research | Best Remote Jobs for People Who Like Fact-Checking and Research |
+| 67 | best-work-from-home-jobs-with-no-phone-calls | Best Work From Home Jobs With No Phone Calls |
+| 68 | best-ai-evaluation-jobs-notice-mistakes-fast | Best AI Evaluation Jobs for People Who Notice Mistakes Fast |
+| 69 | best-remote-jobs-college-students-recent-graduates-ai | Best Remote Jobs for College Students and Recent Graduates Interested in AI |
+| 70 | best-remote-ai-jobs-bilingual-workers-language-experts | Best Remote AI Jobs for Bilingual Workers and Language Experts |
+| 71 | remote-ai-evaluator-jobs-explained | Remote AI Evaluator Jobs Explained: Tasks, Skills, Pay, and Application Tips |
+| 72 | ai-model-trainer-jobs-apply-from-home | AI Model Trainer Jobs: What They Are and How to Apply From Home |
+| 73 | prompt-evaluation-jobs | Prompt Evaluation Jobs: How Remote Workers Get Paid to Test AI Answers |
+| 74 | ai-rater-jobs-review-chatbot-responses | AI Rater Jobs: How to Review Chatbot Responses for Accuracy and Quality |
+| 75 | ai-response-reviewer-jobs | AI Response Reviewer Jobs: How to Get Paid Reviewing Model Answers |
+| 76 | data-annotation-jobs-from-home-vs-ai-training-jobs | Data Annotation Jobs From Home: How They Compare to AI Training Jobs |
+| 77 | rlhf-jobs-explained-human-feedback-work | RLHF Jobs Explained: What Human Feedback Work Actually Looks Like |
+| 78 | human-feedback-jobs-in-ai-remote-workers-improve-chatbots | Human Feedback Jobs in AI: How Remote Workers Improve Chatbots |
+| 79 | paid-ai-research-jobs-from-home | Paid AI Research Jobs From Home: What Counts as Real Research Work? |
+| 80 | expert-review-jobs-from-home | Expert Review Jobs From Home: How Professionals Can Turn Knowledge Into Remote Work |
+| 81 | work-in-ai-from-home | Work in AI From Home: The Practical Guide for Non-Technical Remote Workers |
+| 82 | how-ai-training-works-human-feedback-jobs | How AI Training Works: The Human Feedback Jobs Behind Modern AI Models |
+| 83 | ai-training-jobs-near-me-vs-remote-ai-training-jobs | AI Training Jobs Near Me vs Remote AI Training Jobs: Which Searches Actually Work? |
+| 84 | google-ai-training-jobs | Google AI Training Jobs: What Remote Job Seekers Should Know Before Applying |
+| 85 | microsoft-ai-training-jobs | Microsoft AI Training Jobs: How to Search for Remote AI Evaluation Roles |
+| 86 | claude-ai-training-jobs-human-reviewers-improve-ai-answers | Claude AI Training Jobs: How Human Reviewers Help Improve AI Answers |
 
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
