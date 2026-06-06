@@ -52,8 +52,6 @@ body {
   transition: background 0.2s, color 0.2s;
 }
 .blog-nav-home:hover { background: rgba(255,255,255,0.14); color: #fff; }
-.blog-nav-logo { height: 22px; width: auto; display: block; border-radius: 3px; }
-
 /* ── Page header ────────────────────────────────────────────── */
 .blog-header {
   width: 100%;
