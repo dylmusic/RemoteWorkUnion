@@ -503,9 +503,10 @@
     <div class="nav-inner">
       <a href="/" class="nav-back">← Back</a>
       <span class="nav-logo">Remote Work Union</span>
-      <a href="/" class="nav-cta">Join Free</a>
+      <a href="/" class="nav-cta" id="nav-cta-btn">Join Free</a>
     </div>
   </nav>
+  <script>(function(){if(localStorage.getItem('rwu_email')){var b=document.getElementById('nav-cta-btn');b.href='https://www.remoteworkunion.com/';b.innerHTML='<img src="/logo.svg" alt="" style="height:17px;width:auto;vertical-align:middle;"> Dashboard →';b.style.display='inline-flex';b.style.alignItems='center';b.style.gap='6px';}})()</script>
 
   <div class="page">
 

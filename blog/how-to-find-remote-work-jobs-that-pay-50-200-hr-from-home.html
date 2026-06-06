@@ -197,7 +197,8 @@
 
   <nav class="blog-nav">
     <a class="blog-nav-back" href="https://remoteworkunion.com/blog">← Back to Blog</a>
-    <a class="blog-nav-home" href="https://remoteworkunion.com"><img src="/logo.svg" alt="Remote Work Union" style="height:19px;width:auto;vertical-align:middle;">Dashboard →</a>
+    <a class="blog-nav-home" href="https://www.remoteworkunion.com/" id="blog-nav-home-btn"><img src="/logo.svg" alt="Remote Work Union" style="height:19px;width:auto;vertical-align:middle;"><span>Dashboard →</span></a>
+    <script>(function(){if(!localStorage.getItem('rwu_email')){var b=document.getElementById('blog-nav-home-btn');if(b)b.querySelector('span').textContent='Join Free';}})()</script>
   </nav>
 
   <article class="article-wrap">
