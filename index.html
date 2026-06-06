@@ -2020,6 +2020,15 @@
           localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
           localStorage.setItem('rwu_hidden',  f['Hidden Steps']  || '');
           atPatch({ 'Last Activity Date': new Date().toISOString() });
+          if (!f['Country']) {
+            try {
+              const geoRes = await fetch('https://ipapi.co/json/');
+              if (geoRes.ok) {
+                const geo = await geoRes.json();
+                if (geo && geo.country_name) atPatch({ 'Country': geo.country_name });
+              }
+            } catch (_) {}
+          }
           gtag('event', 'dashboard_load', { user_type: 'returning' });
         }
       } catch (_) {}
