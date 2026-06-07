@@ -1229,6 +1229,8 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       letter-spacing: 0.01em;
+      min-width: 175px;
+      justify-content: center;
     }
     .member-count-dot {
       width: 7px;
@@ -1461,6 +1463,7 @@
     .invite-toggle {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 7px;
       color: rgba(255,255,255,0.65);
       font-size: 0.8rem;
@@ -1472,6 +1475,7 @@
       margin-top: 10px;
       margin-bottom: 4px;
       align-self: center;
+      min-width: 175px;
       cursor: pointer;
       font-family: inherit;
       transition: background 0.2s, box-shadow 0.2s, color 0.2s;
@@ -1624,9 +1628,9 @@
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
     <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span></span>
     <!-- Refer a Friend — shown only when signed in (controlled by refreshDashboard) -->
-    <button class="invite-toggle" id="invite-toggle" style="display:none"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0"><rect x="1.5" y="5" width="5" height="3" rx="1.5" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/><rect x="9.5" y="8" width="5" height="3" rx="1.5" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/><line x1="6.5" y1="6.5" x2="9.5" y2="9.5" stroke="rgba(255,255,255,0.6)" stroke-width="1.4" stroke-linecap="round"/></svg>Refer A Friend</button>
+    <button class="invite-toggle" id="invite-toggle" style="display:none">🔗 Refer A Friend</button>
 
-    <div style="height:8px"></div>
+    <div style="height:4px"></div>
 
     <!-- 6. Email form -->
     <div class="form-wrap">
@@ -2014,7 +2018,7 @@
         <button class="invite-copy-btn" id="invite-copy-btn">Copy Link</button>
       </div>
       <p class="invite-count" id="invite-count"></p>
-      <p class="invite-coming-soon">Share your link to help others find remote work. Secure your spot in our referral program 🔒</p>
+      <p class="invite-coming-soon">Share your link to help others find remote work. Secure your spot in our referral program 🔒 More info coming soon.</p>
     </div>
   </div>
 
