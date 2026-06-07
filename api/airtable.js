@@ -45,12 +45,16 @@ module.exports = async (req, res) => {
         let todayPromise = Promise.resolve(null);
         if (todayParam) {
           const safeDate = todayParam.replace(/[^0-9-]/g, '').slice(0, 10);
-          const formula = encodeURIComponent(`({Joined Date}="${safeDate}")`);
+          const formula = encodeURIComponent(`IS_SAME({Joined Date}, '${safeDate}', 'day')`);
           const todayUrl = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
           todayPromise = fetch(todayUrl, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then(r => r.ok ? r.json() : { records: [] })
+            .then(async r => {
+              const raw = await r.json();
+              console.log('[airtable] today raw response:', JSON.stringify(raw));
+              return r.ok ? raw : { records: [] };
+            })
             .then(d => (d.records || []).length)
-            .catch(() => 0);
+            .catch(err => { console.error('[airtable] today fetch error:', err.message); return 0; });
         }
         const [total, todayCount] = await Promise.all([totalPromise, todayPromise]);
         console.log('[airtable] count:', total, '| today:', todayCount);
