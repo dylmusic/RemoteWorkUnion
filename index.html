@@ -1677,7 +1677,7 @@
     <p class="sub">Join Remote Work Union For Free</p>
     <button class="apply-now-link" id="apply-now">Apply For Jobs Now &rarr;</button>
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
-    <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span><div class="member-count-popup" id="member-count-popup"><div class="mcp-total" id="mcp-total">—</div><div class="mcp-label">members</div><div class="mcp-today" id="mcp-today">↑ — joined today</div></div></span>
+    <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span><div class="member-count-popup" id="member-count-popup"><div class="mcp-total" id="mcp-total">—</div><div class="mcp-label">members</div><div class="mcp-today" id="mcp-today">↑ — last 24h</div></div></span>
     <!-- Refer a Friend — shown only when signed in (controlled by refreshDashboard) -->
     <button class="invite-toggle" id="invite-toggle" style="display:none">🔗 Refer A Friend</button>
 
@@ -3280,7 +3280,7 @@
 
       function updatePopupDisplay() {
         if (totEl) totEl.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
-        if (todEl) todEl.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
+        if (todEl) todEl.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' last 24h';
       }
 
       function openPopup() {
@@ -3306,7 +3306,7 @@
             }
             if (typeof d.todayCount === 'number') {
               _rwuTodayCount = d.todayCount;
-              if (todEl) todEl.textContent = '↑ ' + _rwuTodayCount + ' joined today';
+              if (todEl) todEl.textContent = '↑ ' + _rwuTodayCount + ' last 24h';
             }
           })
           .catch(() => {

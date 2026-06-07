@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
         })();
         let todayPromise = Promise.resolve(null);
         if (todayParam) {
-          const formula = encodeURIComponent(`IS_SAME({Joined Date}, TODAY(), 'day')`);
+          const formula = encodeURIComponent(`IS_AFTER(CREATED_TIME(), DATEADD(NOW(), -24, 'hours'))`);
           const todayUrl = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
           todayPromise = fetch(todayUrl, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(async r => {
