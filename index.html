@@ -1458,14 +1458,6 @@
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } }
 
     /* Refer a Friend */
-    .invite-orb {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #4ade80;
-      flex-shrink: 0;
-      animation: dotPulse 2s ease-in-out infinite;
-    }
     .invite-toggle {
       display: inline-flex;
       align-items: center;
@@ -1632,7 +1624,7 @@
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
     <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span></span>
     <!-- Refer a Friend — shown only when signed in (controlled by refreshDashboard) -->
-    <button class="invite-toggle" id="invite-toggle" style="display:none"><span class="invite-orb"></span>Refer a Friend</button>
+    <button class="invite-toggle" id="invite-toggle" style="display:none"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0"><rect x="1.5" y="5" width="5" height="3" rx="1.5" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/><rect x="9.5" y="8" width="5" height="3" rx="1.5" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/><line x1="6.5" y1="6.5" x2="9.5" y2="9.5" stroke="rgba(255,255,255,0.6)" stroke-width="1.4" stroke-linecap="round"/></svg>Refer A Friend</button>
 
     <div style="height:8px"></div>
 
@@ -2022,7 +2014,7 @@
         <button class="invite-copy-btn" id="invite-copy-btn">Copy Link</button>
       </div>
       <p class="invite-count" id="invite-count"></p>
-      <p class="invite-coming-soon">Share your link and help others find remote work. You&rsquo;ll be among the first rewarded when our referral program launches.</p>
+      <p class="invite-coming-soon">Share your link to help others find remote work. Secure your spot in our referral program 🔒</p>
     </div>
   </div>
 
