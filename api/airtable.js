@@ -44,13 +44,12 @@ module.exports = async (req, res) => {
         })();
         let todayPromise = Promise.resolve(null);
         if (todayParam) {
-          const safeDate = todayParam.replace(/[^0-9-]/g, '').slice(0, 10);
-          const formula = encodeURIComponent(`IS_SAME({Joined Date}, '${safeDate}', 'day')`);
+          const formula = encodeURIComponent(`IS_SAME({Joined Date}, TODAY(), 'day')`);
           const todayUrl = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
           todayPromise = fetch(todayUrl, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(async r => {
               const raw = await r.json();
-              console.log('[airtable] today raw response:', JSON.stringify(raw));
+              console.log('[airtable] today response — records:', (raw.records || []).length, raw.error || '');
               return r.ok ? raw : { records: [] };
             })
             .then(d => (d.records || []).length)
