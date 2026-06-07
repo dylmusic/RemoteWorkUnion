@@ -1582,6 +1582,16 @@
     <button class="apply-now-link" id="apply-now">Apply For Jobs Now &rarr;</button>
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
     <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span></span>
+    <!-- Invite a Friend — shown only when signed in (controlled by refreshDashboard) -->
+    <button class="invite-toggle" id="invite-toggle" style="display:none">🔗 Invite a Friend</button>
+    <div class="invite-body" id="invite-body">
+      <div class="invite-link-row">
+        <span class="invite-link-text" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</span>
+        <button class="invite-copy-btn" id="invite-copy-btn">Copy</button>
+      </div>
+      <p class="invite-count" id="invite-count">0 friends joined with your link</p>
+      <p class="invite-coming-soon">Rewards coming soon &mdash; share your link to lock in your spot 🔒</p>
+    </div>
 
     <div class="spacer-sm"></div>
 
@@ -1777,16 +1787,6 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             View Latest Opportunities on X
           </a>
-          <!-- Invite a Friend -->
-          <button class="invite-toggle" id="invite-toggle" style="display:none">🔗 Invite a Friend</button>
-          <div class="invite-body" id="invite-body">
-            <div class="invite-link-row">
-              <span class="invite-link-text" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</span>
-              <button class="invite-copy-btn" id="invite-copy-btn">Copy</button>
-            </div>
-            <p class="invite-count" id="invite-count">0 friends joined with your link</p>
-            <p class="invite-coming-soon">Rewards coming soon &mdash; share your link to lock in your spot 🔒</p>
-          </div>
           <!-- Resume nudge banner — only visible at 100% progress, dismissible -->
           <div class="resume-nudge" id="resume-nudge" role="alert">
             <div class="resume-nudge-tooltip">Handshake &amp; Mercor allow you to update your resume at any time</div>
