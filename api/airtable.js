@@ -27,19 +27,36 @@ module.exports = async (req, res) => {
 
     if (isCount) {
       try {
-        let total = 0;
-        let offset = null;
-        do {
-          let url = `${AT_URL}?pageSize=100&fields[]=Email`;
-          if (offset) url += `&offset=${encodeURIComponent(offset)}`;
-          const r = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
-          if (!r.ok) throw new Error(`Airtable status ${r.status}`);
-          const d = await r.json();
-          total += (d.records || []).length;
-          offset = d.offset || null;
-        } while (offset);
-        console.log('[airtable] count:', total);
-        return res.status(200).json({ count: total });
+        const todayParam = (req.query && req.query.today) || '';
+        const totalPromise = (async () => {
+          let total = 0;
+          let offset = null;
+          do {
+            let url = `${AT_URL}?pageSize=100&fields[]=Email`;
+            if (offset) url += `&offset=${encodeURIComponent(offset)}`;
+            const r = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!r.ok) throw new Error(`Airtable status ${r.status}`);
+            const d = await r.json();
+            total += (d.records || []).length;
+            offset = d.offset || null;
+          } while (offset);
+          return total;
+        })();
+        let todayPromise = Promise.resolve(null);
+        if (todayParam) {
+          const safeDate = todayParam.replace(/[^0-9-]/g, '').slice(0, 10);
+          const formula = encodeURIComponent(`({Joined Date}="${safeDate}")`);
+          const todayUrl = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
+          todayPromise = fetch(todayUrl, { headers: { 'Authorization': `Bearer ${token}` } })
+            .then(r => r.ok ? r.json() : { records: [] })
+            .then(d => (d.records || []).length)
+            .catch(() => 0);
+        }
+        const [total, todayCount] = await Promise.all([totalPromise, todayPromise]);
+        console.log('[airtable] count:', total, '| today:', todayCount);
+        const result = { count: total };
+        if (todayCount !== null) result.todayCount = todayCount;
+        return res.status(200).json(result);
       } catch (err) {
         console.error('[airtable] count error:', err.message);
         return res.status(500).json({ error: 'Count error' });
