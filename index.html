@@ -1234,7 +1234,6 @@
       justify-content: center;
       position: relative;
       cursor: pointer;
-      transition: opacity 0.2s ease;
     }
 
     .member-count-popup {
@@ -3278,7 +3277,6 @@
       if (!badge || !popup) return;
 
       let dismissTimer = null;
-      let loadingTimer = null;
 
       function updatePopupDisplay() {
         if (totEl) totEl.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
@@ -3291,15 +3289,10 @@
         clearTimeout(dismissTimer);
         dismissTimer = setTimeout(closePopup, 4000);
 
-        // Live refresh — show cached values immediately, update on resolve
-        clearTimeout(loadingTimer);
-        loadingTimer = setTimeout(() => { badge.style.opacity = '0.55'; }, 300);
-
+        // Silent live refresh — no visual feedback on the pill
         fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } })
           .then(r => r.ok ? r.json() : null)
           .then(d => {
-            clearTimeout(loadingTimer);
-            badge.style.removeProperty('opacity');
             if (!d) return;
             if (typeof d.count === 'number' && d.count > 0) {
               _rwuCount = d.count;
@@ -3311,17 +3304,12 @@
               if (todEl) todEl.textContent = '↑ ' + _rwuTodayCount + ' joined today';
             }
           })
-          .catch(() => {
-            clearTimeout(loadingTimer);
-            badge.style.removeProperty('opacity');
-          });
+          .catch(() => {});
       }
 
       function closePopup() {
         popup.classList.remove('open');
         clearTimeout(dismissTimer);
-        clearTimeout(loadingTimer);
-        badge.style.removeProperty('opacity');
       }
 
       badge.addEventListener('click', (e) => {
