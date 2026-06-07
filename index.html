@@ -2138,6 +2138,7 @@
           atId = d.id;
           localStorage.setItem('rwu_record_id', d.id);
           rwuRefCode = refCode;
+          localStorage.setItem('rwu_ref_code', refCode);
           rwuRefCount = 0;
           if (refBy && refBy !== refCode) {
             localStorage.removeItem('rwu_ref');
@@ -2254,6 +2255,7 @@
             rwuRefCode = genRefCode();
             toUpdate['Referral Code'] = rwuRefCode;
           }
+          localStorage.setItem('rwu_ref_code', rwuRefCode);
           atPatch(toUpdate);
           if (!f['Country'] || f['Country'] === 'Unknown') {
             const country = await tryGetCountry();

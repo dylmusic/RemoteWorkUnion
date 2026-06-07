@@ -11,6 +11,12 @@ git add <files> && git commit -m "..." && git push origin main
 ```
 Never stop at a local edit. Always push before reporting the task done.
 
+## Referral share button on blog articles
+All blog articles include `<div id="rwu-ref-share"></div>` (placed just before `<div class="article-body">`) and `<script src="/blog/referral-share.js"></script>` before `</body>`. The script reads `localStorage.rwu_email` and `localStorage.rwu_ref_code` at runtime:
+- Signed in: renders a ghost pill button that copies `https://www.remoteworkunion.com/blog/[slug]?ref=THEIRCODE` to clipboard
+- Signed out: renders a "Join to get your referral link" button that navigates to the homepage
+The `rwu_ref_code` localStorage key is set in `index.html` whenever `rwuRefCode` is assigned (in `atCreate` and `atFetch`). Styles live in `blog/article-styles.css` (`.rwu-ref-share-btn`).
+
 ## Every time you add a new article, do exactly 4 things:
 1. Create `/blog/[slug].html` (use article 46 as the template reference: `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`)
 2. Add an article card to `/blog/index.html` — insert before the previous newest article comment
