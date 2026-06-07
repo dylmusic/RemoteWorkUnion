@@ -1485,21 +1485,45 @@
       transition: background 0.2s, box-shadow 0.2s, color 0.2s;
     }
     .invite-toggle:hover { background: rgba(255,255,255,0.12); color: #fff; box-shadow: 0 0 14px rgba(255,255,255,0.08); }
-    .invite-body {
-      display: none;
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-      background: rgba(255,255,255,0.07);
+    /* Referral modal card */
+    .referral-modal-card {
+      position: relative;
+      background: linear-gradient(160deg, rgba(0,20,60,0.97) 0%, rgba(0,10,40,0.98) 100%);
       border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 4px;
-      gap: 14px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      max-width: 420px;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
-    .invite-body.open { display: flex; }
+    .referral-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+      margin: 0 28px 0 0;
+    }
+    .referral-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      font-family: inherit;
+      line-height: 1;
+      padding: 4px 8px;
+      transition: color 0.15s;
+    }
+    .referral-modal-close:hover { color: #fff; }
     .invite-link-row { display: flex; align-items: center; gap: 8px; }
     .invite-link-pill {
       flex: 1;
@@ -1609,14 +1633,6 @@
     <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span></span>
     <!-- Refer a Friend — shown only when signed in (controlled by refreshDashboard) -->
     <button class="invite-toggle" id="invite-toggle" style="display:none"><span class="invite-orb"></span>Refer a Friend</button>
-    <div class="invite-body" id="invite-body">
-      <div class="invite-link-row">
-        <div class="invite-link-pill" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</div>
-        <button class="invite-copy-btn" id="invite-copy-btn">Copy Link</button>
-      </div>
-      <p class="invite-count" id="invite-count"></p>
-      <p class="invite-coming-soon">Share your link and help others find remote work. You&rsquo;ll be among the first rewarded when our referral program launches.</p>
-    </div>
 
     <div style="height:8px"></div>
 
@@ -1993,6 +2009,20 @@
       <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
       <p class="modal-title" id="modal-title-text">About Remote Work Union</p>
       <p>Remote Work Union is an independent newsletter and resource platform for remote workers. We are not a certified or registered labor union, do not provide collective bargaining services, and are not affiliated with any official union organization. We do not offer legal, financial, or employment advice. Our goal is to help remote and independent workers find opportunities and resources. All content is informational only.</p>
+    </div>
+  </div>
+
+  <!-- Referral modal -->
+  <div class="modal-overlay" id="referral-modal" role="dialog" aria-modal="true" aria-labelledby="referral-modal-title">
+    <div class="referral-modal-card">
+      <button class="referral-modal-close" id="referral-modal-close" aria-label="Close">&times;</button>
+      <p class="referral-modal-title" id="referral-modal-title">Refer a Friend</p>
+      <div class="invite-link-row">
+        <div class="invite-link-pill" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</div>
+        <button class="invite-copy-btn" id="invite-copy-btn">Copy Link</button>
+      </div>
+      <p class="invite-count" id="invite-count"></p>
+      <p class="invite-coming-soon">Share your link and help others find remote work. You&rsquo;ll be among the first rewarded when our referral program launches.</p>
     </div>
   </div>
 
@@ -2477,8 +2507,8 @@
           if (invCountEl) invCountEl.innerHTML = '<span class="invite-stat-num">' + rwuRefCount + '</span><span class="invite-stat-label">referral' + (rwuRefCount === 1 ? '' : 's') + '</span>';
         } else {
           invTgl.style.display = 'none';
-          const invBody = document.getElementById('invite-body');
-          if (invBody) invBody.classList.remove('open');
+          const refModal = document.getElementById('referral-modal');
+          if (refModal) refModal.classList.remove('open');
         }
       }
     }
@@ -3081,7 +3111,11 @@
       if (e.target === disclaimerModal) disclaimerModal.classList.remove('open');
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') disclaimerModal.classList.remove('open');
+      if (e.key === 'Escape') {
+        disclaimerModal.classList.remove('open');
+        const refModal = document.getElementById('referral-modal');
+        if (refModal) refModal.classList.remove('open');
+      }
     });
 
     // ── resume nudge dismiss + mobile tooltip ─────────────────
@@ -3115,45 +3149,51 @@
       });
     }
 
-    // ── invite a friend ───────────────────────────────────────
+    // ── refer a friend modal ──────────────────────────────────
     (function() {
-      const toggle   = document.getElementById('invite-toggle');
-      const body     = document.getElementById('invite-body');
-      const copyBtn  = document.getElementById('invite-copy-btn');
-      const linkEl   = document.getElementById('invite-link-text');
-      const countEl  = document.getElementById('invite-count');
-      if (!toggle || !body || !copyBtn) return;
+      const toggle    = document.getElementById('invite-toggle');
+      const modal     = document.getElementById('referral-modal');
+      const closeBtn  = document.getElementById('referral-modal-close');
+      const copyBtn   = document.getElementById('invite-copy-btn');
+      const linkEl    = document.getElementById('invite-link-text');
+      const countEl   = document.getElementById('invite-count');
+      if (!toggle || !modal) return;
 
-      toggle.addEventListener('click', () => {
-        body.classList.toggle('open');
-        if (body.classList.contains('open') && rwuRefCode) {
-          if (linkEl) linkEl.textContent = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
-          if (countEl) countEl.innerHTML = '<span class="invite-stat-num">' + rwuRefCount + '</span><span class="invite-stat-label">referral' + (rwuRefCount === 1 ? '' : 's') + '</span>';
-        }
-      });
+      function openModal() {
+        if (linkEl) linkEl.textContent = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
+        if (countEl) countEl.innerHTML = '<span class="invite-stat-num">' + rwuRefCount + '</span><span class="invite-stat-label">referral' + (rwuRefCount === 1 ? '' : 's') + '</span>';
+        modal.classList.add('open');
+      }
+      function closeModal() { modal.classList.remove('open'); }
 
-      copyBtn.addEventListener('click', () => {
-        const link = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(link).then(() => {
+      toggle.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          const link = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(link).then(() => {
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => { copyBtn.textContent = 'Copy Link'; }, 2000);
+            }).catch(() => fallbackCopy(link));
+          } else {
+            fallbackCopy(link);
+          }
+          function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (_) {}
+            document.body.removeChild(ta);
             copyBtn.textContent = 'Copied!';
             setTimeout(() => { copyBtn.textContent = 'Copy Link'; }, 2000);
-          }).catch(() => fallbackCopy(link));
-        } else {
-          fallbackCopy(link);
-        }
-        function fallbackCopy(text) {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); } catch (_) {}
-          document.body.removeChild(ta);
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
-        }
-      });
+          }
+        });
+      }
     })();
 
     // ── live member count badge ────────────────────────────────
