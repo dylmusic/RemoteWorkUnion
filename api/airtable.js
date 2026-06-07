@@ -44,16 +44,22 @@ module.exports = async (req, res) => {
         })();
         let todayPromise = Promise.resolve(null);
         if (todayParam) {
-          const formula = encodeURIComponent(`IS_AFTER(CREATED_TIME(), DATEADD(NOW(), -24, 'hours'))`);
-          const todayUrl = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
-          todayPromise = fetch(todayUrl, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then(async r => {
-              const raw = await r.json();
-              console.log('[airtable] today response — records:', (raw.records || []).length, raw.error || '');
-              return r.ok ? raw : { records: [] };
-            })
-            .then(d => (d.records || []).length)
-            .catch(err => { console.error('[airtable] today fetch error:', err.message); return 0; });
+          todayPromise = (async () => {
+            const formula = encodeURIComponent(`IS_AFTER({Last Activity Date}, DATEADD(NOW(), -24, 'hours'))`);
+            let todayTotal = 0;
+            let offset = null;
+            do {
+              let url = `${AT_URL}?filterByFormula=${formula}&fields[]=Email&pageSize=100`;
+              if (offset) url += `&offset=${encodeURIComponent(offset)}`;
+              const r = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+              if (!r.ok) throw new Error(`Airtable today status ${r.status}`);
+              const d = await r.json();
+              todayTotal += (d.records || []).length;
+              offset = d.offset || null;
+            } while (offset);
+            console.log('[airtable] today count (paginated):', todayTotal);
+            return todayTotal;
+          })().catch(err => { console.error('[airtable] today fetch error:', err.message); return 0; });
         }
         const [total, todayCount] = await Promise.all([totalPromise, todayPromise]);
         console.log('[airtable] count:', total, '| today:', todayCount);

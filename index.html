@@ -3257,15 +3257,19 @@
     }
     (async () => {
       try {
+        console.log('[DIAG] page-load count fetch firing');
         const r = await fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } });
-        if (!r.ok) return;
+        console.log('[DIAG] page-load fetch HTTP status:', r.status);
+        if (!r.ok) { console.warn('[DIAG] page-load fetch not ok — bailing, count stays 0'); return; }
         const d = await r.json();
+        console.log('[DIAG] page-load response JSON:', JSON.stringify(d));
         if (typeof d.count === 'number' && d.count > 0) {
           _rwuCount = d.count;
           _rwuUpdateBadge();
         }
         if (typeof d.todayCount === 'number') _rwuTodayCount = d.todayCount;
-      } catch (_) {}
+        console.log('[DIAG] after page-load — _rwuCount:', _rwuCount, '| _rwuTodayCount:', _rwuTodayCount);
+      } catch (e) { console.error('[DIAG] page-load fetch threw:', e); }
     })();
 
     // ── member count popup ─────────────────────────────────────
@@ -3284,15 +3288,18 @@
       }
 
       function openPopup() {
+        console.log('[DIAG] popup opened — showing cached values: total=', _rwuCount, '| today=', _rwuTodayCount);
         updatePopupDisplay();
         popup.classList.add('open');
         clearTimeout(dismissTimer);
         dismissTimer = setTimeout(closePopup, 4000);
 
         // Silent live refresh — no visual feedback on the pill
+        console.log('[DIAG] popup click triggering fresh fetch');
         fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } })
-          .then(r => r.ok ? r.json() : null)
+          .then(r => { console.log('[DIAG] popup fetch HTTP status:', r.status); return r.ok ? r.json() : null; })
           .then(d => {
+            console.log('[DIAG] popup fetch response JSON:', JSON.stringify(d));
             if (!d) return;
             if (typeof d.count === 'number' && d.count > 0) {
               _rwuCount = d.count;
@@ -3304,7 +3311,7 @@
               if (todEl) todEl.textContent = '↑ ' + _rwuTodayCount + ' joined today';
             }
           })
-          .catch(() => {});
+          .catch(e => { console.error('[DIAG] popup fetch threw:', e); });
       }
 
       function closePopup() {
