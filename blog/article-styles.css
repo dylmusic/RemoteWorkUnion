@@ -189,7 +189,7 @@ body {
   height: auto;
   object-fit: contain;
   border-radius: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
   display: block;
 }
 
@@ -348,7 +348,7 @@ body {
 /* ── Referral share button ──────────────────────────────────── */
 #rwu-ref-share {
   text-align: center;
-  margin: 12px 0 12px;
+  margin: 8px 0 12px;
 }
 
 .rwu-ref-share-btn {
