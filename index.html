@@ -1457,64 +1457,89 @@
     .resume-nudge-text--short { display: none; }
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } }
 
-    /* Invite a Friend */
+    /* Refer a Friend */
+    .invite-orb {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
     .invite-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      color: rgba(255,255,255,0.55);
+      gap: 7px;
+      color: rgba(255,255,255,0.65);
       font-size: 0.8rem;
       font-weight: 500;
-      padding: 6px 14px;
+      padding: 6px 16px 6px 10px;
       border-radius: 100px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.12);
-      margin-bottom: 10px;
+      margin-top: 10px;
+      margin-bottom: 4px;
       align-self: center;
       cursor: pointer;
       font-family: inherit;
       transition: background 0.2s, box-shadow 0.2s, color 0.2s;
     }
-    .invite-toggle:hover { background: rgba(255,255,255,0.15); color: #fff; box-shadow: 0 0 14px rgba(255,255,255,0.1); }
+    .invite-toggle:hover { background: rgba(255,255,255,0.12); color: #fff; box-shadow: 0 0 14px rgba(255,255,255,0.08); }
     .invite-body {
       display: none;
       flex-direction: column;
       align-items: stretch;
       width: 100%;
       background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 10px;
-      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 4px;
+      gap: 14px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .invite-body.open { display: flex; }
     .invite-link-row { display: flex; align-items: center; gap: 8px; }
-    .invite-link-text {
+    .invite-link-pill {
       flex: 1;
+      min-width: 0;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
       font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      word-break: break-all;
+      font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+      color: rgba(255,255,255,0.75);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.02em;
       line-height: 1.4;
+      cursor: default;
+      user-select: all;
+      -webkit-user-select: all;
     }
     .invite-copy-btn {
       flex-shrink: 0;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 100px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: #10B981;
+      border: none;
       color: #fff;
       font-family: inherit;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.2s;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
     }
-    .invite-copy-btn:hover { background: rgba(255,255,255,0.22); }
-    .invite-count { font-size: 13px; color: rgba(255,255,255,0.75); }
-    .invite-coming-soon { font-size: 12px; color: rgba(255,255,255,0.45); }
+    .invite-copy-btn:hover { background: #059669; box-shadow: 0 2px 8px rgba(16,185,129,0.35); }
+    .invite-copy-btn:active { transform: scale(0.97); }
+    .invite-stat-num { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+    .invite-stat-label { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 4px; }
+    .invite-count { line-height: 1; }
+    .invite-coming-soon { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.55; }
   </style>
   <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
@@ -1582,18 +1607,18 @@
     <button class="apply-now-link" id="apply-now">Apply For Jobs Now &rarr;</button>
     <a href="/work" class="learn-more-link">Learn More &rarr;</a>
     <span class="member-count-badge" id="member-count-badge"><span class="member-count-dot"></span><span id="member-count-text">Join Remote Work Union</span></span>
-    <!-- Invite a Friend — shown only when signed in (controlled by refreshDashboard) -->
-    <button class="invite-toggle" id="invite-toggle" style="display:none">🔗 Invite a Friend</button>
+    <!-- Refer a Friend — shown only when signed in (controlled by refreshDashboard) -->
+    <button class="invite-toggle" id="invite-toggle" style="display:none"><span class="invite-orb"></span>Refer a Friend</button>
     <div class="invite-body" id="invite-body">
       <div class="invite-link-row">
-        <span class="invite-link-text" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</span>
-        <button class="invite-copy-btn" id="invite-copy-btn">Copy</button>
+        <div class="invite-link-pill" id="invite-link-text">https://www.remoteworkunion.com/?ref=...</div>
+        <button class="invite-copy-btn" id="invite-copy-btn">Copy Link</button>
       </div>
-      <p class="invite-count" id="invite-count">0 friends joined with your link</p>
-      <p class="invite-coming-soon">Rewards coming soon &mdash; share your link to lock in your spot 🔒</p>
+      <p class="invite-count" id="invite-count"></p>
+      <p class="invite-coming-soon">Share your link and help others find remote work. You&rsquo;ll be among the first rewarded when our referral program launches.</p>
     </div>
 
-    <div class="spacer-sm"></div>
+    <div style="height:8px"></div>
 
     <!-- 6. Email form -->
     <div class="form-wrap">
@@ -2449,7 +2474,7 @@
         if (email && rwuRefCode) {
           invTgl.style.removeProperty('display');
           if (invLinkEl) invLinkEl.textContent = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
-          if (invCountEl) invCountEl.textContent = rwuRefCount + ' friend' + (rwuRefCount === 1 ? '' : 's') + ' joined with your link';
+          if (invCountEl) invCountEl.innerHTML = '<span class="invite-stat-num">' + rwuRefCount + '</span><span class="invite-stat-label">referral' + (rwuRefCount === 1 ? '' : 's') + '</span>';
         } else {
           invTgl.style.display = 'none';
           const invBody = document.getElementById('invite-body');
@@ -3103,7 +3128,7 @@
         body.classList.toggle('open');
         if (body.classList.contains('open') && rwuRefCode) {
           if (linkEl) linkEl.textContent = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
-          if (countEl) countEl.textContent = rwuRefCount + ' friend' + (rwuRefCount === 1 ? '' : 's') + ' joined with your link';
+          if (countEl) countEl.innerHTML = '<span class="invite-stat-num">' + rwuRefCount + '</span><span class="invite-stat-label">referral' + (rwuRefCount === 1 ? '' : 's') + '</span>';
         }
       });
 
@@ -3112,7 +3137,7 @@
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(link).then(() => {
             copyBtn.textContent = 'Copied!';
-            setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+            setTimeout(() => { copyBtn.textContent = 'Copy Link'; }, 2000);
           }).catch(() => fallbackCopy(link));
         } else {
           fallbackCopy(link);
