@@ -202,6 +202,37 @@ module.exports = async (req, res) => {
       return res.status(atRes.status).json(data);
     }
 
+    // ── INCREMENT REFERRAL ──────────────────────────────────────────────────
+    if (action === 'incrementReferral') {
+      const { referralCode } = body;
+      if (!referralCode) {
+        console.error('[airtable] incrementReferral called without referralCode');
+        return res.status(400).json({ error: 'Missing referralCode' });
+      }
+      const sanitized = referralCode.replace(/"/g, '');
+      const formula = encodeURIComponent(`({Referral Code}="${sanitized}")`);
+      const searchUrl = `${AT_URL}?filterByFormula=${formula}&maxRecords=1`;
+      const searchRes = await fetch(searchUrl, { headers: { 'Authorization': `Bearer ${token}` } });
+      const searchData = await searchRes.json();
+      console.log('[airtable] incrementReferral search status:', searchRes.status, '| records:', (searchData.records || []).length);
+      const record = searchData.records && searchData.records[0];
+      if (!record) {
+        console.log('[airtable] incrementReferral: no record found for code:', sanitized);
+        return res.status(200).json({ ok: false, reason: 'not_found' });
+      }
+      const currentCount = (record.fields && record.fields['Referral Count']) || 0;
+      const patchUrl = `${AT_URL}/${record.id}`;
+      const atRes = await fetch(patchUrl, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: { 'Referral Count': Number(currentCount) + 1 } }),
+      });
+      const data = await atRes.json();
+      console.log('[airtable] incrementReferral patch status:', atRes.status);
+      if (!atRes.ok) console.error('[airtable] incrementReferral patch failed:', JSON.stringify(data));
+      return res.status(atRes.status).json(data);
+    }
+
     console.error('[airtable] unknown action:', action);
     return res.status(400).json({ error: 'Invalid action' });
 

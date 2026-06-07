@@ -223,6 +223,26 @@ Inline style classes to include in every article:
 | 109 | data-entry-remote-jobs-vs-ai-data-annotation-jobs | Data Entry Remote Jobs vs AI Data Annotation Jobs: What's the Difference? |
 | 110 | upwork-usajobs-robert-half-job-boards-remote-ai-work | Upwork, USAJobs, Robert Half, and Job Boards: Where Remote AI Work Actually Appears |
 
+## Referral System
+
+### Airtable fields (already exist)
+- `Referral Code` (text) — unique 8-char uppercase alphanumeric, generated on signup or backfilled on first dashboard load for existing users
+- `Referred By` (text) — referral code of the person who referred this user; set on create if `?ref=` param was in the URL
+- `Referral Count` (number) — incremented by 1 each time someone signs up via this user's link
+
+### ?ref= param flow
+- On any page load, `?ref=VALUE` is captured into `localStorage.rwu_ref`
+- On signup (`atCreate`), if `rwu_ref` is set and differs from the new user's own code, `Referred By` is stored and `rwu_ref` is cleared; the referrer's `Referral Count` is incremented server-side via `incrementReferral`
+- Self-referral is blocked (`refBy !== refCode`)
+
+### API action: `incrementReferral`
+POST to `/api/airtable` with `{ action: 'incrementReferral', referralCode: '<code>' }`.  
+Searches for the record with matching `Referral Code`, then patches `Referral Count` += 1. No `Last Activity Date` update (this fires for the referrer, not the current user).
+
+### Dashboard invite UI
+- "Invite a Friend" ghost-pill button appears in the dashboard (`hs-progress`) below the "View Latest Opportunities on X" button, only when the user is signed in and has a referral code
+- Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
+
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
 - Outlier AI → `/blog/how-outlier-ai-works-remote-ai-training-jobs-pay-application-tips`
