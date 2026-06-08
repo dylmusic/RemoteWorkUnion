@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
       console.error('[airtable] GET called without email param');
       return res.status(400).json({ error: 'Missing email' });
     }
-    const sanitized = emailParam.replace(/"/g, '');
+    const sanitized = emailParam.toLowerCase().replace(/"/g, '');
     const formula = encodeURIComponent(`({Email}="${sanitized}")`);
     const url = `${AT_URL}?filterByFormula=${formula}&maxRecords=1`;
     console.log('[airtable] GET search URL:', url);
@@ -110,7 +110,7 @@ module.exports = async (req, res) => {
         console.error('[airtable] search called without email');
         return res.status(400).json({ error: 'Missing email' });
       }
-      const sanitized = email.replace(/"/g, '');
+      const sanitized = email.toLowerCase().replace(/"/g, '');
       const formula = encodeURIComponent(`({Email}="${sanitized}")`);
       const url = `${AT_URL}?filterByFormula=${formula}&maxRecords=1`;
       console.log('[airtable] search URL:', url);

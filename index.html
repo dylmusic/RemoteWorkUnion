@@ -2121,7 +2121,7 @@
       const refBy = localStorage.getItem('rwu_ref') || '';
       try {
         const createFields = {
-          'Email': email,
+          'Email': email.toLowerCase(),
           'Joined Date': today(),
           'Current Step': 1,
           'Country': country,
@@ -2153,6 +2153,7 @@
     }
 
     async function atCreateOrRestore(email) {
+      email = email.toLowerCase();
       await atFetch(email);
       if (!atId) await atCreate(email);
     }
@@ -2227,6 +2228,7 @@
     }
 
     async function atFetch(email) {
+      email = email.toLowerCase();
       try {
         const r = await fetch('/api/airtable', {
           method: 'POST',
@@ -2834,7 +2836,7 @@
     // ── form submit ───────────────────────────────────────────
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const val = input.value.trim();
+      const val = input.value.trim().toLowerCase();
       if (!val || !val.includes('@')) return;
 
       const btn = form.querySelector('.join-btn');
@@ -3065,7 +3067,7 @@
     });
 
     progEmailSubmit.addEventListener('click', async () => {
-      const val = progEmailInput.value.trim();
+      const val = progEmailInput.value.trim().toLowerCase();
       if (!val || !val.includes('@')) return;
       progEmailSubmit.textContent = '...';
       progEmailSubmit.disabled = true;
