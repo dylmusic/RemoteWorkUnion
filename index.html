@@ -2139,11 +2139,13 @@
       return s.replace(/[^a-z0-9]/gi, '').slice(0, 8).toUpperCase();
     }
 
+    const _ISO_NAMES = {'AF':'Afghanistan','AL':'Albania','DZ':'Algeria','AO':'Angola','AR':'Argentina','AU':'Australia','AT':'Austria','AZ':'Azerbaijan','BD':'Bangladesh','BY':'Belarus','BE':'Belgium','BJ':'Benin','BO':'Bolivia','BR':'Brazil','BF':'Burkina Faso','BI':'Burundi','KH':'Cambodia','CM':'Cameroon','CA':'Canada','CV':'Cape Verde','CF':'Central African Republic','TD':'Chad','CL':'Chile','CN':'China','CO':'Colombia','KM':'Comoros','CD':'Democratic Republic of Congo','CG':'Republic of Congo','HR':'Croatia','CU':'Cuba','CZ':'Czech Republic','DK':'Denmark','DJ':'Djibouti','DO':'Dominican Republic','EC':'Ecuador','EG':'Egypt','GQ':'Equatorial Guinea','ER':'Eritrea','ET':'Ethiopia','FI':'Finland','FR':'France','GA':'Gabon','GM':'Gambia','GE':'Georgia','DE':'Germany','GH':'Ghana','GR':'Greece','GT':'Guatemala','GN':'Guinea','GW':'Guinea-Bissau','HN':'Honduras','HU':'Hungary','IN':'India','ID':'Indonesia','IE':'Ireland','IL':'Israel','IT':'Italy','CI':'Ivory Coast','JP':'Japan','JO':'Jordan','KZ':'Kazakhstan','KE':'Kenya','KW':'Kuwait','LV':'Latvia','LB':'Lebanon','LS':'Lesotho','LR':'Liberia','LY':'Libya','LT':'Lithuania','MG':'Madagascar','MW':'Malawi','MY':'Malaysia','ML':'Mali','MR':'Mauritania','MU':'Mauritius','MX':'Mexico','MA':'Morocco','MZ':'Mozambique','NA':'Namibia','NP':'Nepal','NL':'Netherlands','NZ':'New Zealand','NE':'Niger','NG':'Nigeria','NO':'Norway','PK':'Pakistan','PE':'Peru','PH':'Philippines','PL':'Poland','PT':'Portugal','RO':'Romania','RU':'Russia','RW':'Rwanda','SA':'Saudi Arabia','SN':'Senegal','SL':'Sierra Leone','SO':'Somalia','ZA':'South Africa','SS':'South Sudan','ES':'Spain','LK':'Sri Lanka','SD':'Sudan','SZ':'Eswatini','SE':'Sweden','CH':'Switzerland','TZ':'Tanzania','TH':'Thailand','TG':'Togo','TN':'Tunisia','TR':'Turkey','UG':'Uganda','UA':'Ukraine','AE':'United Arab Emirates','GB':'United Kingdom','US':'United States','UZ':'Uzbekistan','VE':'Venezuela','VN':'Vietnam','ZM':'Zambia','ZW':'Zimbabwe'};
+
     async function tryGetCountry() {
       const attempts = [
         { url: 'https://ipwho.is/',       extract: d => (d && d.success !== false && d.country) ? d.country : null },
         { url: 'https://ipapi.co/json/',  extract: d => (d && !d.error && d.country_name) ? d.country_name : null },
-        { url: 'https://api.country.is/', extract: d => (d && d.country) ? d.country : null },
+        { url: 'https://api.country.is/', extract: d => (d && d.country && _ISO_NAMES[d.country]) ? _ISO_NAMES[d.country] : null },
       ];
       for (const { url, extract } of attempts) {
         try {
@@ -2167,7 +2169,20 @@
     const DASHBOARD_FLAGS = [
       {
         id: 'mercor-africa-jun8',
-        countries: ['nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','cameroon','zimbabwe','zambia','south africa','ng','ke','et','gh','ug','tz','rw','cm','zw','zm','za','bi'],
+        countries: [
+          'nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','cameroon',
+          'zimbabwe','zambia','south africa','south sudan','angola','senegal','ivory coast',
+          'mozambique','madagascar','malawi','somalia','sudan','egypt','morocco','algeria',
+          'tunisia','libya','sierra leone','liberia','togo','benin','niger','mali',
+          'burkina faso','guinea','guinea-bissau','gambia','mauritania','mauritius',
+          'seychelles','comoros','djibouti','eritrea','central african republic','chad',
+          'democratic republic of congo','republic of congo','gabon','equatorial guinea',
+          'cape verde','namibia','botswana','lesotho','eswatini','swaziland','burundi',
+          'ng','ke','et','gh','ug','tz','rw','cm','zw','zm','za','ss','ao','sn','ci',
+          'mz','mg','mw','so','sd','eg','ma','dz','tn','ly','sl','lr','tg','bj','ne',
+          'ml','bf','gn','gw','gm','mr','mu','sc','km','dj','er','cf','td','cd','cg',
+          'ga','gq','cv','na','bw','ls','sz','bi'
+        ],
         message: 'Nigeria & Africa: Earn $10-$20/hr — Voice Researcher',
         linkText: 'Apply Now →',
         color: 'orange',
