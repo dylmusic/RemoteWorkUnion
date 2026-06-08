@@ -1451,22 +1451,38 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
-    .flag-interstitial-cta {
-      display: block;
-      margin-top: 20px;
-      padding: 14px 28px;
-      border-radius: 100px;
-      background: #16a34a;
-      color: #fff;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.2s, transform 0.15s;
+    .africa-flag-slide {
+      list-style: none;
+      background: #fff7ed;
+      border: 1.5px solid #f97316;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 6px 0 8px;
     }
-    .flag-interstitial-cta:hover { background: #15803d; transform: scale(1.02); color: #fff; }
-    .flag-interstitial-cta:active { transform: scale(1); }
+    .africa-flag-slide-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #c2410c;
+      margin: 0 0 6px;
+    }
+    .africa-flag-slide-body {
+      font-size: 13px;
+      color: #7c2d12;
+      margin: 0 0 12px;
+      line-height: 1.5;
+    }
+    .africa-flag-slide-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: #ea580c;
+      color: #fff;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .africa-flag-slide-btn:hover { background: #c2410c; color: #fff; }
     /* Blog highlight cards */
     .blog-highlight {
       width: 100%;
@@ -1914,10 +1930,9 @@
             </div>
           </div>
           <!-- Active flag banner — content driven by Airtable Flags table -->
-          <div class="resume-nudge" id="active-flag-banner" role="alert">
+          <div class="resume-nudge" id="active-flag-banner" role="alert" style="cursor:pointer">
             <span class="resume-nudge-text" id="active-flag-text"></span>
             <div class="resume-nudge-actions">
-              <a class="resume-nudge-btn" id="active-flag-cta" href="#" target="_blank" rel="noopener" style="display:none"></a>
               <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
@@ -2095,16 +2110,6 @@
     </div>
   </div>
 
-  <!-- Flag interstitial modal -->
-  <div class="modal-overlay" id="flag-interstitial-modal" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <button class="modal-close" id="flag-interstitial-close" aria-label="Close">&times;</button>
-      <p class="modal-title" id="flag-interstitial-title"></p>
-      <p id="flag-interstitial-body"></p>
-      <a class="flag-interstitial-cta" id="flag-interstitial-cta" href="https://mercor.com" target="_blank" rel="noopener"></a>
-    </div>
-  </div>
-
   <!-- Referral modal -->
   <div class="modal-overlay" id="referral-modal" role="dialog" aria-modal="true" aria-labelledby="referral-modal-title">
     <div class="referral-modal-card">
@@ -2184,14 +2189,7 @@
           'ga','gq','cv','na','bw','ls','sz','bi'
         ],
         message: 'Nigeria & Africa: Earn $10-$20/hr — Voice Researcher',
-        linkText: 'Apply Now →',
-        color: 'orange',
-        interstitial: {
-          title: 'Apply on Mercor',
-          body: 'After signing up or logging in, search “Africa” in the opportunities search bar to find the Voice AI Research role.',
-          ctaText: 'Go to Mercor →',
-          ctaUrl: 'https://mercor.com'
-        }
+        color: 'orange'
       }
     ];
 
@@ -2207,15 +2205,6 @@
       if (!match) { _activeFlagMatch = null; banner.classList.remove('visible'); return; }
       _activeFlagMatch = match;
       document.getElementById('active-flag-text').textContent = match.message;
-      const ctaBtn = document.getElementById('active-flag-cta');
-      if (ctaBtn) {
-        if (match.linkText || match.interstitial) {
-          ctaBtn.textContent = match.linkText || 'Learn More →';
-          ctaBtn.style.display = '';
-        } else {
-          ctaBtn.style.display = 'none';
-        }
-      }
       banner.classList.remove('flag-blue', 'flag-green');
       if (match.color === 'blue') banner.classList.add('flag-blue');
       else if (match.color === 'green') banner.classList.add('flag-green');
@@ -3320,8 +3309,6 @@
         disclaimerModal.classList.remove('open');
         const refModal = document.getElementById('referral-modal');
         if (refModal) refModal.classList.remove('open');
-        const flagIM = document.getElementById('flag-interstitial-modal');
-        if (flagIM) flagIM.classList.remove('open');
       }
     });
 
@@ -3356,13 +3343,9 @@
       });
     }
 
-    // ── active flag banner dismiss + interstitial ────────────
+    // ── active flag banner dismiss + click ────────────
     const flagBanner = document.getElementById('active-flag-banner');
     const flagDismissBtn = document.getElementById('active-flag-dismiss');
-    const flagCtaBtn = document.getElementById('active-flag-cta');
-    const flagInterstitialModal = document.getElementById('flag-interstitial-modal');
-    const flagInterstitialClose = document.getElementById('flag-interstitial-close');
-    const flagInterstitialCta = document.getElementById('flag-interstitial-cta');
 
     if (flagBanner && flagDismissBtn) {
       flagDismissBtn.addEventListener('click', (e) => {
@@ -3373,34 +3356,23 @@
       });
     }
 
-    if (flagCtaBtn && flagInterstitialModal) {
-      flagCtaBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const match = _activeFlagMatch;
-        if (match && match.interstitial) {
-          const it = match.interstitial;
-          document.getElementById('flag-interstitial-title').textContent = it.title;
-          document.getElementById('flag-interstitial-body').textContent = it.body;
-          flagInterstitialCta.textContent = it.ctaText || 'Go →';
-          flagInterstitialCta.href = it.ctaUrl || '#';
-          flagInterstitialModal.classList.add('open');
-        } else if (match && match.link) {
-          window.open(match.link, '_blank', 'noopener');
+    if (flagBanner) {
+      flagBanner.addEventListener('click', () => {
+        const progMc = document.getElementById('prog-mc');
+        if (!progMc) return;
+        const applied = getApplied();
+        if (!applied.includes('mercor') && !document.getElementById('africa-flag-slide')) {
+          const slide = document.createElement('li');
+          slide.className = 'africa-flag-slide';
+          slide.id = 'africa-flag-slide';
+          slide.innerHTML =
+            '<div class="africa-flag-slide-title">Now Hiring on Mercor</div>' +
+            '<div class="africa-flag-slide-body">We have a referral on Mercor. Sign up and search “Africa” to find the Voice AI Research role — $10–$20/hr.</div>' +
+            '<a class="africa-flag-slide-btn" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor →</a>';
+          progMc.insertAdjacentElement('beforebegin', slide);
         }
-      });
-    }
-
-    if (flagInterstitialClose && flagInterstitialModal) {
-      flagInterstitialClose.addEventListener('click', () => flagInterstitialModal.classList.remove('open'));
-      flagInterstitialModal.addEventListener('click', (e) => {
-        if (e.target === flagInterstitialModal) flagInterstitialModal.classList.remove('open');
-      });
-    }
-
-    if (flagInterstitialCta && flagInterstitialModal) {
-      flagInterstitialCta.addEventListener('click', () => {
-        flagInterstitialModal.classList.remove('open');
+        const scrollTarget = document.getElementById('africa-flag-slide') || progMc;
+        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
     }
 
