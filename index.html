@@ -1451,6 +1451,22 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
+    .flag-interstitial-cta {
+      display: block;
+      margin-top: 20px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      background: #16a34a;
+      color: #fff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .flag-interstitial-cta:hover { background: #15803d; transform: scale(1.02); color: #fff; }
+    .flag-interstitial-cta:active { transform: scale(1); }
     /* Blog highlight cards */
     .blog-highlight {
       width: 100%;
@@ -2079,6 +2095,16 @@
     </div>
   </div>
 
+  <!-- Flag interstitial modal -->
+  <div class="modal-overlay" id="flag-interstitial-modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" id="flag-interstitial-close" aria-label="Close">&times;</button>
+      <p class="modal-title" id="flag-interstitial-title"></p>
+      <p id="flag-interstitial-body"></p>
+      <a class="flag-interstitial-cta" id="flag-interstitial-cta" href="https://mercor.com" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+
   <!-- Referral modal -->
   <div class="modal-overlay" id="referral-modal" role="dialog" aria-modal="true" aria-labelledby="referral-modal-title">
     <div class="referral-modal-card">
@@ -2136,14 +2162,21 @@
       return 'Unknown';
     }
 
+    let _activeFlagMatch = null;
+
     const DASHBOARD_FLAGS = [
       {
         id: 'mercor-africa-jun8',
         countries: ['nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','cameroon','zimbabwe','zambia','south africa','ng','ke','et','gh','ug','tz','rw','cm','zw','zm','za','bi'],
-        message: 'New opportunity: Voice AI Research — $10-$20/hr for Nigeria & East Africa. 128 hired this month.',
-        link: 'https://www.mercor.com/opportunities',
-        linkText: 'Apply on Mercor →',
-        color: 'orange'
+        message: 'Nigeria & Africa: Earn $10-$20/hr — Voice Researcher',
+        linkText: 'Apply Now →',
+        color: 'orange',
+        interstitial: {
+          title: 'Apply on Mercor',
+          body: 'After signing up or logging in, search “Africa” in the opportunities search bar to find the Voice AI Research role.',
+          ctaText: 'Go to Mercor →',
+          ctaUrl: 'https://mercor.com'
+        }
       }
     ];
 
@@ -2156,12 +2189,12 @@
         if (localStorage.getItem('rwu_flag_dismissed_' + f.id)) return false;
         return f.countries.includes(uc);
       });
-      if (!match) { banner.classList.remove('visible'); return; }
+      if (!match) { _activeFlagMatch = null; banner.classList.remove('visible'); return; }
+      _activeFlagMatch = match;
       document.getElementById('active-flag-text').textContent = match.message;
       const ctaBtn = document.getElementById('active-flag-cta');
       if (ctaBtn) {
-        if (match.link) {
-          ctaBtn.href = match.link;
+        if (match.linkText || match.interstitial) {
           ctaBtn.textContent = match.linkText || 'Learn More →';
           ctaBtn.style.display = '';
         } else {
@@ -3272,6 +3305,8 @@
         disclaimerModal.classList.remove('open');
         const refModal = document.getElementById('referral-modal');
         if (refModal) refModal.classList.remove('open');
+        const flagIM = document.getElementById('flag-interstitial-modal');
+        if (flagIM) flagIM.classList.remove('open');
       }
     });
 
@@ -3306,15 +3341,51 @@
       });
     }
 
-    // ── active flag banner dismiss ────────────────────────────
+    // ── active flag banner dismiss + interstitial ────────────
     const flagBanner = document.getElementById('active-flag-banner');
     const flagDismissBtn = document.getElementById('active-flag-dismiss');
+    const flagCtaBtn = document.getElementById('active-flag-cta');
+    const flagInterstitialModal = document.getElementById('flag-interstitial-modal');
+    const flagInterstitialClose = document.getElementById('flag-interstitial-close');
+    const flagInterstitialCta = document.getElementById('flag-interstitial-cta');
+
     if (flagBanner && flagDismissBtn) {
       flagDismissBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const flagId = flagBanner.dataset.flagId;
         if (flagId) localStorage.setItem('rwu_flag_dismissed_' + flagId, '1');
         flagBanner.classList.remove('visible');
+      });
+    }
+
+    if (flagCtaBtn && flagInterstitialModal) {
+      flagCtaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const match = _activeFlagMatch;
+        if (match && match.interstitial) {
+          const it = match.interstitial;
+          document.getElementById('flag-interstitial-title').textContent = it.title;
+          document.getElementById('flag-interstitial-body').textContent = it.body;
+          flagInterstitialCta.textContent = it.ctaText || 'Go →';
+          flagInterstitialCta.href = it.ctaUrl || '#';
+          flagInterstitialModal.classList.add('open');
+        } else if (match && match.link) {
+          window.open(match.link, '_blank', 'noopener');
+        }
+      });
+    }
+
+    if (flagInterstitialClose && flagInterstitialModal) {
+      flagInterstitialClose.addEventListener('click', () => flagInterstitialModal.classList.remove('open'));
+      flagInterstitialModal.addEventListener('click', (e) => {
+        if (e.target === flagInterstitialModal) flagInterstitialModal.classList.remove('open');
+      });
+    }
+
+    if (flagInterstitialCta && flagInterstitialModal) {
+      flagInterstitialCta.addEventListener('click', () => {
+        flagInterstitialModal.classList.remove('open');
       });
     }
 
