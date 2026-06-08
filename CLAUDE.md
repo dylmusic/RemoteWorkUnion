@@ -249,6 +249,13 @@ Searches for the record with matching `Referral Code`, then patches `Referral Co
 - "Invite a Friend" ghost-pill button appears in the dashboard (`hs-progress`) below the "View Latest Opportunities on X" button, only when the user is signed in and has a referral code
 - Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
 
+## Active Flag (targeted push banner)
+- Airtable field `Active Flag` (single line text) on the Newsletter Subscribers table
+- Set text in Airtable to show a targeted orange push banner to users whose `Country` is an African country
+- Clear the field to remove the flag for that user
+- Banner shows on dashboard load; dismiss is session-only (reappears on next visit if field is still set)
+- Country matching uses a broad African country name/code list defined in `index.html` (`AFRICAN_COUNTRIES` set)
+
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
 - Outlier AI → `/blog/how-outlier-ai-works-remote-ai-training-jobs-pay-application-tips`

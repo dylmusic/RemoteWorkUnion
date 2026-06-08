@@ -1895,6 +1895,13 @@
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
+          <!-- Active flag banner — targeted push for African country users, content set in Airtable -->
+          <div class="resume-nudge" id="active-flag-banner" role="alert">
+            <span class="resume-nudge-text" id="active-flag-text"></span>
+            <div class="resume-nudge-actions">
+              <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
           <p class="prog-header">🏆 Your Progress</p>
           <ul class="prog-list">
             <li class="prog-item clickable prog-item-col" id="prog-newsletter">
@@ -2089,6 +2096,8 @@
     let atId = localStorage.getItem('rwu_record_id') || null;
     let rwuRefCode = '';
     let rwuRefCount = 0;
+    let rwuActiveFlag = '';
+    let rwuUserCountry = '';
 
     // Capture ?ref= param on landing and persist it
     (function() {
@@ -2123,6 +2132,46 @@
         } catch (_) {}
       }
       return 'Unknown';
+    }
+
+    const AFRICAN_COUNTRIES = new Set([
+      'nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','south africa',
+      'zimbabwe','zambia','cameroon','senegal','ivory coast',"cote d'ivoire",'cote divoire',
+      'mozambique','madagascar','angola','malawi','somalia','sudan','south sudan','egypt',
+      'morocco','algeria','tunisia','libya','burundi','sierra leone','liberia','togo',
+      'benin','niger','mali','burkina faso','guinea','guinea-bissau','gambia','mauritania',
+      'mauritius','seychelles','comoros','djibouti','eritrea','central african republic',
+      'chad','democratic republic of congo','dr congo','republic of congo','gabon',
+      'equatorial guinea','sao tome and principe','cape verde','namibia','botswana',
+      'lesotho','swaziland','eswatini',
+      'ng','ke','et','gh','ug','tz','rw','za','zw','zm','cm','sn','ci','mz','mg',
+      'ao','mw','so','sd','ss','eg','ma','dz','tn','ly','bi','sl','lr','tg','bj',
+      'ne','ml','bf','gn','gw','gm','mr','mu','sc','km','dj','er','cf','td','cd',
+      'cg','ga','gq','st','cv','na','bw','ls','sz'
+    ]);
+
+    function _flagHash(text) {
+      let h = 0;
+      for (let i = 0; i < text.length; i++) h = (Math.imul(31, h) + text.charCodeAt(i)) | 0;
+      return Math.abs(h).toString(36);
+    }
+
+    function showActiveFlagIfNeeded() {
+      const banner = document.getElementById('active-flag-banner');
+      if (!banner) return;
+      if (!rwuActiveFlag || !rwuUserCountry || rwuUserCountry === 'Unknown') {
+        banner.classList.remove('visible'); return;
+      }
+      if (!AFRICAN_COUNTRIES.has(rwuUserCountry.toLowerCase().trim())) {
+        banner.classList.remove('visible'); return;
+      }
+      const key = 'rwu_flag_dismissed_' + _flagHash(rwuActiveFlag);
+      if (sessionStorage.getItem(key)) {
+        banner.classList.remove('visible'); return;
+      }
+      document.getElementById('active-flag-text').textContent = rwuActiveFlag;
+      banner.dataset.flagKey = key;
+      banner.classList.add('visible');
     }
 
     function correctEmailTypo(email) {
@@ -2288,6 +2337,8 @@
             toUpdate['Referral Code'] = rwuRefCode;
           }
           localStorage.setItem('rwu_ref_code', rwuRefCode);
+          rwuActiveFlag = f['Active Flag'] || '';
+          rwuUserCountry = f['Country'] || '';
           atPatch(toUpdate);
           if (!f['Country'] || f['Country'] === 'Unknown') {
             const country = await tryGetCountry();
@@ -2521,6 +2572,7 @@
           recEl.classList.remove('visible');
         }
       }
+      showActiveFlagIfNeeded();
     }
 
     function refreshDashboard() {
@@ -3245,6 +3297,17 @@
           gtag('event', 'resume_nudge_click');
           window.location.href = '/blog/remote-work-resume-guide';
         }
+      });
+    }
+
+    // ── active flag banner dismiss ────────────────────────────
+    const flagBanner = document.getElementById('active-flag-banner');
+    const flagDismissBtn = document.getElementById('active-flag-dismiss');
+    if (flagBanner && flagDismissBtn) {
+      flagDismissBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (flagBanner.dataset.flagKey) sessionStorage.setItem(flagBanner.dataset.flagKey, '1');
+        flagBanner.classList.remove('visible');
       });
     }
 
