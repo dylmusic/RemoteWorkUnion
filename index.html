@@ -891,6 +891,9 @@
     #africa-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
     #mc-apply.africa-mode #mc-main { display: none; }
     #mc-apply.africa-mode #africa-intro { display: flex; }
+    #english-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
+    #mc-apply.english-mode #mc-main { display: none; }
+    #mc-apply.english-mode #english-intro { display: flex; }
 
     /* RentAHuman view */
     #rh-apply {
@@ -1791,6 +1794,22 @@
         <div id="mc-apply">
           <button class="dash-btn" id="mc-dash-btn">⊞ Dashboard</button>
           <div class="skipped-banner" id="mc-skipped-banner">⚠ You skipped this opportunity</div>
+          <!-- English speakers special intro — shown when English flag CTA triggers this card -->
+          <div id="english-intro">
+            <div class="step-dots" aria-hidden="true">
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot current"></span>
+            </div>
+            <p class="hs-tag">Special Opportunity</p>
+            <p class="hs-headline">Now Hiring on Mercor</p>
+            <ol class="card-process-steps" style="margin:12px 0 4px;width:100%;max-width:320px;">
+              <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
+              <li><span class="step-num">2</span><span>Search &ldquo;Generalist&rdquo; on Mercor</span></li>
+              <li><span class="step-num">3</span><span>Apply for &ldquo;Generalist Expert&rdquo;</span></li>
+            </ol>
+            <button class="hs-cta" id="english-intro-cta">Go to Mercor &rarr;</button>
+          </div>
           <!-- Africa special intro — shown when flag CTA triggers this card -->
           <div id="africa-intro">
             <div class="step-dots" aria-hidden="true">
@@ -2181,6 +2200,15 @@
           'ga','gq','cv','na','bw','ls','sz','bi'
         ],
         message: 'Nigeria & Africa: Earn $10-$20/hr',
+        color: 'orange'
+      },
+      {
+        id: 'mercor-english-jun8',
+        countries: [
+          'united states','united kingdom','canada','australia','ireland','new zealand',
+          'us','gb','ca','au','ie','nz'
+        ],
+        message: 'Native English Speakers — Earn $70/hr',
         color: 'orange'
       }
     ];
@@ -2901,6 +2929,7 @@
 
     function goToDashboard() {
       mcApply.classList.remove('africa-mode');
+      mcApply.classList.remove('english-mode');
       fromDash = false;
       updateDashBtns();
       progBarFill.style.width = '0%';
@@ -3363,23 +3392,42 @@
       });
     }
 
+    const englishIntroCta = document.getElementById('english-intro-cta');
+    if (englishIntroCta) {
+      englishIntroCta.addEventListener('click', () => {
+        mcApply.classList.remove('english-mode');
+      });
+    }
+
     if (flagBanner) {
       const openAfricaSlide = () => {
         mcApply.classList.add('africa-mode');
         goToCard(mcApply);
       };
+      const openEnglishSlide = () => {
+        mcApply.classList.add('english-mode');
+        goToCard(mcApply);
+      };
+      const openActiveFlag = () => {
+        if (!_activeFlagMatch) return;
+        if (_activeFlagMatch.id === 'mercor-africa-jun8') {
+          trackResourceClick('Africa Voice Research Flag');
+          openAfricaSlide();
+        } else if (_activeFlagMatch.id === 'mercor-english-jun8') {
+          trackResourceClick('English Generalist Flag — ' + new Date().toISOString());
+          openEnglishSlide();
+        }
+      };
       flagBanner.addEventListener('click', (e) => {
         if (e.target === flagDismissBtn) return;
-        trackResourceClick('Africa Voice Research Flag');
-        openAfricaSlide();
+        openActiveFlag();
       });
       const flagCtaBtn = document.getElementById('active-flag-cta');
       if (flagCtaBtn) {
         flagCtaBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          trackResourceClick('Africa Voice Research Flag');
-          openAfricaSlide();
+          openActiveFlag();
         });
       }
     }
