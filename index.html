@@ -2362,9 +2362,15 @@
           localStorage.setItem('rwu_ref_code', rwuRefCode);
           rwuUserCountry = f['Country'] || '';
           atPatch(toUpdate);
-          if (!f['Country'] || f['Country'] === 'Unknown') {
+          const countryMissing = !f['Country'] || f['Country'] === 'Unknown';
+          const lastChecked = parseInt(localStorage.getItem('rwu_country_last_checked') || '0', 10);
+          const sevenDays = 7 * 24 * 60 * 60 * 1000;
+          if (countryMissing || (Date.now() - lastChecked > sevenDays)) {
             const country = await tryGetCountry();
-            if (country !== 'Unknown') atPatch({ 'Country': country });
+            if (country !== 'Unknown') {
+              atPatch({ 'Country': country });
+              localStorage.setItem('rwu_country_last_checked', String(Date.now()));
+            }
           }
           gtag('event', 'dashboard_load', { user_type: 'returning' });
         }
