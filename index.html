@@ -2473,7 +2473,10 @@
 
     function showView(el) {
       el.classList.add('show');
-      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('animate')));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.classList.add('animate');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
     }
 
     function showMercor() {
@@ -2926,6 +2929,7 @@
         hideAllCards();
         reviveView(el);
         refreshCardState(el);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 400);
     }
 
