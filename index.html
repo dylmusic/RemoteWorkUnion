@@ -186,6 +186,14 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
+
+    .email-typo-note {
+      display: none;
+      font-size: 12px;
+      color: rgba(255,255,255,0.52);
+      margin-top: 8px;
+      text-align: center;
+    }
     .success-msg.show { display: flex; }
     .success-msg.fade-in { opacity: 1; }
 
@@ -1698,6 +1706,7 @@
         />
         <button type="submit" class="join-btn">Join Free</button>
       </form>
+      <p class="email-typo-note" id="email-typo-note"></p>
       <div class="success-msg" id="success" role="alert">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <polyline points="20 6 9 17 4 12"/>
@@ -1902,6 +1911,7 @@
                 </div>
               </div>
               <p class="prog-email-ok" id="prog-email-ok">&#10003; Updated!</p>
+              <p class="email-typo-note" id="prog-email-typo-note"></p>
               <p class="prog-nudge" id="prog-newsletter-nudge">Sign up to unlock your full member profile</p>
             </li>
             <li class="prog-item anim-in" id="prog-hs">
@@ -2113,6 +2123,26 @@
         } catch (_) {}
       }
       return 'Unknown';
+    }
+
+    function correctEmailTypo(email) {
+      email = email.replace(/\s/g, '');
+      const atCount = (email.match(/@/g) || []).length;
+      if (atCount > 1) {
+        const lastAt = email.lastIndexOf('@');
+        email = email.slice(0, lastAt).replace(/@/g, '') + email.slice(lastAt);
+      }
+      email = email
+        .replace(/\.con$/, '.com').replace(/\.cmo$/, '.com').replace(/\.ocm$/, '.com')
+        .replace(/\.cok$/, '.com').replace(/\.coim$/, '.com').replace(/\.comm$/, '.com')
+        .replace(/\.ney$/, '.net').replace(/\.nte$/, '.net');
+      email = email
+        .replace(/@gmial\.com$/, '@gmail.com').replace(/@gmaill\.com$/, '@gmail.com')
+        .replace(/@gamil\.com$/, '@gmail.com').replace(/@yahooo\.com$/, '@yahoo.com')
+        .replace(/@yaho\.com$/, '@yahoo.com').replace(/@hotmial\.com$/, '@hotmail.com')
+        .replace(/@hotmaill\.com$/, '@hotmail.com').replace(/@outlok\.com$/, '@outlook.com')
+        .replace(/@outloook\.com$/, '@outlook.com');
+      return email;
     }
 
     async function atCreate(email) {
@@ -2836,8 +2866,16 @@
     // ── form submit ───────────────────────────────────────────
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const val = input.value.trim().toLowerCase();
-      if (!val || !val.includes('@')) return;
+      const rawVal = input.value.trim().toLowerCase();
+      if (!rawVal || !rawVal.includes('@')) return;
+      const val = correctEmailTypo(rawVal);
+      const typoNote = document.getElementById('email-typo-note');
+      if (val !== rawVal) {
+        typoNote.textContent = 'We corrected your email to ' + val;
+        typoNote.style.display = 'block';
+      } else {
+        typoNote.style.display = 'none';
+      }
 
       const btn = form.querySelector('.join-btn');
       btn.textContent = '...';
@@ -2869,6 +2907,7 @@
           setTimeout(() => {
             success.classList.remove('show', 'fade-in');
             success.style.cssText = '';
+            document.getElementById('email-typo-note').style.display = 'none';
             hsApply.style.display = 'none';
             progBarFill.style.width = '0%';
             hsProgress.classList.add('show');
@@ -3067,8 +3106,17 @@
     });
 
     progEmailSubmit.addEventListener('click', async () => {
-      const val = progEmailInput.value.trim().toLowerCase();
-      if (!val || !val.includes('@')) return;
+      const rawVal = progEmailInput.value.trim().toLowerCase();
+      if (!rawVal || !rawVal.includes('@')) return;
+      const val = correctEmailTypo(rawVal);
+      const progTypoNote = document.getElementById('prog-email-typo-note');
+      if (val !== rawVal) {
+        progTypoNote.textContent = 'We corrected your email to ' + val;
+        progTypoNote.style.display = 'block';
+        setTimeout(() => { progTypoNote.style.display = 'none'; }, 4000);
+      } else {
+        progTypoNote.style.display = 'none';
+      }
       progEmailSubmit.textContent = '...';
       progEmailSubmit.disabled = true;
 
