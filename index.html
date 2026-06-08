@@ -3359,6 +3359,7 @@
     const africaIntroCta = document.getElementById('africa-intro-cta');
     if (africaIntroCta) {
       africaIntroCta.addEventListener('click', () => {
+        trackResourceClick('Africa Voice Research — Mercor Click');
         mcApply.classList.remove('africa-mode');
       });
     }
@@ -3370,6 +3371,7 @@
       };
       flagBanner.addEventListener('click', (e) => {
         if (e.target === flagDismissBtn) return;
+        trackResourceClick('Africa Voice Research Flag');
         openAfricaSlide();
       });
       const flagCtaBtn = document.getElementById('active-flag-cta');
@@ -3377,6 +3379,7 @@
         flagCtaBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
+          trackResourceClick('Africa Voice Research Flag');
           openAfricaSlide();
         });
       }
