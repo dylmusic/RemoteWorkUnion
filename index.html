@@ -875,7 +875,7 @@
     #ot-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
     /* Mercor view */
-    #mc-apply, #africa-opp-apply {
+    #mc-apply {
       display: none;
       flex-direction: column;
       align-items: center;
@@ -884,9 +884,13 @@
       transform: translateY(8px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    #mc-apply.show, #africa-opp-apply.show { display: flex; }
-    #mc-apply.animate, #africa-opp-apply.animate { opacity: 1; transform: translateY(0); }
-    #mc-apply.fade-out, #africa-opp-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+    #mc-apply.show { display: flex; }
+    #mc-apply.animate { opacity: 1; transform: translateY(0); }
+    #mc-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+    #mc-main { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    #africa-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
+    #mc-apply.africa-mode #mc-main { display: none; }
+    #mc-apply.africa-mode #africa-intro { display: flex; }
 
     /* RentAHuman view */
     #rh-apply {
@@ -1787,43 +1791,58 @@
         <div id="mc-apply">
           <button class="dash-btn" id="mc-dash-btn">⊞ Dashboard</button>
           <div class="skipped-banner" id="mc-skipped-banner">⚠ You skipped this opportunity</div>
-          <div class="step-dots" aria-hidden="true">
-            <span class="step-dot done"></span>
-            <span class="step-dot done"></span>
-            <span class="step-dot current"></span>
-          </div>
-          <p class="hs-tag">&#10003; Step 3 of 3</p>
-          <p class="hs-headline">Apply to Mercor AI</p>
-          <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
-          <div class="card-process" id="mc-process">
-            <button class="card-process-toggle" onclick="document.getElementById('mc-process').classList.toggle('open')">
-              <span class="card-process-chevron"></span> View Process
-            </button>
-            <div class="card-process-body">
-              <p class="card-process-time">⏱ 30min&ndash;1 hour &middot; Requires AI video interview</p>
-              <ol class="card-process-steps">
-                <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
-                <li><span class="step-num">2</span><span>Find roles that are the best fit for you</span></li>
-                <li><span class="step-num">3</span><span>Submit your resume (use our <a href="/blog/remote-work-resume-guide" target="_blank" rel="noopener noreferrer" class="card-process-link">Resume Optimizer</a>)</span></li>
-                <li><span class="step-num">4</span><span>Complete Mercor AI Interview (guide coming soon)</span></li>
-                <li><span class="step-num">5</span><span>Apply for 10+ roles (1-click apply after your first application)</span></li>
-              </ol>
+          <!-- Africa special intro — shown when flag CTA triggers this card -->
+          <div id="africa-intro">
+            <div class="step-dots" aria-hidden="true">
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot current"></span>
             </div>
+            <p class="hs-tag">Special Opportunity</p>
+            <p class="hs-headline">Voice AI Research &mdash; $10&ndash;$20/hr</p>
+            <p class="hs-subline">We have a referral on Mercor. After signing up, search &ldquo;Africa&rdquo; to find the Voice AI Research role.</p>
+            <a class="hs-cta" id="africa-intro-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor &rarr;</a>
           </div>
-          <span class="hs-salary">Earn $50&ndash;$200/hr</span>
-          <a class="hs-cta" id="mc-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
-          <button class="hs-confirm-btn" id="mc-confirm">✅ I finished applying &mdash; confirm!</button>
-          <button class="hs-cb-btn" id="mc-already">
-            <span class="hs-cb" id="mc-cb">
-              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="1,4 3.8,7 9,1"/>
-              </svg>
-            </span>
-            I&rsquo;ve already applied to Mercor AI
-          </button>
-          <button class="undo-link" id="mc-undo">↩ I did not apply yet</button>
-          <button class="card-action-link" id="mc-skip">⏭ Skip this opportunity for now</button>
-          <button class="card-action-link" id="mc-hide">✕ Not for me</button>
+          <!-- Regular Mercor content -->
+          <div id="mc-main">
+            <div class="step-dots" aria-hidden="true">
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot current"></span>
+            </div>
+            <p class="hs-tag">&#10003; Step 3 of 3</p>
+            <p class="hs-headline">Apply to Mercor AI</p>
+            <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
+            <div class="card-process" id="mc-process">
+              <button class="card-process-toggle" onclick="document.getElementById('mc-process').classList.toggle('open')">
+                <span class="card-process-chevron"></span> View Process
+              </button>
+              <div class="card-process-body">
+                <p class="card-process-time">⏱ 30min&ndash;1 hour &middot; Requires AI video interview</p>
+                <ol class="card-process-steps">
+                  <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
+                  <li><span class="step-num">2</span><span>Find roles that are the best fit for you</span></li>
+                  <li><span class="step-num">3</span><span>Submit your resume (use our <a href="/blog/remote-work-resume-guide" target="_blank" rel="noopener noreferrer" class="card-process-link">Resume Optimizer</a>)</span></li>
+                  <li><span class="step-num">4</span><span>Complete Mercor AI Interview (guide coming soon)</span></li>
+                  <li><span class="step-num">5</span><span>Apply for 10+ roles (1-click apply after your first application)</span></li>
+                </ol>
+              </div>
+            </div>
+            <span class="hs-salary">Earn $50&ndash;$200/hr</span>
+            <a class="hs-cta" id="mc-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
+            <button class="hs-confirm-btn" id="mc-confirm">✅ I finished applying &mdash; confirm!</button>
+            <button class="hs-cb-btn" id="mc-already">
+              <span class="hs-cb" id="mc-cb">
+                <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1,4 3.8,7 9,1"/>
+                </svg>
+              </span>
+              I&rsquo;ve already applied to Mercor AI
+            </button>
+            <button class="undo-link" id="mc-undo">↩ I did not apply yet</button>
+            <button class="card-action-link" id="mc-skip">⏭ Skip this opportunity for now</button>
+            <button class="card-action-link" id="mc-hide">✕ Not for me</button>
+          </div>
         </div>
         <!-- Step 5: RentAHuman AI -->
         <div id="rh-apply">
@@ -1865,21 +1884,6 @@
           <p class="hs-headline">Resume Guide</p>
           <p class="hs-subline">Build a cleaner, stronger resume for remote work and AI training jobs.</p>
           <a href="/blog/remote-work-resume-guide" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:11px 24px;background:linear-gradient(90deg,#4ade80,#22d3a5);color:#052e16;font-family:inherit;font-size:13px;font-weight:700;border-radius:100px;text-decoration:none;transition:filter 0.2s;" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">Open Resume Guide &#8594;</a>
-        </div>
-
-        <!-- Africa special opportunity slide (triggered by flag banner only) -->
-        <div id="africa-opp-apply">
-          <button class="dash-btn" id="africa-opp-dash-btn">&#8592; Back to Dashboard</button>
-          <div class="step-dots" aria-hidden="true">
-            <span class="step-dot done"></span>
-            <span class="step-dot done"></span>
-            <span class="step-dot current"></span>
-          </div>
-          <p class="hs-tag">Special Opportunity</p>
-          <p class="hs-headline">Voice AI Research &mdash; $10&ndash;$20/hr</p>
-          <p class="hs-subline">We have a referral on Mercor. After signing up, search &ldquo;Africa&rdquo; to find the Voice AI Research role.</p>
-          <a class="hs-cta" id="africa-opp-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor &rarr;</a>
-          <button class="card-action-link" id="africa-opp-back">&#8592; Back to Dashboard</button>
         </div>
 
         <!-- Step 5: Completion screen -->
@@ -2448,8 +2452,6 @@
     const progRhNext             = document.getElementById('prog-rh-next');
     const rgTeaser               = document.getElementById('rg-teaser');
     const rgDashBtn              = document.getElementById('rg-dash-btn');
-    const africaOppApply         = document.getElementById('africa-opp-apply');
-    const africaOppDashBtn       = document.getElementById('africa-opp-dash-btn');
     const progResumeGuide        = document.getElementById('prog-resume-guide');
     const hiddenRolesSection = document.getElementById('hidden-roles-section');
     const hiddenRolesToggle  = document.getElementById('hidden-roles-toggle');
@@ -2884,18 +2886,19 @@
     }
 
     function hideAllCards() {
-      [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply].forEach(el => {
+      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => {
         el.classList.remove('show', 'animate', 'fade-out');
         el.style.display = 'none';
       });
     }
 
     function goToDashboard() {
+      mcApply.classList.remove('africa-mode');
       fromDash = false;
       updateDashBtns();
       progBarFill.style.width = '0%';
       hsCard.classList.remove('glow');
-      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply];
+      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser];
       const visible = allCards.find(el =>
         el.style.display !== 'none' &&
         !el.classList.contains('fade-out') &&
@@ -2934,7 +2937,7 @@
 
       form.style.display = 'none';
       // hide all cards — only the dashboard shows on return
-      [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply].forEach(el => { el.style.display = 'none'; });
+      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
@@ -3345,23 +3348,28 @@
       });
     }
 
-    if (africaOppDashBtn) africaOppDashBtn.addEventListener('click', goToDashboard);
-    const africaOppBack = document.getElementById('africa-opp-back');
-    if (africaOppBack) africaOppBack.addEventListener('click', goToDashboard);
-    const africaOppCta = document.getElementById('africa-opp-cta');
-    if (africaOppCta) africaOppCta.addEventListener('click', () => { setTimeout(goToDashboard, 300); });
+    const africaIntroCta = document.getElementById('africa-intro-cta');
+    if (africaIntroCta) {
+      africaIntroCta.addEventListener('click', () => {
+        setTimeout(() => { mcApply.classList.remove('africa-mode'); }, 300);
+      });
+    }
 
     if (flagBanner) {
+      const openAfricaSlide = () => {
+        mcApply.classList.add('africa-mode');
+        goToCard(mcApply);
+      };
       flagBanner.addEventListener('click', (e) => {
         if (e.target === flagDismissBtn) return;
-        goToCard(africaOppApply);
+        openAfricaSlide();
       });
       const flagCtaBtn = document.getElementById('active-flag-cta');
       if (flagCtaBtn) {
         flagCtaBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          goToCard(africaOppApply);
+          openAfricaSlide();
         });
       }
     }
