@@ -250,17 +250,87 @@ Searches for the record with matching `Referral Code`, then patches `Referral Co
 - Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
 
 ## Dashboard flag banners (targeted push)
-Defined in `index.html` as the `DASHBOARD_FLAGS` array (hardcoded, no Airtable table needed).
 
-Each flag object:
-- `id` — unique slug, used as the localStorage dismiss key (`rwu_flag_dismissed_[id]`)
-- `countries` — array of lowercase country names/codes to target (e.g. `['nigeria','kenya','ng']`); matched against `rwuUserCountry`
-- `message` — banner text
-- `link` — optional CTA URL
-- `linkText` — CTA label (defaults to "Learn More →")
+### How flags work
+Defined in `index.html` as the `DASHBOARD_FLAGS` array — hardcoded, no Airtable table needed.
+
+On every dashboard render, `evaluateAndShowFlag()` (called from `updateProgressBar()`) checks `rwuUserCountry` (set by `atFetch` from the Airtable `Country` field) against each flag's `countries` array using `.toLowerCase()`. The first matching flag that hasn't been dismissed shows an orange banner above the progress list (`#active-flag-banner`). The banner has an "Apply Now →" button on the right and a ✕ dismiss. Clicking anywhere on the banner (or the button) triggers the flag's action. Dismiss sets `localStorage.rwu_flag_dismissed_[id]` — persistent across sessions.
+
+Each flag object fields:
+- `id` — unique slug; used as the localStorage dismiss key (`rwu_flag_dismissed_[id]`)
+- `countries` — array of **lowercase** full country names and/or ISO codes to target (e.g. `['nigeria', 'kenya', 'ng', 'ke']`); matched against `rwuUserCountry.toLowerCase()`
+- `message` — text shown on the banner
 - `color` — `'orange'` (default), `'blue'`, or `'green'`
 
-**To add a flag:** Add an object to `DASHBOARD_FLAGS` and deploy. First matching flag that hasn't been dismissed is shown above the progress list. Dismiss is persistent (localStorage).
+### How to add a simple flag (banner only, no slide)
+1. Open `index.html` and find `const DASHBOARD_FLAGS = [`
+2. Add a new object:
+```js
+{
+  id: 'platform-country-jul8',   // unique — changing id resets dismiss for all users
+  countries: ['india', 'in'],    // lowercase full names + ISO codes
+  message: 'India: New roles on Handshake AI →',
+  color: 'orange'
+}
+```
+3. Wire a click handler in the flag banner section (search `openAfricaSlide` for the pattern):
+```js
+// in the flagBanner click handler block:
+const openFlagAction = () => goToCard(hsApply); // or any other action
+```
+4. Deploy.
+
+### How to add a flag with a custom intro slide (like Africa/Mercor)
+The Africa flag uses an intro slide (`#africa-intro`) embedded inside `#mc-apply`, toggled by an `africa-mode` CSS class. To replicate for another card:
+
+1. **Add CSS** (next to the existing `africa-mode` rules):
+```css
+#[card]-apply.[flag]-mode #[card]-main { display: none; }
+#[flag]-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
+#[card]-apply.[flag]-mode #[flag]-intro { display: flex; }
+```
+2. **Add HTML** inside `#[card]-apply`, after `#[card]-skipped-banner`:
+```html
+<div id="[flag]-intro">
+  <div class="step-dots" aria-hidden="true">...</div>
+  <p class="hs-tag">Special Opportunity</p>
+  <p class="hs-headline">Slide Title</p>
+  <ol class="card-process-steps" style="margin:12px 0 4px;width:100%;max-width:320px;">
+    <li><span class="step-num">1</span><span>Step one</span></li>
+    ...
+  </ol>
+  <button class="hs-cta" id="[flag]-intro-cta">CTA Button →</button>
+</div>
+```
+3. **Wrap regular card content** in `<div id="[card]-main">...</div>`
+4. **Wire JS** (in the flag handler section):
+```js
+// CTA removes the mode class → shows regular card content
+document.getElementById('[flag]-intro-cta').addEventListener('click', () => {
+  [card]Apply.classList.remove('[flag]-mode');
+});
+// Flag click adds mode then opens the card
+const openFlagSlide = () => { [card]Apply.classList.add('[flag]-mode'); goToCard([card]Apply); };
+```
+5. **Cleanup** — add `[card]Apply.classList.remove('[flag]-mode')` at the top of `goToDashboard()`.
+6. Deploy.
+
+### Targeting notes
+- `countries` is matched with `.toLowerCase()` — always use lowercase in the array
+- Include both full names and ISO codes as belt-and-suspenders (e.g. `'nigeria'` and `'ng'`)
+- To show to **all countries**: change the `evaluateAndShowFlag` logic — `f.countries.includes(uc)` → `f.countries.length === 0 || f.countries.includes(uc)`
+- To target by step: check `rwu_step` from localStorage inside the flag handler after the banner shows
+
+### To deactivate a flag
+Remove or comment out the object in `DASHBOARD_FLAGS` and deploy.
+
+### To re-broadcast a dismissed flag to all users
+Change the `id` (e.g. `mercor-africa-jun8` → `mercor-africa-jul1`) — this resets the localStorage dismiss key for everyone.
+
+### Current active flags
+| id | Target | Description |
+|----|--------|-------------|
+| `mercor-africa-jun8` | Nigeria & 50+ African countries | Shows Africa intro slide inside Mercor card — Voice AI Research $10–$20/hr. Uses `africa-mode` on `#mc-apply` / `#africa-intro` pattern. |
 
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
