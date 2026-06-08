@@ -1801,7 +1801,7 @@
             <p class="hs-tag">Special Opportunity</p>
             <p class="hs-headline">Voice AI Research &mdash; $10&ndash;$20/hr</p>
             <p class="hs-subline">We have a referral on Mercor. After signing up, search &ldquo;Africa&rdquo; to find the Voice AI Research role.</p>
-            <a class="hs-cta" id="africa-intro-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor &rarr;</a>
+            <button class="hs-cta" id="africa-intro-cta">Go to Mercor &rarr;</button>
           </div>
           <!-- Regular Mercor content -->
           <div id="mc-main">
@@ -3355,7 +3355,7 @@
     const africaIntroCta = document.getElementById('africa-intro-cta');
     if (africaIntroCta) {
       africaIntroCta.addEventListener('click', () => {
-        setTimeout(() => { mcApply.classList.remove('africa-mode'); }, 300);
+        mcApply.classList.remove('africa-mode');
       });
     }
 
