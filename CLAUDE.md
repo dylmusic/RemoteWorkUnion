@@ -249,23 +249,18 @@ Searches for the record with matching `Referral Code`, then patches `Referral Co
 - "Invite a Friend" ghost-pill button appears in the dashboard (`hs-progress`) below the "View Latest Opportunities on X" button, only when the user is signed in and has a referral code
 - Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
 
-## Flags table (targeted push banner system)
-Airtable base `appRMEXhqhENAGzHW`, table name **"Flags"**. Fields:
-- `ID` (text) — short unique slug, used as the localStorage dismissal key e.g. `mercor-africa-jun8`
-- `Message` (text) — banner text displayed to the user
-- `Link` (text) — optional URL for a CTA button
-- `Link Text` (text) — label for the CTA button; defaults to "Learn More →"
-- `Target Countries` (text) — comma-separated full country names (e.g. `Nigeria,Kenya,Ghana`); empty = show to ALL signed-in users with a known country
-- `Target Min Step` (number) — only show to users whose Current Step is ≥ this value; empty/0 = no minimum
-- `Target Max Step` (number) — only show to users whose Current Step is ≤ this value; empty = no maximum
-- `Color` (text) — `orange` (default), `blue`, or `green`
-- `Active` (checkbox) — only active flags are fetched; uncheck to remove a flag without deleting
+## Dashboard flag banners (targeted push)
+Defined in `index.html` as the `DASHBOARD_FLAGS` array (hardcoded, no Airtable table needed).
 
-**How it works:** On dashboard load, `getFlags` is called once (result cached per page load). The first flag that matches the user's country and step, and hasn't been dismissed, is shown in the orange banner above the progress list. Dismiss sets `localStorage.rwu_flag_dismissed_[ID]`.
+Each flag object:
+- `id` — unique slug, used as the localStorage dismiss key (`rwu_flag_dismissed_[id]`)
+- `countries` — array of lowercase country names/codes to target (e.g. `['nigeria','kenya','ng']`); matched against `rwuUserCountry`
+- `message` — banner text
+- `link` — optional CTA URL
+- `linkText` — CTA label (defaults to "Learn More →")
+- `color` — `'orange'` (default), `'blue'`, or `'green'`
 
-**Country matching:** Uses exact case-insensitive match against the user's stored `Country` field (full country names from ipwho.is). Include both full names and any variants the API might return.
-
-**To add a flag:** Create a record in the Flags table with `Active` checked. To remove, uncheck `Active` or delete the record.
+**To add a flag:** Add an object to `DASHBOARD_FLAGS` and deploy. First matching flag that hasn't been dismissed is shown above the progress list. Dismiss is persistent (localStorage).
 
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`

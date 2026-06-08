@@ -2100,7 +2100,6 @@
     let rwuRefCode = '';
     let rwuRefCount = 0;
     let rwuUserCountry = '';
-    let rwuFlagsCache = null;
 
     // Capture ?ref= param on landing and persist it
     (function() {
@@ -2137,63 +2136,42 @@
       return 'Unknown';
     }
 
-    async function getFlags() {
-      if (rwuFlagsCache !== null) return rwuFlagsCache;
-      try {
-        const r = await fetch('/api/airtable', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
-          body: JSON.stringify({ action: 'getFlags' })
-        });
-        const d = await r.json();
-        rwuFlagsCache = d.flags || [];
-      } catch (_) {
-        rwuFlagsCache = [];
+    const DASHBOARD_FLAGS = [
+      {
+        id: 'mercor-africa-jun8',
+        countries: ['nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','cameroon','zimbabwe','zambia','south africa','ng','ke','et','gh','ug','tz','rw','cm','zw','zm','za','bi'],
+        message: 'New opportunity: Voice AI Research — $10-$20/hr for Nigeria & East Africa. 128 hired this month.',
+        link: 'https://www.mercor.com/opportunities',
+        linkText: 'Apply on Mercor →',
+        color: 'orange'
       }
-      return rwuFlagsCache;
-    }
+    ];
 
-    function _countryMatches(userCountry, targetList) {
-      if (!targetList || !targetList.trim()) return true;
-      const uc = userCountry.toLowerCase().trim();
-      if (!uc || uc === 'unknown') return false;
-      const targets = targetList.split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
-      return targets.includes(uc);
-    }
-
-    async function evaluateAndShowFlag() {
+    function evaluateAndShowFlag() {
       const banner = document.getElementById('active-flag-banner');
       if (!banner) return;
-      const flags = await getFlags();
-      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
-      const match = flags.find(f => {
-        if (!f['Message']) return false;
-        const flagId = (f['ID'] || '').trim();
-        if (!flagId) return false;
-        if (localStorage.getItem('rwu_flag_dismissed_' + flagId)) return false;
-        if (!_countryMatches(rwuUserCountry, f['Target Countries'])) return false;
-        const minStep = Number(f['Target Min Step']) || 0;
-        const maxStep = f['Target Max Step'] != null && f['Target Max Step'] !== '' ? Number(f['Target Max Step']) : Infinity;
-        if (minStep && step < minStep) return false;
-        if (isFinite(maxStep) && step > maxStep) return false;
-        return true;
+      const uc = rwuUserCountry.toLowerCase().trim();
+      const match = DASHBOARD_FLAGS.find(f => {
+        if (!uc || uc === 'unknown') return false;
+        if (localStorage.getItem('rwu_flag_dismissed_' + f.id)) return false;
+        return f.countries.includes(uc);
       });
       if (!match) { banner.classList.remove('visible'); return; }
-      document.getElementById('active-flag-text').textContent = match['Message'];
+      document.getElementById('active-flag-text').textContent = match.message;
       const ctaBtn = document.getElementById('active-flag-cta');
       if (ctaBtn) {
-        if (match['Link']) {
-          ctaBtn.href = match['Link'];
-          ctaBtn.textContent = match['Link Text'] || 'Learn More →';
+        if (match.link) {
+          ctaBtn.href = match.link;
+          ctaBtn.textContent = match.linkText || 'Learn More →';
           ctaBtn.style.display = '';
         } else {
           ctaBtn.style.display = 'none';
         }
       }
       banner.classList.remove('flag-blue', 'flag-green');
-      if (match['Color'] === 'blue') banner.classList.add('flag-blue');
-      else if (match['Color'] === 'green') banner.classList.add('flag-green');
-      banner.dataset.flagId = match['ID'];
+      if (match.color === 'blue') banner.classList.add('flag-blue');
+      else if (match.color === 'green') banner.classList.add('flag-green');
+      banner.dataset.flagId = match.id;
       banner.classList.add('visible');
     }
 

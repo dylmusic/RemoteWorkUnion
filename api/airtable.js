@@ -259,24 +259,6 @@ module.exports = async (req, res) => {
       return res.status(atRes.status).json(data);
     }
 
-    // ── GET FLAGS ────────────────────────────────────────────────────────────
-    if (action === 'getFlags') {
-      const FLAGS_URL = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent('Flags')}`;
-      const formula = encodeURIComponent(`{Active}=1`);
-      try {
-        const r = await fetch(`${FLAGS_URL}?filterByFormula=${formula}`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-        });
-        const d = await r.json();
-        const flags = (d.records || []).map(rec => rec.fields);
-        console.log('[airtable] getFlags: found', flags.length, 'active flags');
-        return res.status(200).json({ flags });
-      } catch (err) {
-        console.error('[airtable] getFlags error:', err.message);
-        return res.status(200).json({ flags: [] });
-      }
-    }
-
     console.error('[airtable] unknown action:', action);
     return res.status(400).json({ error: 'Invalid action' });
 
