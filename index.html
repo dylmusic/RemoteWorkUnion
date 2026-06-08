@@ -1516,6 +1516,8 @@
     .resume-nudge-dismiss:hover { color: #fff; }
     .resume-nudge-text--short { display: none; }
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } }
+    .resume-nudge.flag-blue { background: #1d4ed8; }
+    .resume-nudge.flag-green { background: #16a34a; }
 
     /* Refer a Friend */
     .invite-toggle {
@@ -1895,10 +1897,11 @@
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
-          <!-- Active flag banner — targeted push for African country users, content set in Airtable -->
+          <!-- Active flag banner — content driven by Airtable Flags table -->
           <div class="resume-nudge" id="active-flag-banner" role="alert">
             <span class="resume-nudge-text" id="active-flag-text"></span>
             <div class="resume-nudge-actions">
+              <a class="resume-nudge-btn" id="active-flag-cta" href="#" target="_blank" rel="noopener" style="display:none"></a>
               <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
@@ -2096,8 +2099,8 @@
     let atId = localStorage.getItem('rwu_record_id') || null;
     let rwuRefCode = '';
     let rwuRefCount = 0;
-    let rwuActiveFlag = '';
     let rwuUserCountry = '';
+    let rwuFlagsCache = null;
 
     // Capture ?ref= param on landing and persist it
     (function() {
@@ -2134,43 +2137,63 @@
       return 'Unknown';
     }
 
-    const AFRICAN_COUNTRIES = new Set([
-      'nigeria','kenya','ethiopia','ghana','uganda','tanzania','rwanda','south africa',
-      'zimbabwe','zambia','cameroon','senegal','ivory coast',"cote d'ivoire",'cote divoire',
-      'mozambique','madagascar','angola','malawi','somalia','sudan','south sudan','egypt',
-      'morocco','algeria','tunisia','libya','burundi','sierra leone','liberia','togo',
-      'benin','niger','mali','burkina faso','guinea','guinea-bissau','gambia','mauritania',
-      'mauritius','seychelles','comoros','djibouti','eritrea','central african republic',
-      'chad','democratic republic of congo','dr congo','republic of congo','gabon',
-      'equatorial guinea','sao tome and principe','cape verde','namibia','botswana',
-      'lesotho','swaziland','eswatini',
-      'ng','ke','et','gh','ug','tz','rw','za','zw','zm','cm','sn','ci','mz','mg',
-      'ao','mw','so','sd','ss','eg','ma','dz','tn','ly','bi','sl','lr','tg','bj',
-      'ne','ml','bf','gn','gw','gm','mr','mu','sc','km','dj','er','cf','td','cd',
-      'cg','ga','gq','st','cv','na','bw','ls','sz'
-    ]);
-
-    function _flagHash(text) {
-      let h = 0;
-      for (let i = 0; i < text.length; i++) h = (Math.imul(31, h) + text.charCodeAt(i)) | 0;
-      return Math.abs(h).toString(36);
+    async function getFlags() {
+      if (rwuFlagsCache !== null) return rwuFlagsCache;
+      try {
+        const r = await fetch('/api/airtable', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-rwu-secret': 'RWU2026SECRET' },
+          body: JSON.stringify({ action: 'getFlags' })
+        });
+        const d = await r.json();
+        rwuFlagsCache = d.flags || [];
+      } catch (_) {
+        rwuFlagsCache = [];
+      }
+      return rwuFlagsCache;
     }
 
-    function showActiveFlagIfNeeded() {
+    function _countryMatches(userCountry, targetList) {
+      if (!targetList || !targetList.trim()) return true;
+      const uc = userCountry.toLowerCase().trim();
+      if (!uc || uc === 'unknown') return false;
+      const targets = targetList.split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+      return targets.includes(uc);
+    }
+
+    async function evaluateAndShowFlag() {
       const banner = document.getElementById('active-flag-banner');
       if (!banner) return;
-      if (!rwuActiveFlag || !rwuUserCountry || rwuUserCountry === 'Unknown') {
-        banner.classList.remove('visible'); return;
+      const flags = await getFlags();
+      const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
+      const match = flags.find(f => {
+        if (!f['Message']) return false;
+        const flagId = (f['ID'] || '').trim();
+        if (!flagId) return false;
+        if (localStorage.getItem('rwu_flag_dismissed_' + flagId)) return false;
+        if (!_countryMatches(rwuUserCountry, f['Target Countries'])) return false;
+        const minStep = Number(f['Target Min Step']) || 0;
+        const maxStep = f['Target Max Step'] != null && f['Target Max Step'] !== '' ? Number(f['Target Max Step']) : Infinity;
+        if (minStep && step < minStep) return false;
+        if (isFinite(maxStep) && step > maxStep) return false;
+        return true;
+      });
+      if (!match) { banner.classList.remove('visible'); return; }
+      document.getElementById('active-flag-text').textContent = match['Message'];
+      const ctaBtn = document.getElementById('active-flag-cta');
+      if (ctaBtn) {
+        if (match['Link']) {
+          ctaBtn.href = match['Link'];
+          ctaBtn.textContent = match['Link Text'] || 'Learn More →';
+          ctaBtn.style.display = '';
+        } else {
+          ctaBtn.style.display = 'none';
+        }
       }
-      if (!AFRICAN_COUNTRIES.has(rwuUserCountry.toLowerCase().trim())) {
-        banner.classList.remove('visible'); return;
-      }
-      const key = 'rwu_flag_dismissed_' + _flagHash(rwuActiveFlag);
-      if (sessionStorage.getItem(key)) {
-        banner.classList.remove('visible'); return;
-      }
-      document.getElementById('active-flag-text').textContent = rwuActiveFlag;
-      banner.dataset.flagKey = key;
+      banner.classList.remove('flag-blue', 'flag-green');
+      if (match['Color'] === 'blue') banner.classList.add('flag-blue');
+      else if (match['Color'] === 'green') banner.classList.add('flag-green');
+      banner.dataset.flagId = match['ID'];
       banner.classList.add('visible');
     }
 
@@ -2337,7 +2360,6 @@
             toUpdate['Referral Code'] = rwuRefCode;
           }
           localStorage.setItem('rwu_ref_code', rwuRefCode);
-          rwuActiveFlag = f['Active Flag'] || '';
           rwuUserCountry = f['Country'] || '';
           atPatch(toUpdate);
           if (!f['Country'] || f['Country'] === 'Unknown') {
@@ -2572,7 +2594,7 @@
           recEl.classList.remove('visible');
         }
       }
-      showActiveFlagIfNeeded();
+      evaluateAndShowFlag();
     }
 
     function refreshDashboard() {
@@ -3306,7 +3328,8 @@
     if (flagBanner && flagDismissBtn) {
       flagDismissBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (flagBanner.dataset.flagKey) sessionStorage.setItem(flagBanner.dataset.flagKey, '1');
+        const flagId = flagBanner.dataset.flagId;
+        if (flagId) localStorage.setItem('rwu_flag_dismissed_' + flagId, '1');
         flagBanner.classList.remove('visible');
       });
     }

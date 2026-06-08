@@ -249,12 +249,23 @@ Searches for the record with matching `Referral Code`, then patches `Referral Co
 - "Invite a Friend" ghost-pill button appears in the dashboard (`hs-progress`) below the "View Latest Opportunities on X" button, only when the user is signed in and has a referral code
 - Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
 
-## Active Flag (targeted push banner)
-- Airtable field `Active Flag` (single line text) on the Newsletter Subscribers table
-- Set text in Airtable to show a targeted orange push banner to users whose `Country` is an African country
-- Clear the field to remove the flag for that user
-- Banner shows on dashboard load; dismiss is session-only (reappears on next visit if field is still set)
-- Country matching uses a broad African country name/code list defined in `index.html` (`AFRICAN_COUNTRIES` set)
+## Flags table (targeted push banner system)
+Airtable base `appRMEXhqhENAGzHW`, table name **"Flags"**. Fields:
+- `ID` (text) — short unique slug, used as the localStorage dismissal key e.g. `mercor-africa-jun8`
+- `Message` (text) — banner text displayed to the user
+- `Link` (text) — optional URL for a CTA button
+- `Link Text` (text) — label for the CTA button; defaults to "Learn More →"
+- `Target Countries` (text) — comma-separated full country names (e.g. `Nigeria,Kenya,Ghana`); empty = show to ALL signed-in users with a known country
+- `Target Min Step` (number) — only show to users whose Current Step is ≥ this value; empty/0 = no minimum
+- `Target Max Step` (number) — only show to users whose Current Step is ≤ this value; empty = no maximum
+- `Color` (text) — `orange` (default), `blue`, or `green`
+- `Active` (checkbox) — only active flags are fetched; uncheck to remove a flag without deleting
+
+**How it works:** On dashboard load, `getFlags` is called once (result cached per page load). The first flag that matches the user's country and step, and hasn't been dismissed, is shown in the orange banner above the progress list. Dismiss sets `localStorage.rwu_flag_dismissed_[ID]`.
+
+**Country matching:** Uses exact case-insensitive match against the user's stored `Country` field (full country names from ipwho.is). Include both full names and any variants the API might return.
+
+**To add a flag:** Create a record in the Flags table with `Active` checked. To remove, uncheck `Active` or delete the record.
 
 ## Platforms mentioned across articles (for cross-linking)
 - Mercor → `/blog/how-to-get-a-mercor-remote-job`
