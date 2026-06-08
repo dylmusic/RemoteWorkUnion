@@ -1933,6 +1933,7 @@
           <div class="resume-nudge" id="active-flag-banner" role="alert" style="cursor:pointer">
             <span class="resume-nudge-text" id="active-flag-text"></span>
             <div class="resume-nudge-actions">
+              <a class="resume-nudge-btn" id="active-flag-cta" href="#" style="display:none">Apply Now →</a>
               <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
@@ -2205,6 +2206,8 @@
       if (!match) { _activeFlagMatch = null; banner.classList.remove('visible'); return; }
       _activeFlagMatch = match;
       document.getElementById('active-flag-text').textContent = match.message;
+      const ctaBtn = document.getElementById('active-flag-cta');
+      if (ctaBtn) ctaBtn.style.display = '';
       banner.classList.remove('flag-blue', 'flag-green');
       if (match.color === 'blue') banner.classList.add('flag-blue');
       else if (match.color === 'green') banner.classList.add('flag-green');
@@ -3356,24 +3359,38 @@
       });
     }
 
-    if (flagBanner) {
-      flagBanner.addEventListener('click', () => {
-        const progMc = document.getElementById('prog-mc');
-        if (!progMc) return;
-        const applied = getApplied();
-        if (!applied.includes('mercor') && !document.getElementById('africa-flag-slide')) {
-          const slide = document.createElement('li');
-          slide.className = 'africa-flag-slide';
-          slide.id = 'africa-flag-slide';
-          slide.innerHTML =
-            '<div class="africa-flag-slide-title">Now Hiring on Mercor</div>' +
-            '<div class="africa-flag-slide-body">We have a referral on Mercor. Sign up and search “Africa” to find the Voice AI Research role — $10–$20/hr.</div>' +
-            '<a class="africa-flag-slide-btn" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor →</a>';
-          progMc.insertAdjacentElement('beforebegin', slide);
-        }
-        const scrollTarget = document.getElementById('africa-flag-slide') || progMc;
-        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function showAfricaFlagSlide() {
+      const progMc = document.getElementById('prog-mc');
+      if (!progMc) return;
+      const existing = document.getElementById('africa-flag-slide');
+      if (existing) existing.remove();
+      const slide = document.createElement('li');
+      slide.className = 'africa-flag-slide';
+      slide.id = 'africa-flag-slide';
+      slide.innerHTML =
+        '<div class=”africa-flag-slide-title”>Now Hiring on Mercor</div>' +
+        '<div class=”africa-flag-slide-body”>We have a referral on Mercor. Sign up and search “Africa” to find the Voice AI Research role — $10–$20/hr.</div>' +
+        '<a class=”africa-flag-slide-btn” id=”africa-flag-slide-cta” href=”https://t.mercor.com/Fiy3U” target=”_blank” rel=”noopener noreferrer”>Go to Mercor →</a>';
+      progMc.insertAdjacentElement('beforebegin', slide);
+      slide.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('africa-flag-slide-cta').addEventListener('click', () => {
+        setTimeout(() => { const s = document.getElementById('africa-flag-slide'); if (s) s.remove(); }, 300);
       });
+    }
+
+    if (flagBanner) {
+      flagBanner.addEventListener('click', (e) => {
+        if (e.target === flagDismissBtn) return;
+        showAfricaFlagSlide();
+      });
+      const flagCtaBtn = document.getElementById('active-flag-cta');
+      if (flagCtaBtn) {
+        flagCtaBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showAfricaFlagSlide();
+        });
+      }
     }
 
     // ── refer a friend modal ──────────────────────────────────
