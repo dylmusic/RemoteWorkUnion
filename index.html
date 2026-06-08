@@ -888,6 +888,7 @@
     #mc-apply.animate { opacity: 1; transform: translateY(0); }
     #mc-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
     #mc-main { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .flag-intro-subtitle { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85); margin: -4px 0 10px; letter-spacing: 0; }
     #africa-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
     #mc-apply.africa-mode #mc-main { display: none; }
     #mc-apply.africa-mode #africa-intro { display: flex; }
@@ -1522,7 +1523,7 @@
     .resume-nudge-dismiss { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0; width: 20px; height: 20px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; align-self: center; }
     .resume-nudge-dismiss:hover { color: #fff; }
     .resume-nudge-text--short { display: none; }
-    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #active-flag-banner { height: auto; padding: 8px 10px; flex-direction: column; align-items: flex-start; gap: 5px; } #active-flag-banner .resume-nudge-text { white-space: normal; overflow: visible; text-overflow: clip; flex: none; line-height: 1.3; } #active-flag-banner .resume-nudge-actions { display: flex; align-self: stretch; justify-content: flex-end; } }
+    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #active-flag-banner .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
 
@@ -1802,6 +1803,7 @@
               <span class="step-dot current"></span>
             </div>
             <p class="hs-tag">Special Opportunity</p>
+            <p class="flag-intro-subtitle">Native English Speakers &mdash; Earn $70/hr</p>
             <p class="hs-headline">Now Hiring on Mercor</p>
             <ol class="card-process-steps" style="margin:12px 0 4px;width:100%;max-width:320px;">
               <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
@@ -1818,6 +1820,7 @@
               <span class="step-dot current"></span>
             </div>
             <p class="hs-tag">Special Opportunity</p>
+            <p class="flag-intro-subtitle">Nigeria &amp; Africa &mdash; Earn $20/hr</p>
             <p class="hs-headline">Now Hiring on Mercor</p>
             <ol class="card-process-steps" style="margin:12px 0 4px;width:100%;max-width:320px;">
               <li><span class="step-num">1</span><span>Sign up on Mercor with our referral</span></li>
@@ -1941,7 +1944,8 @@
           </div>
           <!-- Active flag banner — content driven by Airtable Flags table -->
           <div class="resume-nudge" id="active-flag-banner" role="alert" style="cursor:pointer">
-            <span class="resume-nudge-text" id="active-flag-text"></span>
+            <span class="resume-nudge-text resume-nudge-text--full" id="active-flag-text"></span>
+            <span class="resume-nudge-text resume-nudge-text--short" id="active-flag-text-short"></span>
             <div class="resume-nudge-actions">
               <a class="resume-nudge-btn" id="active-flag-cta" href="#" style="display:none">Apply Now →</a>
               <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
@@ -2199,7 +2203,8 @@
           'ml','bf','gn','gw','gm','mr','mu','sc','km','dj','er','cf','td','cd','cg',
           'ga','gq','cv','na','bw','ls','sz','bi'
         ],
-        message: 'Nigeria & Africa: Earn $10-$20/hr',
+        message: 'Nigeria & Africa: Earn $20/hr',
+        short: 'Earn $20/hr',
         color: 'orange'
       },
       {
@@ -2209,6 +2214,7 @@
           'us','gb','ca','au','ie','nz'
         ],
         message: 'Native English Speakers — Earn $70/hr',
+        short: 'Earn $70/hr',
         color: 'orange'
       }
     ];
@@ -2225,6 +2231,8 @@
       if (!match) { _activeFlagMatch = null; banner.classList.remove('visible'); return; }
       _activeFlagMatch = match;
       document.getElementById('active-flag-text').textContent = match.message;
+      const shortEl = document.getElementById('active-flag-text-short');
+      if (shortEl) shortEl.textContent = match.short || match.message;
       const ctaBtn = document.getElementById('active-flag-cta');
       if (ctaBtn) ctaBtn.style.display = '';
       banner.classList.remove('flag-blue', 'flag-green');
