@@ -875,7 +875,7 @@
     #ot-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
     /* Mercor view */
-    #mc-apply {
+    #mc-apply, #africa-opp-apply {
       display: none;
       flex-direction: column;
       align-items: center;
@@ -884,9 +884,9 @@
       transform: translateY(8px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    #mc-apply.show { display: flex; }
-    #mc-apply.animate { opacity: 1; transform: translateY(0); }
-    #mc-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+    #mc-apply.show, #africa-opp-apply.show { display: flex; }
+    #mc-apply.animate, #africa-opp-apply.animate { opacity: 1; transform: translateY(0); }
+    #mc-apply.fade-out, #africa-opp-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
 
     /* RentAHuman view */
     #rh-apply {
@@ -1451,38 +1451,6 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
-    .africa-flag-slide {
-      list-style: none;
-      background: #fff7ed;
-      border: 1.5px solid #f97316;
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin: 6px 0 8px;
-    }
-    .africa-flag-slide-title {
-      font-weight: 700;
-      font-size: 15px;
-      color: #c2410c;
-      margin: 0 0 6px;
-    }
-    .africa-flag-slide-body {
-      font-size: 13px;
-      color: #7c2d12;
-      margin: 0 0 12px;
-      line-height: 1.5;
-    }
-    .africa-flag-slide-btn {
-      display: inline-block;
-      padding: 8px 20px;
-      background: #ea580c;
-      color: #fff;
-      border-radius: 100px;
-      font-weight: 700;
-      font-size: 13px;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-    .africa-flag-slide-btn:hover { background: #c2410c; color: #fff; }
     /* Blog highlight cards */
     .blog-highlight {
       width: 100%;
@@ -1897,6 +1865,21 @@
           <p class="hs-headline">Resume Guide</p>
           <p class="hs-subline">Build a cleaner, stronger resume for remote work and AI training jobs.</p>
           <a href="/blog/remote-work-resume-guide" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:11px 24px;background:linear-gradient(90deg,#4ade80,#22d3a5);color:#052e16;font-family:inherit;font-size:13px;font-weight:700;border-radius:100px;text-decoration:none;transition:filter 0.2s;" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">Open Resume Guide &#8594;</a>
+        </div>
+
+        <!-- Africa special opportunity slide (triggered by flag banner only) -->
+        <div id="africa-opp-apply">
+          <button class="dash-btn" id="africa-opp-dash-btn">&#8592; Back to Dashboard</button>
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+          </div>
+          <p class="hs-tag">Special Opportunity</p>
+          <p class="hs-headline">Voice AI Research &mdash; $10&ndash;$20/hr</p>
+          <p class="hs-subline">We have a referral on Mercor. After signing up, search &ldquo;Africa&rdquo; to find the Voice AI Research role.</p>
+          <a class="hs-cta" id="africa-opp-cta" href="https://t.mercor.com/Fiy3U" target="_blank" rel="noopener noreferrer">Go to Mercor &rarr;</a>
+          <button class="card-action-link" id="africa-opp-back">&#8592; Back to Dashboard</button>
         </div>
 
         <!-- Step 5: Completion screen -->
@@ -2465,6 +2448,8 @@
     const progRhNext             = document.getElementById('prog-rh-next');
     const rgTeaser               = document.getElementById('rg-teaser');
     const rgDashBtn              = document.getElementById('rg-dash-btn');
+    const africaOppApply         = document.getElementById('africa-opp-apply');
+    const africaOppDashBtn       = document.getElementById('africa-opp-dash-btn');
     const progResumeGuide        = document.getElementById('prog-resume-guide');
     const hiddenRolesSection = document.getElementById('hidden-roles-section');
     const hiddenRolesToggle  = document.getElementById('hidden-roles-toggle');
@@ -2568,6 +2553,7 @@
       const label = fromDash ? '← Back to Dashboard' : '⊞ Dashboard';
       [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
     }
+
 
     function updateProgressBar() {
       const step    = parseInt(localStorage.getItem('rwu_step') || '0', 10);
@@ -2898,7 +2884,7 @@
     }
 
     function hideAllCards() {
-      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => {
+      [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply].forEach(el => {
         el.classList.remove('show', 'animate', 'fade-out');
         el.style.display = 'none';
       });
@@ -2909,7 +2895,7 @@
       updateDashBtns();
       progBarFill.style.width = '0%';
       hsCard.classList.remove('glow');
-      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser];
+      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply];
       const visible = allCards.find(el =>
         el.style.display !== 'none' &&
         !el.classList.contains('fade-out') &&
@@ -2948,7 +2934,7 @@
 
       form.style.display = 'none';
       // hide all cards — only the dashboard shows on return
-      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
+      [hsApply, otApply, mcApply, rhApply, rgTeaser, africaOppApply].forEach(el => { el.style.display = 'none'; });
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
@@ -3359,36 +3345,23 @@
       });
     }
 
-    function showAfricaFlagSlide() {
-      const progMc = document.getElementById('prog-mc');
-      if (!progMc) return;
-      const existing = document.getElementById('africa-flag-slide');
-      if (existing) existing.remove();
-      const slide = document.createElement('li');
-      slide.className = 'africa-flag-slide';
-      slide.id = 'africa-flag-slide';
-      slide.innerHTML =
-        '<div class=”africa-flag-slide-title”>Now Hiring on Mercor</div>' +
-        '<div class=”africa-flag-slide-body”>We have a referral on Mercor. Sign up and search “Africa” to find the Voice AI Research role — $10–$20/hr.</div>' +
-        '<a class=”africa-flag-slide-btn” id=”africa-flag-slide-cta” href=”https://t.mercor.com/Fiy3U” target=”_blank” rel=”noopener noreferrer”>Go to Mercor →</a>';
-      progMc.insertAdjacentElement('beforebegin', slide);
-      slide.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      document.getElementById('africa-flag-slide-cta').addEventListener('click', () => {
-        setTimeout(() => { const s = document.getElementById('africa-flag-slide'); if (s) s.remove(); }, 300);
-      });
-    }
+    if (africaOppDashBtn) africaOppDashBtn.addEventListener('click', goToDashboard);
+    const africaOppBack = document.getElementById('africa-opp-back');
+    if (africaOppBack) africaOppBack.addEventListener('click', goToDashboard);
+    const africaOppCta = document.getElementById('africa-opp-cta');
+    if (africaOppCta) africaOppCta.addEventListener('click', () => { setTimeout(goToDashboard, 300); });
 
     if (flagBanner) {
       flagBanner.addEventListener('click', (e) => {
         if (e.target === flagDismissBtn) return;
-        showAfricaFlagSlide();
+        goToCard(africaOppApply);
       });
       const flagCtaBtn = document.getElementById('active-flag-cta');
       if (flagCtaBtn) {
         flagCtaBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          showAfricaFlagSlide();
+          goToCard(africaOppApply);
         });
       }
     }
