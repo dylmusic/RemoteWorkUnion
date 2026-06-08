@@ -2376,7 +2376,6 @@
 
     async function atFetch(email) {
       email = email.toLowerCase();
-      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_')).forEach(k => localStorage.removeItem(k));
       try {
         const r = await fetch('/api/airtable', {
           method: 'POST',
@@ -3014,6 +3013,7 @@
       btn.textContent = '...';
       btn.disabled = true;
 
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_')).forEach(k => localStorage.removeItem(k));
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
@@ -3256,6 +3256,7 @@
       // Reset session state; atCreateOrRestore will restore from Airtable if
       // the email already exists, or create a fresh record if it doesn't.
       ['rwu_step','rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id'].forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_')).forEach(k => localStorage.removeItem(k));
       atId = null;
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
