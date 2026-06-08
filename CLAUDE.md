@@ -120,7 +120,7 @@ Inline style classes to include in every article:
 ### Articles 16–33 (published May 29–30, 2026)
 | # | Slug | Title |
 |---|------|-------|
-| 16 | what-remote-ai-jobs-pay-100-per-hour | What Remote AI Jobs Pay $100+/hr? |
+| 16 | remote-ai-jobs-pay-100-hour | What Remote AI Jobs Pay $100+/hr? |
 | 17 | why-ai-companies-need-human-reviewers | Why AI Companies Still Need Humans to Review, Rank, and Improve Model Answers |
 | 18 | how-to-get-a-mercor-remote-job | How to Get a Mercor Remote Job: Application, Interview, and Referral Guide |
 | 19 | is-mercor-legit | Is Mercor Legit? What Remote Workers Should Know Before Applying |
