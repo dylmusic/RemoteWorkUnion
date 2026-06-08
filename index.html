@@ -2475,7 +2475,7 @@
       el.classList.add('show');
       requestAnimationFrame(() => requestAnimationFrame(() => {
         el.classList.add('animate');
-        hsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('member-count-badge').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }));
     }
 
@@ -2884,7 +2884,7 @@
         form.style.transition = '';
         applyNowBtn.innerHTML = 'Apply For Jobs Now &rarr;';
         setTimeout(() => { input.focus(); }, 50);
-        hsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('member-count-badge').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 400);
     }
 
@@ -2929,7 +2929,7 @@
         hideAllCards();
         reviveView(el);
         refreshCardState(el);
-        hsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('member-count-badge').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 400);
     }
 
