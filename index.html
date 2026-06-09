@@ -1526,7 +1526,7 @@
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } .rwu-flag-banner .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
-    #flag-banners-container { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    #flag-banners-container { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 8px; margin-bottom: 8px; }
     #flag-banners-container .resume-nudge { margin-top: 0; margin-bottom: 0; }
 
     /* Refer a Friend */
@@ -2260,6 +2260,7 @@
           el.remove();
           if (container.children.length === 0) {
             container.style.marginTop = '0';
+            container.style.marginBottom = '0';
             if (nudge) nudge.style.marginBottom = '';
           }
         });
@@ -2269,11 +2270,17 @@
         });
         container.appendChild(el);
       });
-      if (container.children.length > 0 && nudge && nudge.classList.contains('visible')) {
-        nudge.style.marginBottom = '0';
-        container.style.marginTop = '6px';
+      if (container.children.length > 0) {
+        container.style.marginTop = '';
+        container.style.marginBottom = '';
+        if (nudge && nudge.classList.contains('visible')) {
+          nudge.style.marginBottom = '0';
+        } else {
+          if (nudge) nudge.style.marginBottom = '';
+        }
       } else {
         container.style.marginTop = '0';
+        container.style.marginBottom = '0';
         if (nudge) nudge.style.marginBottom = '';
       }
     }
@@ -3410,8 +3417,6 @@
         localStorage.setItem('rwu_nudge_dismissed', '1');
         nudgeBanner.classList.remove('visible');
         nudgeBanner.style.marginBottom = '';
-        const fc = document.getElementById('flag-banners-container');
-        if (fc && fc.children.length > 0) fc.style.marginTop = '0';
         gtag('event', 'resume_nudge_dismissed');
       });
       if (nudgeInfoBtn) {
