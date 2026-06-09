@@ -135,6 +135,19 @@ module.exports = async (req, res) => {
         console.error('[airtable] create called without Email field');
         return res.status(400).json({ error: 'Missing Email field' });
       }
+
+      const sanitizedEmail = fields['Email'].toLowerCase().replace(/"/g, '');
+      const dupFormula = encodeURIComponent(`({Email}="${sanitizedEmail}")`);
+      const dupRes = await fetch(`${AT_URL}?filterByFormula=${dupFormula}&maxRecords=1`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const dupData = await dupRes.json();
+      const existing = dupData.records && dupData.records[0];
+      if (existing) {
+        console.log('[airtable] create: existing record found for', sanitizedEmail, '— returning existing');
+        return res.status(200).json({ id: existing.id, fields: existing.fields });
+      }
+
       console.log('[airtable] creating record at:', AT_URL);
 
       const createFields = { ...fields, 'Last Activity Date': new Date().toISOString() };
