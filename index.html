@@ -1523,8 +1523,7 @@
     .resume-nudge-dismiss { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0; width: 20px; height: 20px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; align-self: center; }
     .resume-nudge-dismiss:hover { color: #fff; }
     .resume-nudge-text--short { display: none; }
-    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #flag-banners-container .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
-    #flag-banners-container { width: 100%; align-self: stretch; }
+    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } .rwu-flag-banner .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
 
@@ -1943,8 +1942,6 @@
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
-          <!-- Active flag banners — dynamically populated by evaluateAndShowFlag() -->
-          <div id="flag-banners-container"></div>
           <p class="prog-header">🏆 Your Progress</p>
           <ul class="prog-list">
             <li class="prog-item clickable prog-item-col" id="prog-newsletter">
@@ -2214,8 +2211,7 @@
     ];
 
     function evaluateAndShowFlag() {
-      const container = document.getElementById('flag-banners-container');
-      if (!container) return;
+      document.querySelectorAll('.rwu-flag-banner').forEach(el => el.remove());
       const uc = rwuUserCountry.toLowerCase().trim();
       const matches = DASHBOARD_FLAGS.filter(f => {
         if (!uc || uc === 'unknown') return false;
@@ -2223,16 +2219,19 @@
         return f.countries.includes(uc);
       });
       _activeFlagMatch = matches[0] || null;
-      container.innerHTML = '';
+      const anchor = document.getElementById('resume-nudge');
+      if (!anchor) return;
+      let insertRef = anchor;
       matches.forEach((match, idx) => {
+        const isFirst = idx === 0;
+        const isLast = idx === matches.length - 1;
         const el = document.createElement('div');
-        el.className = 'resume-nudge visible';
-        el.style.marginTop = idx === 0 ? '14px' : '6px';
-        el.style.marginBottom = idx === matches.length - 1 ? '12px' : '0';
-        el.style.width = '100%';
-        el.style.cursor = 'pointer';
+        el.className = 'resume-nudge visible rwu-flag-banner';
         el.dataset.flagId = match.id;
         el.setAttribute('role', 'alert');
+        el.style.cursor = 'pointer';
+        if (!isFirst) el.style.marginTop = '0';
+        if (!isLast) el.style.marginBottom = '6px';
         if (match.color === 'blue') el.classList.add('flag-blue');
         else if (match.color === 'green') el.classList.add('flag-green');
         el.innerHTML =
@@ -2265,7 +2264,8 @@
         el.querySelector('.resume-nudge-btn').addEventListener('click', (e) => {
           e.preventDefault(); e.stopPropagation(); openAction();
         });
-        container.appendChild(el);
+        insertRef.insertAdjacentElement('afterend', el);
+        insertRef = el;
       });
     }
 
