@@ -1524,9 +1524,7 @@
     .resume-nudge-dismiss:hover { color: #fff; }
     .resume-nudge-text--short { display: none; }
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #flag-banners-container .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
-    #flag-banners-container { width: 100%; align-self: stretch; margin-top: 14px; margin-bottom: 12px; }
-    #flag-banners-container > .resume-nudge { width: 100%; margin-top: 0 !important; margin-bottom: 0 !important; }
-    #flag-banners-container > .resume-nudge + .resume-nudge { margin-top: 6px !important; }
+    #flag-banners-container { width: 100%; align-self: stretch; }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
 
@@ -2226,9 +2224,12 @@
       });
       _activeFlagMatch = matches[0] || null;
       container.innerHTML = '';
-      matches.forEach(match => {
+      matches.forEach((match, idx) => {
         const el = document.createElement('div');
         el.className = 'resume-nudge visible';
+        el.style.marginTop = idx === 0 ? '14px' : '6px';
+        el.style.marginBottom = idx === matches.length - 1 ? '12px' : '0';
+        el.style.width = '100%';
         el.style.cursor = 'pointer';
         el.dataset.flagId = match.id;
         el.setAttribute('role', 'alert');
