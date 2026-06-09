@@ -2996,8 +2996,10 @@
     })();
 
     // ── form submit ───────────────────────────────────────────
+    let isSubmitting = false;
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (isSubmitting) return;
       const rawVal = input.value.trim().toLowerCase();
       if (!rawVal || !rawVal.includes('@')) return;
       const val = correctEmailTypo(rawVal);
@@ -3009,6 +3011,7 @@
         typoNote.style.display = 'none';
       }
 
+      isSubmitting = true;
       const btn = form.querySelector('.join-btn');
       btn.textContent = '...';
       btn.disabled = true;
@@ -3017,7 +3020,11 @@
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
-      await atCreateOrRestore(val);
+      try {
+        await atCreateOrRestore(val);
+      } finally {
+        isSubmitting = false;
+      }
       gtag('event', 'email_signup', { method: 'landing_page' });
 
       try {
@@ -3239,6 +3246,7 @@
     });
 
     progEmailSubmit.addEventListener('click', async () => {
+      if (isSubmitting) return;
       const rawVal = progEmailInput.value.trim().toLowerCase();
       if (!rawVal || !rawVal.includes('@')) return;
       const val = correctEmailTypo(rawVal);
@@ -3250,6 +3258,7 @@
       } else {
         progTypoNote.style.display = 'none';
       }
+      isSubmitting = true;
       progEmailSubmit.textContent = '...';
       progEmailSubmit.disabled = true;
 
@@ -3270,7 +3279,11 @@
         });
       } catch (_) {}
 
-      await atCreateOrRestore(val);
+      try {
+        await atCreateOrRestore(val);
+      } finally {
+        isSubmitting = false;
+      }
 
       progEmailSubmit.textContent = 'Update →';
       progEmailSubmit.disabled = false;
