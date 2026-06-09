@@ -1705,7 +1705,7 @@
 
     <!-- 6. Email form -->
     <div class="form-wrap">
-      <form action="https://app.kit.com/forms/9465424/subscriptions" method="post" data-sv-form="9465424" data-uid="10575c54d0" class="email-row" id="form">
+      <form class="email-row" id="form">
         <input
           type="email"
           class="email-input"
@@ -2341,7 +2341,8 @@
     async function atCreateOrRestore(email) {
       email = email.toLowerCase();
       await atFetch(email);
-      if (!atId) await atCreate(email);
+      if (!atId) { await atCreate(email); return true; }
+      return false;
     }
 
     function today() { return new Date().toISOString().split('T')[0]; }
@@ -3059,20 +3060,23 @@
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
+      let isNew = false;
       try {
-        await atCreateOrRestore(val);
+        isNew = await atCreateOrRestore(val);
       } finally {
         isSubmitting = false;
       }
       gtag('event', 'email_signup', { method: 'landing_page' });
 
-      try {
-        await fetch('https://app.kit.com/forms/9465424/subscriptions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email_address: val })
-        });
-      } catch (_) {}
+      if (isNew) {
+        try {
+          await fetch('https://app.kit.com/forms/9465424/subscriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email_address: val })
+          });
+        } catch (_) {}
+      }
 
       form.style.transition = 'opacity 0.3s ease';
       form.style.opacity = '0';
@@ -3310,18 +3314,21 @@
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
 
+      let isNew = false;
       try {
-        await fetch('https://app.kit.com/forms/9465424/subscriptions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email_address: val })
-        });
-      } catch (_) {}
-
-      try {
-        await atCreateOrRestore(val);
+        isNew = await atCreateOrRestore(val);
       } finally {
         isSubmitting = false;
+      }
+
+      if (isNew) {
+        try {
+          await fetch('https://app.kit.com/forms/9465424/subscriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email_address: val })
+          });
+        } catch (_) {}
       }
 
       progEmailSubmit.textContent = 'Update →';
