@@ -1523,7 +1523,9 @@
     .resume-nudge-dismiss { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0; width: 20px; height: 20px; line-height: 1; transition: color 0.15s; font-family: 'Inter',sans-serif; align-self: center; }
     .resume-nudge-dismiss:hover { color: #fff; }
     .resume-nudge-text--short { display: none; }
-    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #active-flag-banner .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
+    @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } #flag-banners-container .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
+    #flag-banners-container { margin-top: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; }
+    #flag-banners-container .resume-nudge { margin: 0; }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
 
@@ -1942,15 +1944,8 @@
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
-          <!-- Active flag banner — content driven by Airtable Flags table -->
-          <div class="resume-nudge" id="active-flag-banner" role="alert" style="cursor:pointer">
-            <span class="resume-nudge-text resume-nudge-text--full" id="active-flag-text"></span>
-            <span class="resume-nudge-text resume-nudge-text--short" id="active-flag-text-short"></span>
-            <div class="resume-nudge-actions">
-              <a class="resume-nudge-btn" id="active-flag-cta" href="#" style="display:none">Apply Now →</a>
-              <button class="resume-nudge-dismiss" id="active-flag-dismiss" aria-label="Dismiss">✕</button>
-            </div>
-          </div>
+          <!-- Active flag banners — dynamically populated by evaluateAndShowFlag() -->
+          <div id="flag-banners-container"></div>
           <p class="prog-header">🏆 Your Progress</p>
           <ul class="prog-list">
             <li class="prog-item clickable prog-item-col" id="prog-newsletter">
@@ -2220,26 +2215,56 @@
     ];
 
     function evaluateAndShowFlag() {
-      const banner = document.getElementById('active-flag-banner');
-      if (!banner) return;
+      const container = document.getElementById('flag-banners-container');
+      if (!container) return;
       const uc = rwuUserCountry.toLowerCase().trim();
-      const match = DASHBOARD_FLAGS.find(f => {
+      const matches = DASHBOARD_FLAGS.filter(f => {
         if (!uc || uc === 'unknown') return false;
         if (localStorage.getItem('rwu_flag_dismissed_' + f.id)) return false;
         return f.countries.includes(uc);
       });
-      if (!match) { _activeFlagMatch = null; banner.classList.remove('visible'); return; }
-      _activeFlagMatch = match;
-      document.getElementById('active-flag-text').textContent = match.message;
-      const shortEl = document.getElementById('active-flag-text-short');
-      if (shortEl) shortEl.textContent = match.short || match.message;
-      const ctaBtn = document.getElementById('active-flag-cta');
-      if (ctaBtn) ctaBtn.style.display = '';
-      banner.classList.remove('flag-blue', 'flag-green');
-      if (match.color === 'blue') banner.classList.add('flag-blue');
-      else if (match.color === 'green') banner.classList.add('flag-green');
-      banner.dataset.flagId = match.id;
-      banner.classList.add('visible');
+      _activeFlagMatch = matches[0] || null;
+      container.innerHTML = '';
+      matches.forEach(match => {
+        const el = document.createElement('div');
+        el.className = 'resume-nudge visible';
+        el.style.cursor = 'pointer';
+        el.dataset.flagId = match.id;
+        el.setAttribute('role', 'alert');
+        if (match.color === 'blue') el.classList.add('flag-blue');
+        else if (match.color === 'green') el.classList.add('flag-green');
+        el.innerHTML =
+          '<span class="resume-nudge-text resume-nudge-text--full"></span>' +
+          '<span class="resume-nudge-text resume-nudge-text--short"></span>' +
+          '<div class="resume-nudge-actions">' +
+            '<a class="resume-nudge-btn" href="#">Apply Now →</a>' +
+            '<button class="resume-nudge-dismiss" aria-label="Dismiss">✕</button>' +
+          '</div>';
+        el.querySelector('.resume-nudge-text--full').textContent = match.message;
+        el.querySelector('.resume-nudge-text--short').textContent = match.short || match.message;
+        const dismissBtn = el.querySelector('.resume-nudge-dismiss');
+        const openAction = () => {
+          if (match.id === 'mercor-africa-jun8') {
+            trackResourceClick('Africa Voice Research Flag');
+            mcApply.classList.add('africa-mode');
+            goToCard(mcApply);
+          } else if (match.id === 'mercor-english-jun8') {
+            trackResourceClick('English Generalist Flag — ' + new Date().toISOString());
+            mcApply.classList.add('english-mode');
+            goToCard(mcApply);
+          }
+        };
+        dismissBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          localStorage.setItem('rwu_flag_dismissed_' + match.id, '1');
+          el.remove();
+        });
+        el.addEventListener('click', (e) => { if (e.target !== dismissBtn) openAction(); });
+        el.querySelector('.resume-nudge-btn').addEventListener('click', (e) => {
+          e.preventDefault(); e.stopPropagation(); openAction();
+        });
+        container.appendChild(el);
+      });
     }
 
     function correctEmailTypo(email) {
@@ -3016,7 +3041,7 @@
       btn.textContent = '...';
       btn.disabled = true;
 
-      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_')).forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_') || k === 'rwu_nudge_dismissed').forEach(k => localStorage.removeItem(k));
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
@@ -3265,7 +3290,7 @@
       // Reset session state; atCreateOrRestore will restore from Airtable if
       // the email already exists, or create a fresh record if it doesn't.
       ['rwu_step','rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id'].forEach(k => localStorage.removeItem(k));
-      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_')).forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_') || k === 'rwu_nudge_dismissed').forEach(k => localStorage.removeItem(k));
       atId = null;
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
@@ -3395,19 +3420,6 @@
       });
     }
 
-    // ── active flag banner dismiss + click ────────────
-    const flagBanner = document.getElementById('active-flag-banner');
-    const flagDismissBtn = document.getElementById('active-flag-dismiss');
-
-    if (flagBanner && flagDismissBtn) {
-      flagDismissBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const flagId = flagBanner.dataset.flagId;
-        if (flagId) localStorage.setItem('rwu_flag_dismissed_' + flagId, '1');
-        flagBanner.classList.remove('visible');
-      });
-    }
-
     const africaIntroCta = document.getElementById('africa-intro-cta');
     if (africaIntroCta) {
       africaIntroCta.addEventListener('click', () => {
@@ -3420,39 +3432,6 @@
       englishIntroCta.addEventListener('click', () => {
         mcApply.classList.remove('english-mode');
       });
-    }
-
-    if (flagBanner) {
-      const openAfricaSlide = () => {
-        mcApply.classList.add('africa-mode');
-        goToCard(mcApply);
-      };
-      const openEnglishSlide = () => {
-        mcApply.classList.add('english-mode');
-        goToCard(mcApply);
-      };
-      const openActiveFlag = () => {
-        if (!_activeFlagMatch) return;
-        if (_activeFlagMatch.id === 'mercor-africa-jun8') {
-          trackResourceClick('Africa Voice Research Flag');
-          openAfricaSlide();
-        } else if (_activeFlagMatch.id === 'mercor-english-jun8') {
-          trackResourceClick('English Generalist Flag — ' + new Date().toISOString());
-          openEnglishSlide();
-        }
-      };
-      flagBanner.addEventListener('click', (e) => {
-        if (e.target === flagDismissBtn) return;
-        openActiveFlag();
-      });
-      const flagCtaBtn = document.getElementById('active-flag-cta');
-      if (flagCtaBtn) {
-        flagCtaBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          openActiveFlag();
-        });
-      }
     }
 
     // ── refer a friend modal ──────────────────────────────────
