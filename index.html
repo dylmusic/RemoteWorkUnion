@@ -1526,6 +1526,8 @@
     @media (max-width: 480px) { .resume-nudge { height: 34px; padding: 0 10px; gap: 0; justify-content: space-between; } .resume-nudge-text--full { display: none; } .resume-nudge-text--short { display: inline-flex; align-items: center; flex: 0 0 auto; font-size: 14px; } .resume-nudge-info { display: inline-flex; } .resume-nudge-actions { display: contents; } .resume-nudge-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; flex: 0 0 auto; } .rwu-flag-banner .resume-nudge-text--short { font-size: 12px; font-weight: 600; } }
     .resume-nudge.flag-blue { background: #1d4ed8; }
     .resume-nudge.flag-green { background: #16a34a; }
+    #flag-banners-container { display: flex; flex-direction: column; gap: 6px; }
+    #flag-banners-container .resume-nudge { margin-top: 0; margin-bottom: 0; }
 
     /* Refer a Friend */
     .invite-toggle {
@@ -1942,6 +1944,7 @@
               <button class="resume-nudge-dismiss" id="resume-nudge-dismiss" aria-label="Dismiss">✕</button>
             </div>
           </div>
+          <div id="flag-banners-container"></div>
           <p class="prog-header">🏆 Your Progress</p>
           <ul class="prog-list">
             <li class="prog-item clickable prog-item-col" id="prog-newsletter">
@@ -2211,7 +2214,8 @@
     ];
 
     function evaluateAndShowFlag() {
-      document.querySelectorAll('.rwu-flag-banner').forEach(el => el.remove());
+      const container = document.getElementById('flag-banners-container');
+      if (container) container.innerHTML = '';
       const uc = rwuUserCountry.toLowerCase().trim();
       const matches = DASHBOARD_FLAGS.filter(f => {
         if (!uc || uc === 'unknown') return false;
@@ -2219,19 +2223,14 @@
         return f.countries.includes(uc);
       });
       _activeFlagMatch = matches[0] || null;
-      const anchor = document.getElementById('resume-nudge');
-      if (!anchor) return;
-      let insertRef = anchor;
-      matches.forEach((match, idx) => {
-        const isFirst = idx === 0;
-        const isLast = idx === matches.length - 1;
+      const nudge = document.getElementById('resume-nudge');
+      if (!container) return;
+      matches.forEach((match) => {
         const el = document.createElement('div');
         el.className = 'resume-nudge visible rwu-flag-banner';
         el.dataset.flagId = match.id;
         el.setAttribute('role', 'alert');
         el.style.cursor = 'pointer';
-        if (!isFirst) el.style.marginTop = '0';
-        if (!isLast) el.style.marginBottom = '6px';
         if (match.color === 'blue') el.classList.add('flag-blue');
         else if (match.color === 'green') el.classList.add('flag-green');
         el.innerHTML =
@@ -2259,14 +2258,24 @@
           e.stopPropagation();
           localStorage.setItem('rwu_flag_dismissed_' + match.id, '1');
           el.remove();
+          if (container.children.length === 0) {
+            container.style.marginTop = '0';
+            if (nudge) nudge.style.marginBottom = '';
+          }
         });
         el.addEventListener('click', (e) => { if (e.target !== dismissBtn) openAction(); });
         el.querySelector('.resume-nudge-btn').addEventListener('click', (e) => {
           e.preventDefault(); e.stopPropagation(); openAction();
         });
-        insertRef.insertAdjacentElement('afterend', el);
-        insertRef = el;
+        container.appendChild(el);
       });
+      if (container.children.length > 0 && nudge && nudge.classList.contains('visible')) {
+        nudge.style.marginBottom = '0';
+        container.style.marginTop = '6px';
+      } else {
+        container.style.marginTop = '0';
+        if (nudge) nudge.style.marginBottom = '';
+      }
     }
 
     function correctEmailTypo(email) {
@@ -3400,6 +3409,9 @@
         e.stopPropagation();
         localStorage.setItem('rwu_nudge_dismissed', '1');
         nudgeBanner.classList.remove('visible');
+        nudgeBanner.style.marginBottom = '';
+        const fc = document.getElementById('flag-banners-container');
+        if (fc && fc.children.length > 0) fc.style.marginTop = '0';
         gtag('event', 'resume_nudge_dismissed');
       });
       if (nudgeInfoBtn) {
