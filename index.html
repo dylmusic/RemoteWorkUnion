@@ -2307,6 +2307,7 @@
         el.querySelector('.resume-nudge-text--short').textContent = match.short || match.message;
         const dismissBtn = el.querySelector('.resume-nudge-dismiss');
         const openAction = () => {
+          gtag('event', 'flag_click', { flag_id: match.id, country: rwuUserCountry });
           if (match.id === 'mercor-africa-jun8') {
             trackResourceClick('Africa Voice Research Flag');
             mcApply.classList.add('africa-mode');
@@ -2319,6 +2320,7 @@
         };
         dismissBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          gtag('event', 'flag_dismissed', { flag_id: match.id });
           localStorage.setItem('rwu_flag_dismissed_' + match.id, '1');
           el.remove();
           if (container.children.length === 0) {
@@ -3174,7 +3176,11 @@
       } finally {
         isSubmitting = false;
       }
-      gtag('event', 'email_signup', { method: 'landing_page' });
+      if (isNew) {
+        gtag('event', 'email_signup', { method: 'landing_page', is_new: true });
+      } else {
+        gtag('event', 'returning_login', { method: 'landing_page' });
+      }
 
       if (isNew) {
         try {
@@ -3635,6 +3641,7 @@
 
       if (copyBtn) {
         copyBtn.addEventListener('click', () => {
+          gtag('event', 'referral_copy', { referral_code: rwuRefCode });
           const link = 'https://www.remoteworkunion.com/?ref=' + rwuRefCode;
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(link).then(() => {
