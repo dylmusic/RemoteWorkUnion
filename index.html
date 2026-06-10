@@ -896,6 +896,20 @@
     #mc-apply.english-mode #mc-main { display: none; }
     #mc-apply.english-mode #english-intro { display: flex; }
 
+    /* micro1 view */
+    #m1-apply {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #m1-apply.show { display: flex; }
+    #m1-apply.animate { opacity: 1; transform: translateY(0); }
+    #m1-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
     /* RentAHuman view */
     #rh-apply {
       display: none;
@@ -1734,6 +1748,7 @@
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
             <span class="step-dot"></span>
+            <span class="step-dot"></span>
           </div>
           <p class="hs-tag">&#10003; Now Hiring</p>
           <p class="hs-headline">Apply for Handshake AI</p>
@@ -1802,6 +1817,7 @@
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
               <span class="step-dot current"></span>
+              <span class="step-dot"></span>
             </div>
             <p class="hs-tag">Special Opportunity</p>
             <p class="flag-intro-subtitle">Native English Speakers<br>Earn $70/hr</p>
@@ -1819,6 +1835,7 @@
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
               <span class="step-dot current"></span>
+              <span class="step-dot"></span>
             </div>
             <p class="hs-tag">Special Opportunity</p>
             <p class="flag-intro-subtitle">Nigeria &amp; Africa<br>Earn $20/hr</p>
@@ -1836,6 +1853,7 @@
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
               <span class="step-dot current"></span>
+              <span class="step-dot"></span>
             </div>
             <p class="hs-tag">&#10003; Now Hiring</p>
             <p class="hs-headline">Apply to Mercor AI</p>
@@ -1870,6 +1888,49 @@
             <button class="card-action-link" id="mc-skip">⏭ Skip this opportunity for now</button>
             <button class="card-action-link" id="mc-hide">✕ Not for me</button>
           </div>
+        </div>
+        <!-- Step 5: micro1 AI -->
+        <div id="m1-apply">
+          <button class="dash-btn" id="m1-dash-btn">⊞ Dashboard</button>
+          <div class="skipped-banner" id="m1-skipped-banner">⚠ You skipped this opportunity</div>
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+          </div>
+          <p class="hs-tag">&#10003; Now Hiring</p>
+          <p class="hs-headline">Apply to micro1 AI</p>
+          <p class="hs-subline">Get matched with top AI research labs and remote companies</p>
+          <div class="card-process" id="m1-process">
+            <button class="card-process-toggle" onclick="document.getElementById('m1-process').classList.toggle('open')">
+              <span class="card-process-chevron"></span> View Process
+            </button>
+            <div class="card-process-body">
+              <p class="card-process-time">⏱ 30min&ndash;1 hour &middot; Requires AI interview</p>
+              <ol class="card-process-steps">
+                <li><span class="step-num">1</span><span>Sign up on micro1 with our referral</span></li>
+                <li><span class="step-num">2</span><span>Find roles that are the best fit for you</span></li>
+                <li><span class="step-num">3</span><span>Submit your resume (use our <a href="/blog/remote-work-resume-guide" target="_blank" rel="noopener noreferrer" class="card-process-link">Resume Optimizer</a>)</span></li>
+                <li><span class="step-num">4</span><span>Complete micro1 AI Interview (guide coming soon)</span></li>
+                <li><span class="step-num">5</span><span>Apply for 10+ roles to get matched faster</span></li>
+              </ol>
+            </div>
+          </div>
+          <span class="hs-salary">Earn $50&ndash;$200/hr</span>
+          <a class="hs-cta" id="m1-cta" href="https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral" target="_blank" rel="noopener noreferrer">Get Our Referral &rarr;</a>
+          <button class="hs-confirm-btn" id="m1-confirm">✅ I finished applying &mdash; confirm!</button>
+          <button class="hs-cb-btn" id="m1-already">
+            <span class="hs-cb" id="m1-cb">
+              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,4 3.8,7 9,1"/>
+              </svg>
+            </span>
+            I&rsquo;ve already applied to micro1 AI
+          </button>
+          <button class="undo-link" id="m1-undo">↩ I did not apply yet</button>
+          <button class="card-action-link" id="m1-skip">⏭ Skip this opportunity for now</button>
+          <button class="card-action-link" id="m1-hide">✕ Not for me</button>
         </div>
         <!-- Step 5: RentAHuman AI -->
         <div id="rh-apply">
@@ -1973,6 +2034,13 @@
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
+            </li>
+            <li class="prog-item anim-in" id="prog-m1" style="animation-delay:0.6s">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Apply to micro1 AI
+              <span class="prog-skipped-badge">⚠ Skipped</span>
+              <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-m1-next">Next &rarr;</button>
             </li>
             <!-- ── More Opportunities toggle ─────────────────── -->
             <li class="prog-more-toggle-li" id="prog-more-toggle-li">
@@ -2432,6 +2500,7 @@
           if (f['Handshake Applied'] === true)  applied.push('handshake');
           if (f['Outlier Applied'] === true)    applied.push('outlier');
           if (f['Mercor Applied'] === true)     applied.push('mercor');
+          if (f['Micro1 Applied'] === true)     applied.push('micro1');
           if (f['RentAHuman Applied'] === true) applied.push('rentahuman');
           localStorage.setItem('rwu_applied', applied.join(','));
           localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
@@ -2478,6 +2547,10 @@
     const mcCb        = document.getElementById('mc-cb');
     const mcCta       = document.getElementById('mc-cta');
     const mcAlready   = document.getElementById('mc-already');
+    const m1Apply     = document.getElementById('m1-apply');
+    const m1Cb        = document.getElementById('m1-cb');
+    const m1Cta       = document.getElementById('m1-cta');
+    const m1Already   = document.getElementById('m1-already');
     const rhApply     = document.getElementById('rh-apply');
     const rhCb        = document.getElementById('rh-cb');
     const rhCta       = document.getElementById('rh-cta');
@@ -2489,12 +2562,14 @@
     const hsDashBtn      = document.getElementById('hs-dash-btn');
     const otDashBtn      = document.getElementById('ot-dash-btn');
     const mcDashBtn      = document.getElementById('mc-dash-btn');
+    const m1DashBtn      = document.getElementById('m1-dash-btn');
     const rhDashBtn      = document.getElementById('rh-dash-btn');
     const progBarFill    = document.getElementById('prog-bar-fill');
     const progPct        = document.getElementById('prog-pct');
     const progHs         = document.getElementById('prog-hs');
     const progOt         = document.getElementById('prog-ot');
     const progMc         = document.getElementById('prog-mc');
+    const progM1         = document.getElementById('prog-m1');
     const progRh         = document.getElementById('prog-rh');
     const hsSkip         = document.getElementById('hs-skip');
     const hsHide         = document.getElementById('hs-hide');
@@ -2502,6 +2577,8 @@
     const otHide         = document.getElementById('ot-hide');
     const mcSkip         = document.getElementById('mc-skip');
     const mcHide         = document.getElementById('mc-hide');
+    const m1Skip         = document.getElementById('m1-skip');
+    const m1Hide         = document.getElementById('m1-hide');
     const rhSkip         = document.getElementById('rh-skip');
     const rhHide         = document.getElementById('rh-hide');
     const applyNowBtn    = document.getElementById('apply-now');
@@ -2509,14 +2586,17 @@
     const hsConfirm      = document.getElementById('hs-confirm');
     const otConfirm      = document.getElementById('ot-confirm');
     const mcConfirm      = document.getElementById('mc-confirm');
+    const m1Confirm      = document.getElementById('m1-confirm');
     const rhConfirm      = document.getElementById('rh-confirm');
     const hsUndo         = document.getElementById('hs-undo');
     const otUndo         = document.getElementById('ot-undo');
     const mcUndo         = document.getElementById('mc-undo');
+    const m1Undo         = document.getElementById('m1-undo');
     const rhUndo         = document.getElementById('rh-undo');
     const hsSkippedBanner = document.getElementById('hs-skipped-banner');
     const otSkippedBanner = document.getElementById('ot-skipped-banner');
     const mcSkippedBanner = document.getElementById('mc-skipped-banner');
+    const m1SkippedBanner = document.getElementById('m1-skipped-banner');
     const rhSkippedBanner = document.getElementById('rh-skipped-banner');
     const progNewsletter  = document.getElementById('prog-newsletter');
     const progEmailWrap   = document.getElementById('prog-email-wrap');
@@ -2529,6 +2609,7 @@
     const progHsNext             = document.getElementById('prog-hs-next');
     const progOtNext             = document.getElementById('prog-ot-next');
     const progMcNext             = document.getElementById('prog-mc-next');
+    const progM1Next             = document.getElementById('prog-m1-next');
     const progRhNext             = document.getElementById('prog-rh-next');
     const rgTeaser               = document.getElementById('rg-teaser');
     const rgDashBtn              = document.getElementById('rg-dash-btn');
@@ -2563,6 +2644,10 @@
       fadeOut(hsApply, () => showView(mcApply));
     }
 
+    function showMicro1() {
+      fadeOut(mcApply, () => showView(m1Apply));
+    }
+
     function showOutlier() {
       fadeOut(mcApply, () => showView(otApply));
     }
@@ -2571,8 +2656,8 @@
       fadeOut(otApply, () => showView(rhApply));
     }
 
-    function showProgress() {
-      fadeOut(mcApply, () => {
+    function showProgress(fromEl) {
+      fadeOut(fromEl || m1Apply, () => {
         progBarFill.style.width = '0%';
         showView(hsProgress);
         setTimeout(refreshDashboard, 50);
@@ -2636,7 +2721,7 @@
 
     function updateDashBtns() {
       const label = fromDash ? '← Back to Dashboard' : '⊞ Dashboard';
-      [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
+      [hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
     }
 
 
@@ -2648,6 +2733,7 @@
       const stepMap = [
         { key: 'handshake' },
         { key: 'mercor' },
+        { key: 'micro1' },
       ];
       const visible     = stepMap.filter(s => !hidden.includes(s.key));
       const active      = visible.filter(s => !skipped.includes(s.key));
@@ -2708,6 +2794,7 @@
       const items = [
         { el: progHs, key: 'handshake',  minStep: 2 },
         { el: progMc, key: 'mercor',     minStep: 3 },
+        { el: progM1, key: 'micro1',     minStep: 6 },
       ];
       items.forEach(({ el, key, minStep }) => {
         if (hidden.includes(key)) { el.style.display = 'none'; return; }
@@ -2796,6 +2883,8 @@
           isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && !applied.includes('handshake') },
         { nextBtn: progMcNext, arrow: progMc.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('mercor') && !skipped.includes('mercor') && !applied.includes('mercor') },
+        { nextBtn: progM1Next, arrow: progM1.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('micro1') && !skipped.includes('micro1') && !applied.includes('micro1') },
       ];
       let assigned = false;
       candidates.forEach(({ nextBtn, arrow, isIncomplete }) => {
@@ -2812,7 +2901,7 @@
 
     function refreshHiddenRoles() {
       const hidden = getHidden();
-      const roleNames = { handshake: 'Handshake AI', outlier: 'Outlier AI', mercor: 'Mercor AI', rentahuman: 'RentAHuman AI' };
+      const roleNames = { handshake: 'Handshake AI', outlier: 'Outlier AI', mercor: 'Mercor AI', micro1: 'micro1 AI', rentahuman: 'RentAHuman AI' };
       if (hidden.length === 0) {
         hiddenRolesSection.classList.remove('visible', 'open');
         return;
@@ -2861,6 +2950,16 @@
         mcSkippedBanner.classList.toggle('show', isSkipped);
         mcCta.style.removeProperty('display');
         mcConfirm.classList.remove('show');
+      } else if (el === m1Apply) {
+        const isSkipped = skipped.includes('micro1');
+        const isApplied = applied.includes('micro1');
+        m1Cb.classList.toggle('checked', isApplied);
+        m1Undo.classList.toggle('show', isApplied || isSkipped);
+        m1Undo.textContent = isSkipped ? '↩ I did not apply yet — Reset this step' : '↩ I did not apply yet';
+        m1Skip.classList.toggle('selected', isSkipped);
+        m1SkippedBanner.classList.toggle('show', isSkipped);
+        m1Cta.style.removeProperty('display');
+        m1Confirm.classList.remove('show');
       } else if (el === rhApply) {
         const isSkipped = skipped.includes('rentahuman');
         const isApplied = applied.includes('rentahuman');
@@ -2969,7 +3068,7 @@
     }
 
     function hideAllCards() {
-      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => {
+      [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => {
         el.classList.remove('show', 'animate', 'fade-out');
         el.style.display = 'none';
       });
@@ -2982,7 +3081,7 @@
       updateDashBtns();
       progBarFill.style.width = '0%';
       hsCard.classList.remove('glow');
-      const allCards = [hsApply, otApply, mcApply, rhApply, rgTeaser];
+      const allCards = [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser];
       const visible = allCards.find(el =>
         el.style.display !== 'none' &&
         !el.classList.contains('fade-out') &&
@@ -3022,7 +3121,7 @@
 
       form.style.display = 'none';
       // hide all cards — only the dashboard shows on return
-      [hsApply, otApply, mcApply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
+      [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
@@ -3168,16 +3267,41 @@
       addApplied('mercor');
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
-      setTimeout(fromDash ? goToDashboard : showProgress, 600);
+      setTimeout(fromDash ? goToDashboard : showMicro1, 600);
     });
 
     mcAlready.addEventListener('click', () => {
       gtag('event', 'step_already_applied', { platform: 'mercor' });
       unskipStep('mercor');
       addApplied('mercor');
-      checkAnimate(fromDash ? goToDashboard : showProgress, mcCb, mcUndo);
+      checkAnimate(fromDash ? goToDashboard : showMicro1, mcCb, mcUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
+    });
+
+    // ── micro1 card ───────────────────────────────────────────
+    m1Cta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'micro1' });
+      m1Cta.style.display = 'none';
+      m1Confirm.classList.add('show');
+    });
+
+    m1Confirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'micro1' });
+      unskipStep('micro1');
+      addApplied('micro1');
+      localStorage.setItem('rwu_step', '6');
+      atPatch({ 'Micro1 Applied': true, 'Current Step': 6 });
+      setTimeout(fromDash ? goToDashboard : showProgress, 600);
+    });
+
+    m1Already.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'micro1' });
+      unskipStep('micro1');
+      addApplied('micro1');
+      checkAnimate(fromDash ? goToDashboard : showProgress, m1Cb, m1Undo);
+      localStorage.setItem('rwu_step', '6');
+      atPatch({ 'Micro1 Applied': true, 'Current Step': 6 });
     });
 
     // ── RentAHuman card ───────────────────────────────────────
@@ -3251,6 +3375,22 @@
       unskipStep('mercor');
       unhideStep('mercor');
       atPatch({ 'Mercor Applied': false });
+      if (fromDash) goToDashboard();
+    });
+
+    m1Undo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'micro1' });
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      m1Cb.classList.remove('checked');
+      m1Undo.classList.remove('show');
+      m1Undo.textContent = '↩ I did not apply yet';
+      hsCard.classList.remove('glow');
+      m1Skip.classList.remove('selected');
+      m1SkippedBanner.classList.remove('show');
+      removeApplied('micro1');
+      unskipStep('micro1');
+      unhideStep('micro1');
+      atPatch({ 'Micro1 Applied': false });
       if (fromDash) goToDashboard();
     });
 
@@ -3348,6 +3488,8 @@
     otHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'outlier'});    hideStep('outlier');    goToDashboard(); });
     mcSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'mercor'});     skipStep('mercor');     goToDashboard(); });
     mcHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'mercor'});     hideStep('mercor');     goToDashboard(); });
+    m1Skip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'micro1'});     skipStep('micro1');     goToDashboard(); });
+    m1Hide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'micro1'});     hideStep('micro1');     goToDashboard(); });
     rhSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'rentahuman'}); skipStep('rentahuman'); goToDashboard(); });
     rhHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'rentahuman'}); hideStep('rentahuman'); goToDashboard(); });
     applyNowBtn.addEventListener('click', () => {
@@ -3373,7 +3515,7 @@
     });
 
         // ── dashboard nav ─────────────────────────────────────────
-    [hsDashBtn, otDashBtn, mcDashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
+    [hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
     if (progResumeGuide) {
       progResumeGuide.addEventListener('click', (e) => {
         if (!localStorage.getItem('rwu_email')) return;
@@ -3386,11 +3528,13 @@
     progHs.addEventListener('click', () => goToCard(hsApply));
     progOt.addEventListener('click', () => goToCard(otApply));
     progMc.addEventListener('click', () => goToCard(mcApply));
+    progM1.addEventListener('click', () => goToCard(m1Apply));
     progRh.addEventListener('click', () => goToCard(rhApply));
     progNewsletterNext.addEventListener('click', (e) => { e.stopPropagation(); goToForm(); });
     progHsNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(hsApply); });
     progOtNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(otApply); });
     progMcNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(mcApply); });
+    progM1Next.addEventListener('click', (e) => { e.stopPropagation(); goToCard(m1Apply); });
     progRhNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(rhApply); });
 
     // ── modal ─────────────────────────────────────────────────

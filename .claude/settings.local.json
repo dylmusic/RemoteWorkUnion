@@ -164,7 +164,18 @@
       "Bash(git -C /Users/dylanrhodes/Documents/remoteworkunion status --short)",
       "Bash(git -C /Users/dylanrhodes/Documents/remoteworkunion diff --cached --stat)",
       "Bash(git -C /Users/dylanrhodes/Documents/remoteworkunion add work.html)",
-      "Bash(git -C /Users/dylanrhodes/Documents/remoteworkunion diff index.html)"
+      "Bash(git -C /Users/dylanrhodes/Documents/remoteworkunion diff index.html)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const h=fs.readFileSync\\('index.html','utf8'\\);const blocks=[...h.matchAll\\(/<script>\\([\\\\s\\\\S]*?\\)<\\\\/script>/g\\)].map\\(m=>m[1]\\);let ok=true;blocks.forEach\\(\\(b,i\\)=>{try{new Function\\(b\\);}catch\\(e\\){ok=false;console.log\\('Block '+i+' ERROR: '+e.message\\);}}\\);console.log\\(ok?'ALL SCRIPT BLOCKS PARSE OK':'PARSE ERRORS ABOVE'\\);\")",
+      "Bash(node -e ' *)",
+      "Bash(npm ls *)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-sandbox --enable-logging=stderr --v=0 --virtual-time-budget=4000 --dump-dom \"http://localhost:8799/index.html\")",
+      "Bash(echo \"exit: $?\")",
+      "Bash(node *)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"http.server 8799\")",
+      "Bash(git --no-pager diff --stat)",
+      "Bash(git --no-pager diff index.html)",
+      "Bash(git *)"
     ],
     "additionalDirectories": [
       "/Users/dylanrhodes/Downloads/RemoteWorkUnion_Articles_1-3_PDF_and_Images/images",

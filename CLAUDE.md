@@ -229,6 +229,32 @@ Inline style classes to include in every article:
 | 109 | data-entry-remote-jobs-vs-ai-data-annotation-jobs | Data Entry Remote Jobs vs AI Data Annotation Jobs: What's the Difference? |
 | 110 | upwork-usajobs-robert-half-job-boards-remote-ai-work | Upwork, USAJobs, Robert Half, and Job Boards: Where Remote AI Work Actually Appears |
 
+## Dashboard opportunity cards & flow
+
+### Main flow (4 steps)
+The dashboard journey is **Join → Handshake → Mercor → micro1**. These are the 4 tracked steps that drive the progress bar. Outlier AI and RentAHuman are **bonus cards** that live in the "More Opportunities" dropdown and are NOT part of the 4-step journey.
+
+Card order in the DOM (inside `#hs-card`): `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
+
+### Step dot indicators (4-dot journey)
+The top-of-card dots reflect the 4-step flow:
+- Handshake: 4 dots — 1 filled (`done`), animation on dot 2 (`current`), 2 empty
+- Mercor (all 3 dot sets: `#mc-main`, `#africa-intro`, `#english-intro`): 4 dots — 2 filled, animation on dot 3, 1 empty
+- micro1 (`#m1-apply`): 4 dots — 3 filled, animation on dot 4
+- Outlier & RentAHuman (bonus): unchanged 2-dot setup
+
+### micro1 card (`#m1-apply`)
+Modeled exactly on the Mercor card's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Has the same "already applied" checkbox / undo / skip / hide controls. Uses `rwu_step` value `6` and Airtable field **`Micro1 Applied`** (boolean, mirrors `Mercor Applied`). Applied state stored under the `micro1` key in `rwu_applied`.
+
+### Progress / 100% logic
+`updateProgressBar()` `stepMap = [handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). 100% requires **Join + Handshake + Mercor + micro1** all complete. Skipped/hidden steps are excluded from the denominator. The resume optimizer nudge fires at `pct === 100`, so it now requires all 4 steps.
+
+### Flow routing (key handlers)
+- Mercor confirm/already → `showMicro1` (non-dash) or `goToDashboard` (from dashboard)
+- micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`
+- `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard
+- Flag banners (Africa/English) still route into the **Mercor** card intro slides only — micro1 has no flag.
+
 ## Referral System
 
 ### Airtable fields (already exist)
