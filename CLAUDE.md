@@ -1,64 +1,46 @@
 # Remote Work Union — Claude Context
 
-## Project
-Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framework, no build step.
-Live at `https://www.remoteworkunion.com/`.
+Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framework, no build step. Live at `https://www.remoteworkunion.com/`. Backend is one serverless function, `api/airtable.js`, fronting an Airtable base ("Newsletter Subscribers" table).
 
-## After EVERY change — always deploy
-Commit and push to GitHub. Vercel deploys automatically on push to `main`.
-```
-git add <files> && git commit -m "..." && git push origin main
-```
-Never stop at a local edit. Always push before reporting the task done.
+---
 
-## Referral share button on blog articles
-All blog articles include `<div id="rwu-ref-share"></div>` (placed just above `<span class="article-tag">`, below the hero image) and `<script src="/blog/referral-share.js"></script>` before `</body>`. The script reads `localStorage.rwu_email` and `localStorage.rwu_ref_code` at runtime:
-- Signed in: renders a ghost pill button that copies `https://www.remoteworkunion.com/blog/[slug]?ref=THEIRCODE` to clipboard
-- Signed out: renders a "Join to get your referral link" button that navigates to the homepage
-The `rwu_ref_code` localStorage key is set in `index.html` whenever `rwuRefCode` is assigned (in `atCreate` and `atFetch`). Styles live in `blog/article-styles.css` (`.rwu-ref-share-btn`).
+## Critical rules (read first)
 
-## Every time you add a new article, do exactly 4 things:
-1. Create `/blog/[slug].html` (use article 46 as the template reference: `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`)
-2. Add an article card to `/blog/index.html` — insert before the previous newest article comment
-3. Add the URL to `/sitemap.xml` and update the blog `<lastmod>` date
-4. Delete the source package folder(s) and zip(s) from `/Users/dylanrhodes/Downloads/`
-
-## Deploying new static files to Vercel — CRITICAL
-`vercel.json` has an explicit `builds` whitelist. Any new file added to the project root that needs to be publicly accessible (images, SVGs, fonts, etc.) **MUST** be added to the `builds` array in `vercel.json` or Vercel will 404 it silently. Always check `vercel.json` when adding new root-level static assets.
-
-Example entry to add:
-```json
-{ "src": "logo.svg", "use": "@vercel/static" }
-```
-
-Files inside `blog/` are already covered by the `blog/**` glob — only root-level files need explicit entries.
+1. **Always deploy after every change.** Vercel auto-deploys on push to `main`. Never stop at a local edit:
+   ```
+   git add <files> && git commit -m "..." && git push origin main
+   ```
+2. **New root-level static assets must be whitelisted in `vercel.json`.** `vercel.json` uses an explicit `builds` array. Any new file in the project *root* that must be publicly served (images, SVGs, fonts) **must** get its own entry or Vercel silently 404s it. Files under `blog/` are already covered by the `blog/**` glob.
+   ```json
+   { "src": "logo.svg", "use": "@vercel/static" }
+   ```
 
 ## Constants
-- Google Analytics: `G-J84MSTXMXF`
-- Twitter: `@RemoteWorkUnion`
-- Canonical base: `https://www.remoteworkunion.com/blog/[slug]`
-- OG fallback image: `https://www.remoteworkunion.com/og.png`
-- Published date ISO format: `2026-06-04T00:00:00Z` (use today's date)
-- Display date format: `June 4, 2026`
 
-## Dynamic nav buttons
+| Key | Value |
+|-----|-------|
+| Google Analytics | `G-J84MSTXMXF` |
+| Twitter | `@RemoteWorkUnion` |
+| Canonical base | `https://www.remoteworkunion.com/blog/[slug]` |
+| OG fallback image | `https://www.remoteworkunion.com/og.png` |
+| Published ISO date | `2026-06-04T00:00:00Z` (use today's date) |
+| Display date | `June 4, 2026` |
 
-### Blog pages (all `blog/*.html`)
-The top-right nav anchor has `id="blog-nav-home-btn"`, its label is wrapped in `<span>`, and an inline `<script>` immediately after the `</a>` (inside `<nav class="blog-nav">`) sets the span to `Join Free` when `localStorage.getItem('rwu_email')` is falsy. The href always points to `https://www.remoteworkunion.com/`. Logo + label in both states. See `blog/article-template.html` for the exact markup.
+---
 
-### work.html
-The Join Free link has `id="nav-cta-btn"` and an inline `<script>` immediately after `</nav>` checks `localStorage.rwu_email` — if present, swaps href to `https://www.remoteworkunion.com/`, injects `logo.svg + "Dashboard →"`, and applies `display:inline-flex`.
+## Adding a new article — do exactly 4 things
 
-## Images
-- Destination: `/blog/images/`
-- Source: usually in `/Users/dylanrhodes/Downloads/RemoteWorkUnion_Article[NN]_*/`
-- Naming convention (newer articles): `article[NN]_main_1200x630.png`, `article[NN]_[descriptor]_1200x630.png`
-- All images: 1200×630px
+1. Create `/blog/[slug].html`. Template reference: article 46, `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`.
+2. Add an article card to `/blog/index.html`, inserted **before** the previous newest-article comment.
+3. Add the URL to `/sitemap.xml` and bump the blog `<lastmod>` date.
+4. Delete the source package folder(s) and zip(s) from `/Users/dylanrhodes/Downloads/`.
 
-### og/twitter image dimensions
-`og:image:width`, `og:image:height`, `twitter:image:width`, and `twitter:image:height` must match the **actual pixel dimensions** of the image file — do not assume 1200×630. Always include all four tags explicitly. Run `sips -g pixelWidth -g pixelHeight <file>` to confirm dimensions before setting.
+### Article page structure
+- **`<head>`** — title, meta description, keywords, canonical, OG tags, Twitter tags, GA script, 3× JSON-LD schemas (BlogPosting, BreadcrumbList, FAQPage), fonts, `article-styles.css`, inline `<style>` block.
+- **`<body>`** — read-progress bar, nav, `<article>`, breadcrumb, hero img, tag + h1 + subtitle + meta + divider, top CTA, body div, bottom CTA block, share row, related-articles grid, footer, scroll-progress script.
+- Inline `<style>` classes every article needs (copy the full block from article 33 or 34): `#read-progress`, `.breadcrumb`, `.article-cta-top`, `.cta-btn-sm`, `.tip-box`, `.pull-quote`, `.article-img-full`, `.share-row`, `.share-btn`, `.related-grid`, `.related-card`, `.related-card-tag/.title/.cta`, `.faq-item`, `.toc`, `.mid-cta`, `.positioning-example`.
 
-## Article card HTML (for index.html)
+### Article card HTML (for `/blog/index.html`)
 ```html
 <!-- ARTICLE NN -->
 <a class="article-card" href="/blog/[slug]" onclick="gtag('event','article_opened',{article_slug:'[slug]'})">
@@ -77,7 +59,7 @@ The Join Free link has `id="nav-cta-btn"` and an inline `<script>` immediately a
 </a>
 ```
 
-## Sitemap entry
+### Sitemap entry
 ```xml
 <url>
   <loc>https://www.remoteworkunion.com/blog/[slug]</loc>
@@ -87,15 +69,134 @@ The Join Free link has `id="nav-cta-btn"` and an inline `<script>` immediately a
 </url>
 ```
 
-## Article HTML structure (key sections in order)
-1. `<head>` — title, meta description, keywords, canonical, OG tags, Twitter tags, GA script, 3× JSON-LD schemas (BlogPosting, BreadcrumbList, FAQPage), fonts, article-styles.css, inline `<style>` block
-2. `<body>` — read-progress bar, nav, `<article>`, breadcrumb, hero img, tag + h1 + subtitle + meta + divider, top CTA, article body div, bottom CTA block, share row, related articles grid, footer, scroll-progress script
+### Images
+- Destination `/blog/images/`. Source usually `/Users/dylanrhodes/Downloads/RemoteWorkUnion_Article[NN]_*/`.
+- Naming: `article[NN]_main_1200x630.png`, `article[NN]_[descriptor]_1200x630.png`. All 1200×630.
+- **OG/Twitter dimensions must match the actual file.** Always set all four tags (`og:image:width/height`, `twitter:image:width/height`). Don't assume 1200×630 — verify with `sips -g pixelWidth -g pixelHeight <file>`.
 
-Inline style classes to include in every article:
-`#read-progress`, `.breadcrumb`, `.article-cta-top`, `.cta-btn-sm`, `.tip-box`, `.pull-quote`, `.article-img-full`, `.share-row`, `.share-btn`, `.related-grid`, `.related-card`, `.related-card-tag/.title/.cta`, `.faq-item`, `.toc`, `.mid-cta`, `.positioning-example`
-(Copy the full `<style>` block from article 33 or 34 as the base.)
+### Cross-linking targets (platforms referenced across articles)
+- Mercor → `/blog/how-to-get-a-mercor-remote-job`
+- Outlier AI → `/blog/how-outlier-ai-works-remote-ai-training-jobs-pay-application-tips`
+- Handshake AI → `/blog/how-handshake-ai-works-ai-fellowships-referrals-remote-work`
+- Platform comparison → `/blog/best-remote-work-sites-ai-training-expert-review-ai-research`
+- Resume guide → `/blog/remote-work-resume-guide`
 
-## All existing articles (slug → title → number)
+---
+
+## Dynamic nav buttons
+
+- **Blog pages (`blog/*.html`)** — top-right nav anchor `id="blog-nav-home-btn"`, label in a `<span>`. An inline `<script>` right after the `</a>` (inside `<nav class="blog-nav">`) sets the span to `Join Free` when `localStorage.rwu_email` is falsy. Href always `https://www.remoteworkunion.com/`. Logo + label in both states. Exact markup in `blog/article-template.html`.
+- **`work.html`** — Join Free link `id="nav-cta-btn"`. Inline `<script>` right after `</nav>` checks `localStorage.rwu_email`; if present, swaps href to the homepage, injects `logo.svg + "Dashboard →"`, sets `display:inline-flex`.
+
+## Referral share button (blog articles)
+
+Every article has `<div id="rwu-ref-share"></div>` (just above `<span class="article-tag">`, below the hero image) and `<script src="/blog/referral-share.js"></script>` before `</body>`. At runtime the script reads `localStorage.rwu_email` and `localStorage.rwu_ref_code`:
+- **Signed in** → ghost pill that copies `https://www.remoteworkunion.com/blog/[slug]?ref=THEIRCODE`.
+- **Signed out** → "Join to get your referral link" button → homepage.
+
+`rwu_ref_code` is set in `index.html` wherever `rwuRefCode` is assigned (`atCreate`, `atFetch`). Styles: `.rwu-ref-share-btn` in `blog/article-styles.css`.
+
+---
+
+## Dashboard (`index.html`)
+
+### Main flow — 4 tracked steps
+**Join → Handshake → Mercor → micro1.** These four drive the progress bar. **Outlier AI and RentAHuman are bonus cards** in the "More Opportunities" dropdown — not part of the journey.
+
+DOM order inside `#hs-card`: `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
+
+`rwu_step` numbering: newsletter `1`, handshake `2`, mercor `3`, outlier `4`, rentahuman `5`, micro1 `6`.
+
+### Step-dot indicators (4-dot journey)
+- Handshake: 1 filled (`done`), animation on dot 2 (`current`), 2 empty.
+- Mercor — all 3 dot sets (`#mc-main`, `#africa-intro`, `#english-intro`): 2 filled, animation on dot 3, 1 empty.
+- micro1 (`#m1-apply`): 3 filled, animation on dot 4.
+- Outlier & RentAHuman (bonus): unchanged 2-dot setup.
+
+### micro1 card (`#m1-apply`)
+Modeled exactly on Mercor's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), same already-applied / undo / skip / hide controls. **Brand token "micro1" is always lowercase.** Referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Uses `rwu_step` `6`; applied state under key `micro1` in `rwu_applied`; persisted to Airtable boolean field **`micro1 Applied`** (mirrors `Mercor Applied`).
+
+### Progress / 100% logic
+`updateProgressBar()` uses `stepMap = [handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). **100% requires Join + Handshake + Mercor + micro1.** Skipped/hidden steps are excluded from the denominator. The resume-optimizer nudge fires at `pct === 100`.
+
+### Flow routing
+- Mercor confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard).
+- micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`.
+- `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard.
+- Flag banners (Africa/English) route into the **Mercor** card intro slides only — micro1 has no flag.
+
+### localStorage keys
+`rwu_email`, `rwu_step`, `rwu_applied` (comma-joined keys), `rwu_skipped`, `rwu_hidden`, `rwu_record_id`, `rwu_ref_code`, `rwu_ref`, `rwu_flag_dismissed_[id]`.
+
+---
+
+## Referral system
+
+### Airtable fields
+- `Referral Code` (text) — unique 8-char uppercase alphanumeric, generated on signup or backfilled on an existing user's first dashboard load.
+- `Referred By` (text) — referral code of whoever referred this user; set on create when `?ref=` was in the URL.
+- `Referral Count` (number) — `+1` each time someone signs up via this user's link.
+
+### `?ref=` flow
+- Any page load captures `?ref=VALUE` into `localStorage.rwu_ref`.
+- On signup (`atCreate`), if `rwu_ref` is set and differs from the new user's own code, store `Referred By`, clear `rwu_ref`, and increment the referrer's count server-side via `incrementReferral`. Self-referral blocked (`refBy !== refCode`).
+
+### API action `incrementReferral`
+`POST /api/airtable` `{ action: 'incrementReferral', referralCode: '<code>' }`. Finds the record with matching `Referral Code`, patches `Referral Count += 1`. Does **not** touch `Last Activity Date` (fires for the referrer, not the current user).
+
+### Dashboard invite UI
+"Invite a Friend" ghost pill in the dashboard (`hs-progress`), below "View Latest Opportunities on X", shown only when signed in with a referral code. Expands to the personal link, a copy button, the referral count, and a "Rewards coming soon" note.
+
+### `api/airtable.js` actions (reference)
+`search`, `create`, `patch`, `appendField`, `incrementReferral`, plus GET (`?email=` lookup, `?count=true[&today=...]`). `patch`/`create` spread `fields` generically, so any field name passes through — **Airtable silently rejects writes to fields that don't exist**, so field-name casing must match the schema exactly.
+
+---
+
+## Dashboard flag banners (targeted geo push)
+
+Hardcoded in `index.html` as the `DASHBOARD_FLAGS` array (no Airtable table). On each dashboard render, `evaluateAndShowFlag()` (called from `updateProgressBar()`) matches `rwuUserCountry` (from the Airtable `Country` field via `atFetch`) against each flag's `countries` with `.toLowerCase()`. First non-dismissed match renders a banner above the progress list (`#active-flag-banner`) with an "Apply Now →" button and ✕ dismiss. Clicking the banner or button triggers the flag action; dismiss sets `localStorage.rwu_flag_dismissed_[id]` (persistent).
+
+Flag object: `id` (unique slug + dismiss key), `countries` (**lowercase** full names *and* ISO codes, e.g. `['nigeria','ng']`), `message`, `color` (`'orange'` default / `'blue'` / `'green'`).
+
+### Add a simple flag (banner only)
+1. Add an object to `DASHBOARD_FLAGS`:
+   ```js
+   { id: 'platform-country-jul8', countries: ['india','in'], message: 'India: New roles on Handshake AI →', color: 'orange' }
+   ```
+2. Wire its click handler in the flag banner block (pattern: search `openAfricaSlide`), e.g. `const openFlagAction = () => goToCard(hsApply);`
+3. Deploy.
+
+### Add a flag with a custom intro slide (Africa/Mercor pattern)
+The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa-mode` class. To replicate on another card:
+1. **CSS** (beside the `africa-mode` rules):
+   ```css
+   #[card]-apply.[flag]-mode #[card]-main { display: none; }
+   #[flag]-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
+   #[card]-apply.[flag]-mode #[flag]-intro { display: flex; }
+   ```
+2. **HTML** inside `#[card]-apply`, after `#[card]-skipped-banner`: a `#[flag]-intro` div with `.step-dots`, `.hs-tag`, `.hs-headline`, an `<ol class="card-process-steps">`, and a `#[flag]-intro-cta` button.
+3. **Wrap** regular card content in `<div id="[card]-main">…</div>`.
+4. **JS**: CTA removes the mode class (`[card]Apply.classList.remove('[flag]-mode')`); flag click adds the class then `goToCard([card]Apply)`.
+5. **Cleanup**: add `[card]Apply.classList.remove('[flag]-mode')` at the top of `goToDashboard()`.
+6. Deploy.
+
+### Targeting & lifecycle notes
+- `countries` matched via `.toLowerCase()` — always lowercase; include both full names and ISO codes.
+- Target **all countries**: change `evaluateAndShowFlag` to `f.countries.length === 0 || f.countries.includes(uc)`.
+- Target by step: read `rwu_step` inside the flag handler after the banner shows.
+- **Deactivate**: remove/comment the object and deploy.
+- **Re-broadcast a dismissed flag**: change its `id` (e.g. `mercor-africa-jun8` → `mercor-africa-jul1`) — this resets the dismiss key for everyone.
+
+### Current active flags
+| id | Target | Description |
+|----|--------|-------------|
+| `mercor-africa-jun8` | Nigeria & 50+ African countries | Africa intro slide inside the Mercor card — Voice AI Research $10–$20/hr. Uses `africa-mode` on `#mc-apply` / `#africa-intro`. |
+
+---
+
+## Article index (slug → title)
+
+> Reference only — keep entries unique when adding articles. Numbering has gaps (57–63 are out of order); the slug is the source of truth.
 
 ### Articles 1–15 (published May 29, 2026)
 | # | Slug | Title |
@@ -139,7 +240,7 @@ Inline style classes to include in every article:
 | 32 | how-to-find-remote-ai-jobs-real-world-experience | How to Find Remote AI Jobs That Use Your Real-World Experience |
 | 33 | why-ai-training-is-one-of-the-best-remote-work-opportunities | Why AI Training Is Becoming One of the Best Remote Work Opportunities |
 
-### Articles 34–43 (published June 2026)
+### Articles 34–86 (published June 2026)
 | # | Slug | Title |
 |---|------|-------|
 | 34 | how-to-get-paid-to-review-ai-answers-from-home | How to Get Paid to Review AI Answers From Home |
@@ -165,13 +266,13 @@ Inline style classes to include in every article:
 | 54 | best-ai-model-evaluation-jobs | Best AI Model Evaluation Jobs for Writers, Researchers, and Domain Experts |
 | 55 | how-to-use-ai-skills-for-remote-work | How to Use AI Skills to Find Better Remote Work and Online Income |
 | 56 | best-ai-side-hustles-remote-workers | Best AI Side Hustles for Remote Workers |
-| 63 | best-remote-ai-jobs-coders-not-full-time-software-role | Best Remote AI Jobs for Coders Who Do Not Want a Full-Time Software Role |
 | 57 | best-remote-jobs-that-pay-for-judgment-instead-of-phone-calls | Best Remote Jobs That Pay for Judgment Instead of Phone Calls |
 | 58 | best-online-jobs-strong-writers-work-from-home | Best Online Jobs for Strong Writers Who Want to Work From Home |
 | 59 | best-remote-jobs-lawyers-paralegals-legal-researchers-ai | Best Remote AI Jobs for Lawyers, Paralegals, and Legal Researchers |
 | 60 | best-remote-ai-jobs-finance-accounting-business-analysts | Best Remote AI Jobs for Finance, Accounting, and Business Analysts |
 | 61 | best-remote-ai-jobs-teachers-tutors-education-experts | Best Remote AI Jobs for Teachers, Tutors, and Education Experts |
 | 62 | best-remote-ai-jobs-nurses-medical-writers-healthcare-experts | Best Remote AI Jobs for Nurses, Medical Writers, and Healthcare Experts |
+| 63 | best-remote-ai-jobs-coders-not-full-time-software-role | Best Remote AI Jobs for Coders Who Do Not Want a Full-Time Software Role |
 | 64 | best-ai-training-platforms-generalists-specialists-students | Best AI Training Platforms for Generalists, Specialists, and Students |
 | 65 | best-alternatives-to-data-entry-jobs-remote-workers | Best Alternatives to Data Entry Jobs for Remote Workers |
 | 66 | best-remote-jobs-fact-checking-research | Best Remote Jobs for People Who Like Fact-Checking and Research |
@@ -197,7 +298,6 @@ Inline style classes to include in every article:
 | 86 | claude-ai-training-jobs-human-reviewers-improve-ai-answers | Claude AI Training Jobs: How Human Reviewers Help Improve AI Answers |
 
 ### Articles 87–100 (published June 6, 2026)
-
 | # | Slug | Title |
 |---|------|-------|
 | 87 | gemini-ai-training-jobs | Gemini AI Training Jobs: How to Find Remote Roles Around Google's AI Ecosystem |
@@ -228,139 +328,3 @@ Inline style classes to include in every article:
 | 108 | work-online-and-get-paid-real-remote-jobs | Work Online and Get Paid: How to Separate Real Remote Jobs From Fast-Money Claims |
 | 109 | data-entry-remote-jobs-vs-ai-data-annotation-jobs | Data Entry Remote Jobs vs AI Data Annotation Jobs: What's the Difference? |
 | 110 | upwork-usajobs-robert-half-job-boards-remote-ai-work | Upwork, USAJobs, Robert Half, and Job Boards: Where Remote AI Work Actually Appears |
-
-## Dashboard opportunity cards & flow
-
-### Main flow (4 steps)
-The dashboard journey is **Join → Handshake → Mercor → micro1**. These are the 4 tracked steps that drive the progress bar. Outlier AI and RentAHuman are **bonus cards** that live in the "More Opportunities" dropdown and are NOT part of the 4-step journey.
-
-Card order in the DOM (inside `#hs-card`): `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
-
-### Step dot indicators (4-dot journey)
-The top-of-card dots reflect the 4-step flow:
-- Handshake: 4 dots — 1 filled (`done`), animation on dot 2 (`current`), 2 empty
-- Mercor (all 3 dot sets: `#mc-main`, `#africa-intro`, `#english-intro`): 4 dots — 2 filled, animation on dot 3, 1 empty
-- micro1 (`#m1-apply`): 4 dots — 3 filled, animation on dot 4
-- Outlier & RentAHuman (bonus): unchanged 2-dot setup
-
-### micro1 card (`#m1-apply`)
-Modeled exactly on the Mercor card's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Has the same "already applied" checkbox / undo / skip / hide controls. Uses `rwu_step` value `6` and Airtable field **`micro1 Applied`** (boolean, mirrors `Mercor Applied`). Applied state stored under the `micro1` key in `rwu_applied`.
-
-### Progress / 100% logic
-`updateProgressBar()` `stepMap = [handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). 100% requires **Join + Handshake + Mercor + micro1** all complete. Skipped/hidden steps are excluded from the denominator. The resume optimizer nudge fires at `pct === 100`, so it now requires all 4 steps.
-
-### Flow routing (key handlers)
-- Mercor confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard)
-- micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`
-- `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard
-- Flag banners (Africa/English) still route into the **Mercor** card intro slides only — micro1 has no flag.
-
-## Referral System
-
-### Airtable fields (already exist)
-- `Referral Code` (text) — unique 8-char uppercase alphanumeric, generated on signup or backfilled on first dashboard load for existing users
-- `Referred By` (text) — referral code of the person who referred this user; set on create if `?ref=` param was in the URL
-- `Referral Count` (number) — incremented by 1 each time someone signs up via this user's link
-
-### ?ref= param flow
-- On any page load, `?ref=VALUE` is captured into `localStorage.rwu_ref`
-- On signup (`atCreate`), if `rwu_ref` is set and differs from the new user's own code, `Referred By` is stored and `rwu_ref` is cleared; the referrer's `Referral Count` is incremented server-side via `incrementReferral`
-- Self-referral is blocked (`refBy !== refCode`)
-
-### API action: `incrementReferral`
-POST to `/api/airtable` with `{ action: 'incrementReferral', referralCode: '<code>' }`.  
-Searches for the record with matching `Referral Code`, then patches `Referral Count` += 1. No `Last Activity Date` update (this fires for the referrer, not the current user).
-
-### Dashboard invite UI
-- "Invite a Friend" ghost-pill button appears in the dashboard (`hs-progress`) below the "View Latest Opportunities on X" button, only when the user is signed in and has a referral code
-- Expands to show the personal link, a copy button, referral count, and a "Rewards coming soon" note
-
-## Dashboard flag banners (targeted push)
-
-### How flags work
-Defined in `index.html` as the `DASHBOARD_FLAGS` array — hardcoded, no Airtable table needed.
-
-On every dashboard render, `evaluateAndShowFlag()` (called from `updateProgressBar()`) checks `rwuUserCountry` (set by `atFetch` from the Airtable `Country` field) against each flag's `countries` array using `.toLowerCase()`. The first matching flag that hasn't been dismissed shows an orange banner above the progress list (`#active-flag-banner`). The banner has an "Apply Now →" button on the right and a ✕ dismiss. Clicking anywhere on the banner (or the button) triggers the flag's action. Dismiss sets `localStorage.rwu_flag_dismissed_[id]` — persistent across sessions.
-
-Each flag object fields:
-- `id` — unique slug; used as the localStorage dismiss key (`rwu_flag_dismissed_[id]`)
-- `countries` — array of **lowercase** full country names and/or ISO codes to target (e.g. `['nigeria', 'kenya', 'ng', 'ke']`); matched against `rwuUserCountry.toLowerCase()`
-- `message` — text shown on the banner
-- `color` — `'orange'` (default), `'blue'`, or `'green'`
-
-### How to add a simple flag (banner only, no slide)
-1. Open `index.html` and find `const DASHBOARD_FLAGS = [`
-2. Add a new object:
-```js
-{
-  id: 'platform-country-jul8',   // unique — changing id resets dismiss for all users
-  countries: ['india', 'in'],    // lowercase full names + ISO codes
-  message: 'India: New roles on Handshake AI →',
-  color: 'orange'
-}
-```
-3. Wire a click handler in the flag banner section (search `openAfricaSlide` for the pattern):
-```js
-// in the flagBanner click handler block:
-const openFlagAction = () => goToCard(hsApply); // or any other action
-```
-4. Deploy.
-
-### How to add a flag with a custom intro slide (like Africa/Mercor)
-The Africa flag uses an intro slide (`#africa-intro`) embedded inside `#mc-apply`, toggled by an `africa-mode` CSS class. To replicate for another card:
-
-1. **Add CSS** (next to the existing `africa-mode` rules):
-```css
-#[card]-apply.[flag]-mode #[card]-main { display: none; }
-#[flag]-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
-#[card]-apply.[flag]-mode #[flag]-intro { display: flex; }
-```
-2. **Add HTML** inside `#[card]-apply`, after `#[card]-skipped-banner`:
-```html
-<div id="[flag]-intro">
-  <div class="step-dots" aria-hidden="true">...</div>
-  <p class="hs-tag">Special Opportunity</p>
-  <p class="hs-headline">Slide Title</p>
-  <ol class="card-process-steps" style="margin:12px 0 4px;width:100%;max-width:320px;">
-    <li><span class="step-num">1</span><span>Step one</span></li>
-    ...
-  </ol>
-  <button class="hs-cta" id="[flag]-intro-cta">CTA Button →</button>
-</div>
-```
-3. **Wrap regular card content** in `<div id="[card]-main">...</div>`
-4. **Wire JS** (in the flag handler section):
-```js
-// CTA removes the mode class → shows regular card content
-document.getElementById('[flag]-intro-cta').addEventListener('click', () => {
-  [card]Apply.classList.remove('[flag]-mode');
-});
-// Flag click adds mode then opens the card
-const openFlagSlide = () => { [card]Apply.classList.add('[flag]-mode'); goToCard([card]Apply); };
-```
-5. **Cleanup** — add `[card]Apply.classList.remove('[flag]-mode')` at the top of `goToDashboard()`.
-6. Deploy.
-
-### Targeting notes
-- `countries` is matched with `.toLowerCase()` — always use lowercase in the array
-- Include both full names and ISO codes as belt-and-suspenders (e.g. `'nigeria'` and `'ng'`)
-- To show to **all countries**: change the `evaluateAndShowFlag` logic — `f.countries.includes(uc)` → `f.countries.length === 0 || f.countries.includes(uc)`
-- To target by step: check `rwu_step` from localStorage inside the flag handler after the banner shows
-
-### To deactivate a flag
-Remove or comment out the object in `DASHBOARD_FLAGS` and deploy.
-
-### To re-broadcast a dismissed flag to all users
-Change the `id` (e.g. `mercor-africa-jun8` → `mercor-africa-jul1`) — this resets the localStorage dismiss key for everyone.
-
-### Current active flags
-| id | Target | Description |
-|----|--------|-------------|
-| `mercor-africa-jun8` | Nigeria & 50+ African countries | Shows Africa intro slide inside Mercor card — Voice AI Research $10–$20/hr. Uses `africa-mode` on `#mc-apply` / `#africa-intro` pattern. |
-
-## Platforms mentioned across articles (for cross-linking)
-- Mercor → `/blog/how-to-get-a-mercor-remote-job`
-- Outlier AI → `/blog/how-outlier-ai-works-remote-ai-training-jobs-pay-application-tips`
-- Handshake AI → `/blog/how-handshake-ai-works-ai-fellowships-referrals-remote-work`
-- Platform comparison → `/blog/best-remote-work-sites-ai-training-expert-review-ai-research`
-- Resume guide → `/blog/remote-work-resume-guide`
