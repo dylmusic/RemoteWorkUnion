@@ -175,7 +175,9 @@
       "Bash(pkill -f \"http.server 8799\")",
       "Bash(git --no-pager diff --stat)",
       "Bash(git --no-pager diff index.html)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(echo \"\\(grep exit $?\\)\")",
+      "Bash(echo \"exit=$?\")"
     ],
     "additionalDirectories": [
       "/Users/dylanrhodes/Downloads/RemoteWorkUnion_Articles_1-3_PDF_and_Images/images",

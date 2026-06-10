@@ -244,13 +244,13 @@ The top-of-card dots reflect the 4-step flow:
 - Outlier & RentAHuman (bonus): unchanged 2-dot setup
 
 ### micro1 card (`#m1-apply`)
-Modeled exactly on the Mercor card's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Has the same "already applied" checkbox / undo / skip / hide controls. Uses `rwu_step` value `6` and Airtable field **`Micro1 Applied`** (boolean, mirrors `Mercor Applied`). Applied state stored under the `micro1` key in `rwu_applied`.
+Modeled exactly on the Mercor card's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Has the same "already applied" checkbox / undo / skip / hide controls. Uses `rwu_step` value `6` and Airtable field **`micro1 Applied`** (boolean, mirrors `Mercor Applied`). Applied state stored under the `micro1` key in `rwu_applied`.
 
 ### Progress / 100% logic
 `updateProgressBar()` `stepMap = [handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). 100% requires **Join + Handshake + Mercor + micro1** all complete. Skipped/hidden steps are excluded from the denominator. The resume optimizer nudge fires at `pct === 100`, so it now requires all 4 steps.
 
 ### Flow routing (key handlers)
-- Mercor confirm/already → `showMicro1` (non-dash) or `goToDashboard` (from dashboard)
+- Mercor confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard)
 - micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`
 - `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard
 - Flag banners (Africa/English) still route into the **Mercor** card intro slides only — micro1 has no flag.

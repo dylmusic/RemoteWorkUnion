@@ -2500,7 +2500,7 @@
           if (f['Handshake Applied'] === true)  applied.push('handshake');
           if (f['Outlier Applied'] === true)    applied.push('outlier');
           if (f['Mercor Applied'] === true)     applied.push('mercor');
-          if (f['Micro1 Applied'] === true)     applied.push('micro1');
+          if (f['micro1 Applied'] === true)     applied.push('micro1');
           if (f['RentAHuman Applied'] === true) applied.push('rentahuman');
           localStorage.setItem('rwu_applied', applied.join(','));
           localStorage.setItem('rwu_skipped', f['Skipped Steps'] || '');
@@ -2644,7 +2644,7 @@
       fadeOut(hsApply, () => showView(mcApply));
     }
 
-    function showMicro1() {
+    function showmicro1() {
       fadeOut(mcApply, () => showView(m1Apply));
     }
 
@@ -3267,14 +3267,14 @@
       addApplied('mercor');
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
-      setTimeout(fromDash ? goToDashboard : showMicro1, 600);
+      setTimeout(fromDash ? goToDashboard : showmicro1, 600);
     });
 
     mcAlready.addEventListener('click', () => {
       gtag('event', 'step_already_applied', { platform: 'mercor' });
       unskipStep('mercor');
       addApplied('mercor');
-      checkAnimate(fromDash ? goToDashboard : showMicro1, mcCb, mcUndo);
+      checkAnimate(fromDash ? goToDashboard : showmicro1, mcCb, mcUndo);
       localStorage.setItem('rwu_step', '3');
       atPatch({ 'Mercor Applied': true, 'Current Step': 3 });
     });
@@ -3291,7 +3291,7 @@
       unskipStep('micro1');
       addApplied('micro1');
       localStorage.setItem('rwu_step', '6');
-      atPatch({ 'Micro1 Applied': true, 'Current Step': 6 });
+      atPatch({ 'micro1 Applied': true, 'Current Step': 6 });
       setTimeout(fromDash ? goToDashboard : showProgress, 600);
     });
 
@@ -3301,7 +3301,7 @@
       addApplied('micro1');
       checkAnimate(fromDash ? goToDashboard : showProgress, m1Cb, m1Undo);
       localStorage.setItem('rwu_step', '6');
-      atPatch({ 'Micro1 Applied': true, 'Current Step': 6 });
+      atPatch({ 'micro1 Applied': true, 'Current Step': 6 });
     });
 
     // ── RentAHuman card ───────────────────────────────────────
@@ -3390,7 +3390,7 @@
       removeApplied('micro1');
       unskipStep('micro1');
       unhideStep('micro1');
-      atPatch({ 'Micro1 Applied': false });
+      atPatch({ 'micro1 Applied': false });
       if (fromDash) goToDashboard();
     });
 
