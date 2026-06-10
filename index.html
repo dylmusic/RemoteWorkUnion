@@ -1646,7 +1646,6 @@
     .invite-count { line-height: 1; }
     .invite-coming-soon { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.55; }
   </style>
-  <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
   <script type="application/ld+json">
   {
@@ -2370,7 +2369,6 @@
     }
 
     async function atCreate(email) {
-      const country = await tryGetCountry();
       const refCode = genRefCode();
       const refBy = localStorage.getItem('rwu_ref') || '';
       try {
@@ -2378,7 +2376,7 @@
           'Email': email.toLowerCase(),
           'Joined Date': today(),
           'Current Step': 1,
-          'Country': country,
+          'Country': 'Unknown',
           'Referral Code': refCode
         };
         if (refBy && refBy !== refCode) createFields['Referred By'] = refBy;
@@ -2402,6 +2400,15 @@
               body: JSON.stringify({ action: 'incrementReferral', referralCode: refBy })
             }).catch(() => {});
           }
+          // Geo lookup runs in the background — never blocks signup. Patches
+          // Country afterward, mirroring the 7-day refresh pattern in atFetch.
+          (async () => {
+            const country = await tryGetCountry();
+            if (country !== 'Unknown') {
+              atPatch({ 'Country': country });
+              localStorage.setItem('rwu_country_last_checked', String(Date.now()));
+            }
+          })();
         } else { console.error('[rwu] atCreate no id in response', d); }
       } catch (err) { console.error('[rwu] atCreate error', err); }
     }
@@ -2515,17 +2522,17 @@
           }
           localStorage.setItem('rwu_ref_code', rwuRefCode);
           rwuUserCountry = f['Country'] || '';
-          atPatch(toUpdate);
           const countryMissing = !f['Country'] || f['Country'] === 'Unknown';
           const lastChecked = parseInt(localStorage.getItem('rwu_country_last_checked') || '0', 10);
           const sevenDays = 7 * 24 * 60 * 60 * 1000;
           if (countryMissing || (Date.now() - lastChecked > sevenDays)) {
             const country = await tryGetCountry();
             if (country !== 'Unknown') {
-              atPatch({ 'Country': country });
+              toUpdate['Country'] = country;
               localStorage.setItem('rwu_country_last_checked', String(Date.now()));
             }
           }
+          atPatch(toUpdate);
           gtag('event', 'dashboard_load', { user_type: 'returning' });
         }
       } catch (_) {}
@@ -3155,7 +3162,9 @@
       btn.textContent = '...';
       btn.disabled = true;
 
+      ['rwu_step','rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id'].forEach(k => localStorage.removeItem(k));
       Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_') || k === 'rwu_nudge_dismissed').forEach(k => localStorage.removeItem(k));
+      atId = null;
       localStorage.setItem('rwu_email', val);
       localStorage.setItem('rwu_step', '1');
       _rwuUpdateBadge();
@@ -3496,6 +3505,9 @@
       if (hsProgress.classList.contains('show')) { window.location.href = '/work'; return; }
       const step = parseInt(localStorage.getItem('rwu_step') || '0', 10);
       if (step >= 1) { hsCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      ['rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id'].forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_') || k === 'rwu_nudge_dismissed').forEach(k => localStorage.removeItem(k));
+      atId = null;
       localStorage.setItem('rwu_step', '0');
       localStorage.removeItem('rwu_email');
       form.style.transition = 'opacity 0.3s ease';
@@ -3691,23 +3703,6 @@
         popup.classList.add('open');
         clearTimeout(dismissTimer);
         dismissTimer = setTimeout(closePopup, 4000);
-
-        // Silent live refresh — no visual feedback on the pill
-        fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } })
-          .then(r => r.ok ? r.json() : null)
-          .then(d => {
-            if (!d) return;
-            if (typeof d.count === 'number' && d.count > 0) {
-              _rwuCount = d.count;
-              _rwuUpdateBadge();
-              if (totEl) totEl.textContent = _rwuCount.toLocaleString();
-            }
-            if (typeof d.todayCount === 'number') {
-              _rwuTodayCount = d.todayCount;
-              if (todEl) todEl.textContent = '↑ ' + _rwuTodayCount + ' joined today';
-            }
-          })
-          .catch(() => {});
       }
 
       function closePopup() {
