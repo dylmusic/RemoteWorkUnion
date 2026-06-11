@@ -3669,6 +3669,7 @@
     // ── live member count badge ────────────────────────────────
     let _rwuCount = 0;
     let _rwuTodayCount = 0;
+    let _rwuLastFetch = 0;
     function _rwuUpdateBadge() {
       const txt = document.getElementById('member-count-text');
       if (!txt || _rwuCount <= 0) return;
@@ -3677,7 +3678,13 @@
         ? `${_rwuCount.toLocaleString()} Remote Workers`
         : `Join ${_rwuCount.toLocaleString()} Remote Workers`;
     }
-    (async () => {
+    function _rwuUpdatePopup() {
+      const totEl = document.getElementById('mcp-total');
+      const todEl = document.getElementById('mcp-today');
+      if (totEl) totEl.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
+      if (todEl) todEl.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
+    }
+    async function _rwuFetchCount() {
       try {
         const r = await fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } });
         if (!r.ok) return;
@@ -3687,29 +3694,36 @@
           _rwuUpdateBadge();
         }
         if (typeof d.todayCount === 'number') _rwuTodayCount = d.todayCount;
+        _rwuLastFetch = Date.now();
+        try { localStorage.setItem('rwu_count_cache', JSON.stringify({ count: _rwuCount, todayCount: _rwuTodayCount, cachedAt: _rwuLastFetch })); } catch (_) {}
+        _rwuUpdatePopup();
       } catch (_) {}
-    })();
+    }
+    try {
+      const cached = JSON.parse(localStorage.getItem('rwu_count_cache') || 'null');
+      if (cached && typeof cached.count === 'number' && cached.count > 0) {
+        _rwuCount = cached.count;
+        _rwuTodayCount = cached.todayCount || 0;
+        _rwuUpdateBadge();
+        _rwuUpdatePopup();
+      }
+    } catch (_) {}
+    _rwuFetchCount();
 
     // ── member count popup ─────────────────────────────────────
     (function() {
       const badge  = document.getElementById('member-count-badge');
       const popup  = document.getElementById('member-count-popup');
-      const totEl  = document.getElementById('mcp-total');
-      const todEl  = document.getElementById('mcp-today');
       if (!badge || !popup) return;
 
       let dismissTimer = null;
 
-      function updatePopupDisplay() {
-        if (totEl) totEl.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
-        if (todEl) todEl.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
-      }
-
       function openPopup() {
-        updatePopupDisplay();
+        _rwuUpdatePopup();
         popup.classList.add('open');
         clearTimeout(dismissTimer);
         dismissTimer = setTimeout(closePopup, 4000);
+        _rwuFetchCount();
       }
 
       function closePopup() {
