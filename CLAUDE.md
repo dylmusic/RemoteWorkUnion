@@ -4,9 +4,13 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
 
 ---
 
+> **ALWAYS PUSH AFTER EVERY CHANGE. No exceptions. A local edit that isn't deployed is an incomplete task.**
+
+---
+
 ## Critical rules (read first)
 
-1. **Always deploy after every change.** Vercel auto-deploys on push to `main`. Never stop at a local edit:
+1. **Always deploy after every change.** Vercel auto-deploys on push to `main`. Never stop at a local edit. Do not report a task as done until the push succeeds.
    ```
    git add <files> && git commit -m "..." && git push origin main
    ```
@@ -14,6 +18,7 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
    ```json
    { "src": "logo.svg", "use": "@vercel/static" }
    ```
+3. **When articles are ready in `/Users/dylanrhodes/Downloads/`, publish ALL of them at once.** Never publish just one when multiple are present. Inspect all article folders first, then build all HTML files and images in parallel (spawn parallel subagents or process simultaneously), do a single commit+push for the batch, then delete all processed source folders and zips from Downloads.
 
 ## Constants
 
