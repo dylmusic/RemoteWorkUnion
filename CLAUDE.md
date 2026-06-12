@@ -20,6 +20,12 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
    ```
 3. **When articles are ready in `/Users/dylanrhodes/Downloads/`, publish ALL of them at once.** Never publish just one when multiple are present. Inspect all article folders first, then build all HTML files and images in parallel (spawn parallel subagents or process simultaneously), do a single commit+push for the batch, then delete all processed source folders and zips from Downloads.
 
+   **Finding article packages — always use this command first:**
+   ```
+   ls -d /Users/dylanrhodes/Downloads/*/
+   ```
+   This lists ALL subdirectories regardless of naming convention. Article packages may be named `article_NNN_*`, `rwu_article_NNN_*`, or anything else. Never rely on grep patterns — any subdirectory in Downloads could be an article package. Before starting any publish work, run the above command and inspect every directory.
+
 ## Constants
 
 | Key | Value |
