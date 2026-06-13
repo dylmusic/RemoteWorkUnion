@@ -97,6 +97,24 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
 
 ---
 
+## Article Review Rules
+
+Standing rules for any blog content review/update pass. Apply consistently across sessions.
+
+**Core platforms (dashboard/journey context):** The required steps for 100% completion are **Handshake, Mercor, and micro1 — in that order**. This is the "core three" for onboarding/journey-specific framing (e.g. "how to get started," "steps to reach 100%"). Outlier AI and RentAHuman are separate bonus opportunities in this specific context.
+
+**General platform-list mentions:** Outside of the dashboard/journey context — e.g. "platforms worth checking," "apply to these platforms," keyword lists, "where to find this work" — list all **four** platforms naturally together: **Handshake, Mercor, micro1, and Outlier AI**. Do NOT add caveats like "(with Outlier as a bonus)," "(Outlier is secondary)," or similar demotions in these general contexts. Outlier AI gets included normally, no special treatment. RentAHuman can remain framed as a genuine bonus/secondary option since that's accurate.
+
+**Audience framing:** RWU's audience is primarily business, marketing, sales, finance, customer service, social media, creative/writing, and general/entry-level professionals — not just technical/medical/legal/coding backgrounds. Content should **prioritize relatable business/generalist examples as the lead/default framing** for high-pay or expert-tier roles. This does NOT mean removing or excluding doctors, lawyers, engineers, or other technical/professional examples — keep them in the mix, just don't let them be the default or only framing.
+
+**Pay anchors:** **$50–$200/hr** for expert-tier work; **$20+/hr** general floor. Keep pay claims consistent with these figures across articles.
+
+**Outlier-specific articles:** Articles whose premise is specifically about Outlier AI (e.g. "Is Outlier AI Legit?", "Outlier AI Review", three-way platform comparisons) should keep their Outlier-focused framing intact — these rules don't mean rewriting their core premise.
+
+**Consistency check:** Any article review pass should check alignment with the current FAQ (`work.html`), the resume guide (`blog/remote-work-resume-guide.html`), and `work.html`'s "Top Platforms to Apply" section, since these are the canonical sources of current positioning.
+
+---
+
 ## Dynamic nav buttons
 
 - **Blog pages (`blog/*.html`)** — top-right nav anchor `id="blog-nav-home-btn"`, label in a `<span>`. An inline `<script>` right after the `</a>` (inside `<nav class="blog-nav">`) sets the span to `Join Free` when `localStorage.rwu_email` is falsy. Href always `https://www.remoteworkunion.com/`. Logo + label in both states. Exact markup in `blog/article-template.html`.
