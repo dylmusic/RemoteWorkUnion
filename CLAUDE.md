@@ -44,7 +44,10 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
 1. Create `/blog/[slug].html`. Template reference: article 46, `how-to-get-accepted-for-remote-ai-training-jobs-faster.html`.
 2. Add an article card to `/blog/index.html`, inserted **before** the previous newest-article comment.
 3. Add the URL to `/sitemap.xml` and bump the blog `<lastmod>` date.
-4. Delete the source package folder(s) and zip(s) from `/Users/dylanrhodes/Downloads/`.
+4. Delete **both** the source package folder(s) **and** the zip file(s) from `/Users/dylanrhodes/Downloads/`. Always delete both — the zip is not automatically removed when the folder is extracted.
+   ```
+   rm -rf /Users/dylanrhodes/Downloads/article_NNN_* && rm -f /Users/dylanrhodes/Downloads/article_NNN_*.zip
+   ```
 
 ### Article page structure
 - **`<head>`** — title, meta description, keywords, canonical, OG tags, Twitter tags, GA script, 3× JSON-LD schemas (BlogPosting, BreadcrumbList, FAQPage), fonts, `article-styles.css`, inline `<style>` block.
