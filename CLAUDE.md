@@ -99,7 +99,9 @@ Static HTML site at `/Users/dylanrhodes/Documents/remoteworkunion/`. No framewor
 
 ## Article Review Rules
 
-Standing rules for any blog content review/update pass. Apply consistently across sessions.
+> **Scope:** These rules govern a **periodic, on-request content review/update pass** (the kind run manually, in batches, when explicitly asked). They are **not** part of the publish workflow. Do **not** apply or scan for them when publishing new articles — the "Adding a new article — do exactly 4 things" flow above is unchanged and stays fast. This review is run periodically by request; publishing should never trigger it.
+
+Standing rules for a blog content review/update pass. Apply consistently across sessions when doing such a pass.
 
 **Core platforms (dashboard/journey context):** The required steps for 100% completion are **Handshake, Mercor, and micro1 — in that order**. This is the "core three" for onboarding/journey-specific framing (e.g. "how to get started," "steps to reach 100%"). Outlier AI and RentAHuman are separate bonus opportunities in this specific context.
 
