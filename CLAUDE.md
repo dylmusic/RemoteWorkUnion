@@ -362,3 +362,99 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 108 | work-online-and-get-paid-real-remote-jobs | Work Online and Get Paid: How to Separate Real Remote Jobs From Fast-Money Claims |
 | 109 | data-entry-remote-jobs-vs-ai-data-annotation-jobs | Data Entry Remote Jobs vs AI Data Annotation Jobs: What's the Difference? |
 | 110 | upwork-usajobs-robert-half-job-boards-remote-ai-work | Upwork, USAJobs, Robert Half, and Job Boards: Where Remote AI Work Actually Appears |
+
+### Articles 111–125 (published June 2026 — geo/country targeting)
+| # | Slug | Title |
+|---|------|-------|
+| 111 | us-based-ai-training-jobs | US-Based AI Training Jobs: How to Find Remote Work Reviewing AI Models |
+| 112 | best-work-from-home-ai-jobs-americans-strong-writing-skills | Best Work From Home AI Jobs for Americans With Strong Writing Skills |
+| 113 | how-to-find-ai-model-evaluation-work-united-states | How to Find AI Model Evaluation Work in the United States |
+| 114 | which-remote-ai-jobs-are-actually-us-only | Which Remote AI Jobs Are Actually US-Only? |
+| 115 | remote-contract-work-ai-college-educated-us-applicants | Remote Contract Work in AI for College-Educated US Applicants |
+| 116 | canada-ai-training-jobs-legit-remote-ai-work | Canada AI Training Jobs: How to Find Legit Remote AI Work |
+| 117 | best-ai-evaluation-jobs-canadian-writers-researchers-specialists | Best AI Evaluation Jobs for Canadian Writers, Researchers, and Specialists |
+| 118 | how-canadians-can-apply-for-global-ai-training-projects | How Canadians Can Apply for Global AI Training Projects |
+| 119 | uk-ai-training-jobs-remote-work-writers-researchers-experts | UK AI Training Jobs: Remote Work for Writers, Researchers, and Experts |
+| 120 | australia-ai-data-annotation-jobs | Australia AI Data Annotation Jobs: What Skilled Applicants Should Know |
+| 121 | best-english-language-ai-training-jobs-native-speakers | Best English-Language AI Training Jobs for Native Speakers |
+| 122 | ai-evaluation-jobs-us-canada-uk-australia | AI Evaluation Jobs for US, Canadian, UK, and Australian Applicants |
+| 123 | why-ai-training-jobs-require-country-location | Why Some AI Training Jobs Require Your Country or Location |
+| 124 | why-ai-training-jobs-pay-more-us-canada | Why AI Training Jobs Often Pay More in the US and Canada |
+| 125 | how-to-search-high-paying-ai-training-jobs-by-country | How to Search for High-Paying AI Training Jobs by Country |
+
+### Articles 126–140 (published June 2026 — professional/expert niches)
+| # | Slug | Title |
+|---|------|-------|
+| 126 | ai-training-jobs-consultants-mbas-business-analysts | AI Training Jobs for Consultants, MBAs, and Business Analysts |
+| 127 | how-consultants-can-get-paid-reviewing-ai-business-answers | How Consultants Can Get Paid Reviewing AI Business Answers |
+| 128 | ai-evaluation-work-lawyers-law-students-legal-researchers | AI Evaluation Work for Lawyers, Law Students, and Legal Researchers |
+| 129 | healthcare-ai-training-jobs-doctors-nurses-medical-writers | Healthcare AI Training Jobs for Doctors, Nurses, and Medical Writers |
+| 130 | how-finance-experts-can-get-paid-training-ai-models | How Finance Experts Can Get Paid Training AI Models |
+| 131 | ai-code-evaluation-jobs-software-engineers-technical-reviewers | AI Code Evaluation Jobs for Software Engineers and Technical Reviewers |
+| 132 | remote-ai-work-data-analysts-excel-experts-quantitative-thinkers | Remote AI Work for Data Analysts, Excel Experts, and Quantitative Thinkers |
+| 133 | ai-model-evaluation-jobs-teachers-professors-tutors | AI Model Evaluation Jobs for Teachers, Professors, and Tutors |
+| 134 | how-journalists-and-editors-can-get-paid-reviewing-ai-writing | How Journalists and Editors Can Get Paid Reviewing AI Writing |
+| 135 | ai-training-jobs-phd-students-researchers-academics | AI Training Jobs for PhD Students, Researchers, and Academics |
+| 136 | remote-ai-jobs-product-managers-startup-operators-strategy | Remote AI Jobs for Product Managers, Startup Operators, and Strategy People |
+| 137 | best-ai-review-jobs-advanced-degrees | Best AI Review Jobs for People With Advanced Degrees |
+| 138 | subject-matter-experts-remote-ai-work | How Subject Matter Experts Can Turn Their Knowledge Into Remote AI Work |
+| 139 | ai-training-side-hustles-educated-professionals | AI Training Side Hustles for Educated Professionals |
+| 140 | remote-jobs-that-pay-for-expertise-instead-of-customer-support | Remote Jobs That Pay for Expertise Instead of Customer Support |
+
+### Articles 141–180 (published June 2026 — platform comparisons, troubleshooting, workflow)
+| # | Slug | Title |
+|---|------|-------|
+| 141 | mercor-vs-outlier-vs-handshake-ai-platform-comparison | Mercor vs Outlier vs Handshake AI: Which Platform Fits You Best? |
+| 142 | is-mercor-better-for-experts-or-beginners | Is Mercor Better for Experts or Beginners? |
+| 143 | improve-mercor-profile-before-applying-again | How to Improve Your Mercor Profile Before Applying Again |
+| 144 | outlier-ai-projects-explained | Outlier AI Projects Explained |
+| 145 | handshake-ai-fellowship-who-it-fits-how-to-prepare | Handshake AI Fellowship: Who It Fits and How to Prepare |
+| 146 | surge-ai-jobs-remote-ai-applicants | Surge AI Jobs: What Remote AI Applicants Should Know |
+| 147 | micro1-ai-jobs-expert-training-guide | micro1 AI Jobs: How Expert AI Training Opportunities Work |
+| 148 | stellar-ai-jobs-evaluate-ai-work-platforms | Stellar AI Jobs: How to Evaluate New AI Work Platforms Before Applying |
+| 149 | linkedin-ai-jobs-find-real-remote-ai-training-roles | LinkedIn AI Jobs: How to Find Real Remote AI Training Roles |
+| 150 | google-ai-training-jobs-what-job-seekers-mean | Google AI Training Jobs: What Job Seekers Mean by That Search |
+| 151 | gemini-ai-jobs-human-reviewers-improve-ai-answers | Gemini AI Jobs: How Human Reviewers Help Improve AI Answers |
+| 152 | claude-ai-training-jobs-remote-anthropic-style-evaluation | Claude AI Training Jobs: Remote Work Around Anthropic-Style AI Evaluation |
+| 153 | microsoft-ai-training-jobs-remote-ai-evaluation-work | Microsoft AI Training Jobs: How to Search for Remote AI Evaluation Work |
+| 154 | ask-ai-jobs-improve-ai-answer-quality | Ask AI Jobs: How People Get Paid to Improve AI Answer Quality |
+| 155 | ai-mode-jobs | AI Mode Jobs: What AI Search Means for Remote Workers |
+| 156 | outlier-ai-not-getting-tasks | Outlier AI Not Getting Tasks: What It Means and What to Do Next |
+| 157 | outlier-ai-no-projects-available | Outlier AI No Projects Available: Why It Happens and How to Improve Your Chances |
+| 158 | outlier-ai-application-rejected-can-you-reapply-or-try-again | Outlier AI Application Rejected: Can You Reapply or Try Again? |
+| 159 | outlier-ai-assessment-failed-next-test | Outlier AI Assessment Failed: What to Do Before Your Next Test |
+| 160 | why-passed-outlier-ai-test-still-have-no-work | Why You Passed the Outlier AI Test but Still Have No Work |
+| 161 | mercor-interview-failed-reapply-another-chance | Mercor Interview Failed: Can You Reapply or Get Another Chance? |
+| 162 | mercor-application-under-review | Mercor Application Under Review: What It Means and How Long to Wait |
+| 163 | mercor-no-response-after-applying | Mercor No Response After Applying: What Remote AI Applicants Should Know |
+| 164 | mercor-interview-questions-ai-training-expert-roles | Mercor Interview Questions: How to Prepare for AI Training and Expert Roles |
+| 165 | how-long-does-mercor-take-to-hire | How Long Does Mercor Take to Hire? Application Timelines Explained |
+| 166 | how-much-can-you-realistically-make-on-mercor-per-month | How Much Can You Realistically Make on Mercor Per Month? |
+| 167 | handshake-ai-no-response-after-apply | Handshake AI No Response: What It Means After You Apply |
+| 168 | handshake-ai-application-under-review | Handshake AI Application Under Review: What It Means and What to Do |
+| 169 | handshake-ai-rejection-apply-again-improve-profile | Handshake AI Rejection: Can You Apply Again or Improve Your Profile? |
+| 170 | how-long-does-handshake-ai-take-to-respond | How Long Does Handshake AI Take to Respond? |
+| 171 | how-quickly-can-you-start-working-on-outlier-ai | How Quickly Can You Start Working on Outlier AI? |
+| 172 | why-remote-ai-job-applications-get-rejected | Why Remote AI Job Applications Get Rejected |
+| 173 | how-to-follow-up-after-applying-for-ai-training-jobs | How to Follow Up After Applying for AI Training Jobs |
+| 174 | how-many-ai-training-platforms-should-you-apply-to | How Many AI Training Platforms Should You Apply To at Once? |
+| 175 | what-to-do-when-ai-training-work-slows-down | What to Do When AI Training Work Slows Down |
+| 176 | how-to-write-clear-ai-evaluation-answers | How to Write Clear AI Evaluation Answers |
+| 177 | how-to-rank-ai-answers-correctly-model-evaluation-work | How to Rank AI Answers Correctly in Model Evaluation Work |
+| 178 | what-makes-a-good-rlhf-rating-beginners-guide | What Makes a Good RLHF Rating? A Beginner's Guide |
+| 179 | how-to-compare-two-ai-responses-like-a-professional-evaluator | How to Compare Two AI Responses Like a Professional Evaluator |
+| 180 | how-to-fact-check-ai-answers | How to Fact-Check AI Answers for Remote Evaluation Work |
+
+### Articles 181–190 (published June 14, 2026 — evaluation skills, workflow, role comparisons)
+| # | Slug | Title |
+|---|------|-------|
+| 181 | how-to-explain-why-one-ai-answer-is-better-than-another | How to Explain Why One AI Answer Is Better Than Another |
+| 182 | how-to-write-clear-feedback-ai-model-training-tasks | How to Write Clear Feedback for AI Model Training Tasks |
+| 183 | how-to-spot-hallucinations-in-ai-answers | How to Spot Hallucinations in AI Answers |
+| 184 | how-to-evaluate-ai-responses-helpfulness-accuracy-safety | How to Evaluate AI Responses for Helpfulness, Accuracy, and Safety |
+| 185 | how-to-review-chatbot-answers-without-overthinking-the-task | How to Review Chatbot Answers Without Overthinking the Task |
+| — | (186 not in batch) | — |
+| 187 | ai-safety-evaluation-jobs | AI Safety Evaluation Jobs: What Remote Workers Do and How to Apply |
+| 188 | ai-writing-evaluator-jobs | AI Writing Evaluator Jobs: How Writers and Editors Can Get Paid Reviewing AI Content |
+| 189 | search-quality-rater-vs-ai-evaluator | Search Quality Rater vs AI Evaluator: What's the Difference? |
+| 190 | data-labeling-vs-ai-model-evaluation | Data Labeling vs AI Model Evaluation: Which Remote Job Is Better? |
