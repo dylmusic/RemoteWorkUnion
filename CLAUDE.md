@@ -453,8 +453,23 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 183 | how-to-spot-hallucinations-in-ai-answers | How to Spot Hallucinations in AI Answers |
 | 184 | how-to-evaluate-ai-responses-helpfulness-accuracy-safety | How to Evaluate AI Responses for Helpfulness, Accuracy, and Safety |
 | 185 | how-to-review-chatbot-answers-without-overthinking-the-task | How to Review Chatbot Answers Without Overthinking the Task |
-| — | (186 not in batch) | — |
+| — | (186 published in next batch — see Articles 186 and 191–200 section below) | — |
 | 187 | ai-safety-evaluation-jobs | AI Safety Evaluation Jobs: What Remote Workers Do and How to Apply |
 | 188 | ai-writing-evaluator-jobs | AI Writing Evaluator Jobs: How Writers and Editors Can Get Paid Reviewing AI Content |
 | 189 | search-quality-rater-vs-ai-evaluator | Search Quality Rater vs AI Evaluator: What's the Difference? |
 | 190 | data-labeling-vs-ai-model-evaluation | Data Labeling vs AI Model Evaluation: Which Remote Job Is Better? |
+
+### Articles 186 and 191–200 (published June 14, 2026 — income strategy, scam avoidance, search strategy, resume)
+| # | Slug | Title |
+|---|------|-------|
+| 186 | ai-fact-checking-jobs-remote-workers-verify-model-outputs | AI Fact-Checking Jobs: How Remote Workers Verify Model Outputs |
+| 191 | can-ai-training-replace-full-time-job | Can AI Training Replace Your Full-Time Job? What Remote Workers Should Know |
+| 192 | how-many-hours-can-you-work-remote-ai-training-jobs | How Many Hours Can You Actually Work in Remote AI Training Jobs? |
+| 193 | why-ai-training-income-can-be-inconsistent-from-month-to-month | Why AI Training Income Can Be Inconsistent From Month to Month |
+| 194 | how-to-stack-multiple-ai-training-platforms-without-burning-out | How to Stack Multiple AI Training Platforms Without Burning Out |
+| 195 | work-online-get-paid-separate-real-remote-jobs-from-scams | Work Online and Get Paid: How to Separate Real Remote Jobs From Scams |
+| 196 | best-remote-part-time-jobs-from-home-flexible-ai-work | The Best Remote Part-Time Jobs From Home for Flexible AI Work |
+| 197 | remote-jobs-near-me-vs-work-from-anywhere-jobs | Remote Jobs Near Me vs Work From Anywhere Jobs: How to Search Smarter |
+| 198 | ai-detector-jobs-ai-humanizer-trends-writers | AI Detector Jobs and AI Humanizer Trends: What They Mean for Writers |
+| 199 | upwork-linkedin-usajobs-robert-half-remote-ai-work | Upwork, LinkedIn, USAJobs, and Robert Half: Where Remote AI Work Actually Appears |
+| 200 | simple-resume-ai-training-model-evaluation-jobs | How to Build a Simple Resume for AI Training and Model Evaluation Jobs |
