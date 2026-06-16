@@ -473,3 +473,27 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 198 | ai-detector-jobs-ai-humanizer-trends-writers | AI Detector Jobs and AI Humanizer Trends: What They Mean for Writers |
 | 199 | upwork-linkedin-usajobs-robert-half-remote-ai-work | Upwork, LinkedIn, USAJobs, and Robert Half: Where Remote AI Work Actually Appears |
 | 200 | simple-resume-ai-training-model-evaluation-jobs | How to Build a Simple Resume for AI Training and Model Evaluation Jobs |
+
+### Articles 211–230 (published June 15, 2026 — professional niches, micro1, VA, designers, pay guides)
+| # | Slug | Title |
+|---|------|-------|
+| 211 | best-work-from-home-jobs-for-project-managers | The Best Work From Home Jobs for Project Managers |
+| 212 | micro1-vs-mercor-which-should-you-apply-to-first | micro1 vs Mercor: Which Should You Apply to First? |
+| 213 | remote-work-jobs-with-no-experience-that-actually-pay-well | Remote Work Jobs With No Experience That Actually Pay Well |
+| 214 | best-remote-work-jobs-hr-professionals-recruiters | Best Remote Work Jobs for HR Professionals and Recruiters |
+| 215 | how-remote-workers-get-paid-to-train-ai-without-coding | How Remote Workers Get Paid to Train AI Without Coding |
+| 216 | work-from-home-jobs-no-degree-no-phone-calls | Work From Home Jobs With No Degree and No Phone Calls |
+| 217 | how-much-can-you-make-on-micro1-per-month | How Much Can You Make on micro1 Per Month? |
+| 218 | best-remote-work-jobs-real-estate-agents | Best Remote Work Jobs for Real Estate Agents |
+| 219 | remote-work-jobs-that-pay-100-an-hour-from-home | Remote Work Jobs That Pay $100 an Hour From Home |
+| 220 | best-work-from-home-jobs-for-virtual-assistants | Best Work From Home Jobs for Virtual Assistants |
+| 221 | how-long-does-micro1-take-to-respond-after-you-apply | How Long Does micro1 Take to Respond After You Apply? |
+| 222 | best-remote-work-jobs-copywriters-content-writers | Best Remote Work Jobs for Copywriters and Content Writers |
+| 223 | how-to-get-your-first-remote-ai-job-with-no-background | How to Get Your First Remote AI Job With No Background |
+| 224 | best-remote-work-jobs-graphic-visual-designers | Best Remote Work Jobs for Graphic and Visual Designers |
+| 225 | why-some-remote-ai-jobs-pay-200-an-hour | Why Some Remote AI Jobs Pay $200 an Hour and Most Don't |
+| 226 | micro1-reviews-remote-workers-2026 | micro1 Reviews: What Remote Workers Say in 2026 |
+| 227 | best-work-from-home-jobs-accountants-bookkeepers | Best Work From Home Jobs for Accountants and Bookkeepers |
+| 228 | remote-work-for-beginners-no-experience | Remote Work for Beginners: How to Start With No Experience |
+| 229 | best-remote-work-jobs-paralegals-legal-assistants | Best Remote Work Jobs for Paralegals and Legal Assistants |
+| 230 | how-ai-training-platforms-pay-you | How and When AI Training Platforms Actually Pay You |
