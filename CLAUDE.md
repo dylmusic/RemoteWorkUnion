@@ -497,3 +497,27 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 228 | remote-work-for-beginners-no-experience | Remote Work for Beginners: How to Start With No Experience |
 | 229 | best-remote-work-jobs-paralegals-legal-assistants | Best Remote Work Jobs for Paralegals and Legal Assistants |
 | 230 | how-ai-training-platforms-pay-you | How and When AI Training Platforms Actually Pay You |
+
+### Articles 231–250 (published June 18, 2026 — translators, editors, surveys, micro1, UX, operations, data annotation, consultants, pay rates, Nigeria, customer service, AI hiring, career changers, profile guide, Philippines, parents, scam safety)
+| # | Slug | Title |
+|---|------|-------|
+| 231 | best-remote-work-jobs-translators-interpreters | Best Remote Work Jobs for Translators and Interpreters |
+| 232 | best-remote-work-jobs-editors-proofreaders | Best Remote Work Jobs for Editors and Proofreaders |
+| 233 | best-remote-work-jobs-survey-researchers-ux-researchers | Best Remote Work Jobs for Survey Researchers and UX Researchers |
+| 234 | micro1-application-tips-get-accepted-faster | micro1 Application Tips: How to Get Accepted Faster |
+| 235 | micro1-vs-outlier-ai-which-platform-should-you-try-first | micro1 vs Outlier AI: Which Platform Should You Try First? |
+| 236 | best-remote-work-jobs-ux-product-designers | Best Remote Work Jobs for UX and Product Designers |
+| 237 | best-remote-work-jobs-operations-managers | Best Remote Work Jobs for Operations Managers |
+| 238 | best-remote-work-jobs-data-scientists-ml-engineers | Best Remote Work Jobs for Data Scientists and ML Engineers |
+| 239 | is-micro1-legit | Is micro1 Legit? What Remote Workers Should Know Before Applying |
+| 240 | best-remote-work-jobs-data-annotation-specialists | Best Remote Work Jobs for Data Annotation Specialists |
+| 241 | best-work-from-home-jobs-consultants-business-strategists | Best Work From Home Jobs for Consultants and Business Strategists |
+| 242 | how-to-increase-your-pay-rate-on-ai-training-platforms | How to Increase Your Pay Rate on AI Training Platforms |
+| 243 | remote-work-jobs-in-nigeria | Remote Work Jobs in Nigeria: How to Apply and Get Paid From Home |
+| 244 | best-remote-work-jobs-customer-service-reps-leaving-the-phones | The Best Remote Work Jobs for Customer Service Reps Leaving the Phones |
+| 245 | remote-ai-jobs-hiring-most-right-now | Remote AI Jobs That Are Hiring Most Right Now |
+| 246 | best-remote-work-jobs-career-changers-over-40 | Best Remote Work Jobs for Career Changers Over 40 |
+| 247 | how-to-build-a-remote-work-profile-that-gets-you-matched-faster | How to Build a Remote Work Profile That Gets You Matched Faster |
+| 248 | remote-work-jobs-philippines-apply-from-home | Remote Work Jobs in the Philippines: Where to Apply From Home |
+| 249 | best-work-from-home-jobs-stay-at-home-parents | The Best Work From Home Jobs for Stay-at-Home Parents |
+| 250 | how-to-spot-remote-work-scams-before-you-apply | How to Spot Remote Work Scams Before You Apply |
