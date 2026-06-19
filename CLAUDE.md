@@ -521,3 +521,17 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 248 | remote-work-jobs-philippines-apply-from-home | Remote Work Jobs in the Philippines: Where to Apply From Home |
 | 249 | best-work-from-home-jobs-stay-at-home-parents | The Best Work From Home Jobs for Stay-at-Home Parents |
 | 250 | how-to-spot-remote-work-scams-before-you-apply | How to Spot Remote Work Scams Before You Apply |
+
+### Articles 251–260 (published June 19, 2026 — judgment work, prompt writing, follow-up strategy, India, beginner AI jobs, platform stacking, mistake-spotters, scam avoidance, full-time + side work, micro1 application)
+| # | Slug | Title |
+|---|------|-------|
+| 251 | remote-work-judgment-ai-cant-replace | Remote Work That Pays You for the Judgment AI Can't Replace |
+| 252 | best-remote-ai-jobs-prompt-writer-without-coding | Best Remote AI Jobs You Can Do as a Prompt Writer Without Coding |
+| 253 | how-to-follow-up-after-applying-handshake-ai-mercor-micro1 | How to Follow Up After Applying to Handshake AI, Mercor, or micro1 |
+| 254 | remote-work-jobs-india-apply-get-paid-from-home | Remote Work Jobs in India: How to Apply and Get Paid From Home |
+| 255 | easiest-remote-ai-jobs-to-get-started-with | The Easiest Remote AI Jobs to Get Started With |
+| 256 | how-to-use-handshake-ai-mercor-and-micro1-together-for-steady-work | How to Use Handshake AI, Mercor, and micro1 Together for Steady Work |
+| 257 | best-remote-work-jobs-people-who-notice-mistakes-fast | Best Remote Work Jobs for People Who Notice Mistakes Fast |
+| 258 | why-real-remote-work-platforms-never-charge-you-to-start | Why Real Remote Work Platforms Never Charge You to Start |
+| 259 | remote-work-jobs-around-full-time-job | Remote Work Jobs You Can Build Around a Full-Time Job |
+| 260 | how-micro1-application-process-works-start-to-finish | How micro1's Application Process Works, Start to Finish |
