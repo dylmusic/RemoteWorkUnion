@@ -535,3 +535,45 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 | 258 | why-real-remote-work-platforms-never-charge-you-to-start | Why Real Remote Work Platforms Never Charge You to Start |
 | 259 | remote-work-jobs-around-full-time-job | Remote Work Jobs You Can Build Around a Full-Time Job |
 | 260 | how-micro1-application-process-works-start-to-finish | How micro1's Application Process Works, Start to Finish |
+
+### Articles 261–270 (published June 19–20, 2026 — recent grads, research, AI applications, Kenya, writers, reviewer work, PR/comms, schedule flexibility, beginner-to-expert, general knowledge)
+| # | Slug | Title |
+|---|------|-------|
+| 261 | best-work-from-home-jobs-recent-graduates | The Best Work From Home Jobs for Recent Graduates |
+| 262 | remote-ai-jobs-good-at-research | Remote AI Jobs for People Who Are Good at Research |
+| 263 | how-to-write-remote-ai-application-gets-response | How to Write a Remote AI Application That Gets a Response |
+| 264 | remote-work-jobs-in-kenya-legit-online-work | Remote Work Jobs in Kenya: How to Find Legit Online Work |
+| 265 | best-remote-work-jobs-for-writers-flexible-hours | Best Remote Work Jobs for Writers Who Want Flexible Hours |
+| 266 | how-ai-companies-decide-who-gets-remote-reviewer-work | How AI Companies Decide Who Gets Remote Reviewer Work |
+| 267 | best-remote-work-jobs-communications-pr-professionals | The Best Remote Work Jobs for Communications and PR Professionals |
+| 268 | remote-work-that-lets-you-set-your-own-schedule | Remote Work That Lets You Set Your Own Schedule |
+| 269 | how-to-go-from-beginner-tasks-to-expert-tier-remote-pay | How to Go From Beginner Tasks to Expert-Tier Remote Pay |
+| 270 | remote-ai-jobs-strong-general-knowledge | Remote AI Jobs for People With Strong General Knowledge |
+
+### Articles 271–280 (published June 20–21, 2026 — Indonesia, Ghana, writing skills, platform comparison, subject matter experts, procurement, office-to-remote, AI qualification, first 30 days, customer research)
+| # | Slug | Title |
+|---|------|-------|
+| 271 | remote-work-jobs-indonesia-apply-get-paid | Remote Work Jobs in Indonesia: How to Apply and Get Paid |
+| 272 | remote-work-jobs-in-ghana | Remote Work Jobs in Ghana: How to Apply From Home |
+| 273 | best-work-from-home-jobs-writing-skills | The Best Work From Home Jobs That Use Writing Skills |
+| 274 | how-handshake-ai-mercor-micro1-differ-new-applicants | How Handshake AI, Mercor, and micro1 Differ for New Applicants |
+| 275 | best-remote-work-jobs-subject-matter-experts | The Best Remote Work Jobs for Subject Matter Experts |
+| 276 | best-remote-work-jobs-procurement-supply-chain-pros | Best Remote Work Jobs for Procurement and Supply Chain Pros |
+| 277 | remote-work-for-people-leaving-a-9-to-5-office-job | Remote Work for People Leaving a 9-to-5 Office Job |
+| 278 | how-to-know-if-you-qualify-for-remote-ai-training-work | How to Know If You Qualify for Remote AI Training Work |
+| 279 | what-to-expect-first-30-days-remote-ai-work | What to Expect in Your First 30 Days of Remote AI Work |
+| 280 | best-work-from-home-jobs-customer-research-insights-roles | Best Work From Home Jobs for Customer Research and Insights Roles |
+
+### Articles 281–290 (published June 23, 2026 — multi-platform income, detail-oriented, non-technical AI jobs, event/hospitality, account recovery, no cold calling, data-minded, AI tasks stopped, curiosity/fact-checking, mid-career)
+| # | Slug | Title |
+|---|------|-------|
+| 281 | how-to-turn-one-platform-into-a-multi-platform-remote-income | How to Turn One Platform Into a Multi-Platform Remote Income |
+| 282 | best-remote-work-jobs-eye-for-detail | Best Remote Work Jobs for People With an Eye for Detail |
+| 283 | remote-ai-jobs-for-non-technical-professionals | Remote AI Jobs for Non-Technical Professionals Explained |
+| 284 | best-remote-work-jobs-event-hospitality-professionals | The Best Remote Work Jobs for Event and Hospitality Professionals |
+| 285 | recover-stalled-paused-ai-training-account | How to Recover a Stalled or Paused AI Training Account |
+| 286 | remote-work-jobs-for-people-who-hate-cold-calling | Remote Work Jobs for People Who Hate Cold Calling |
+| 287 | best-work-from-home-jobs-data-minded-professionals | Best Work From Home Jobs for Data-Minded Professionals |
+| 288 | why-ai-training-tasks-suddenly-stopped-how-to-restart | Why Your AI Training Tasks Suddenly Stopped and How to Restart |
+| 289 | remote-work-jobs-curiosity-fact-checking | Remote Work Jobs That Reward Curiosity and Fact-Checking |
+| 290 | best-remote-work-jobs-mid-career-professionals | The Best Remote Work Jobs for Mid-Career Professionals |
