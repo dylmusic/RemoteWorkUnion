@@ -1352,7 +1352,7 @@
       opacity: 0;
       transition: max-height 0.35s ease, opacity 0.3s ease;
     }
-    .prog-email-wrap.open { max-height: 50px; opacity: 1; }
+    .prog-email-wrap.open { max-height: 92px; opacity: 1; }
     .prog-email-row {
       display: flex;
       align-items: center;
@@ -1388,6 +1388,35 @@
       transition: background 0.2s;
     }
     .prog-email-submit:hover { background: rgba(255,255,255,0.26); }
+    .prog-signout-link {
+      align-self: flex-start;
+      margin-top: 9px;
+      background: none;
+      border: none;
+      padding: 2px 0;
+      color: rgba(255,255,255,0.5);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .prog-signout-link:hover { color: rgba(255,255,255,0.85); }
+    .dash-signout-wrap { display: flex; justify-content: center; margin-top: 18px; }
+    .dash-signout-btn {
+      padding: 8px 22px;
+      border-radius: 100px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.6);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .dash-signout-btn:hover { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.4); }
     .prog-nudge {
       font-size: 10px;
       color: rgba(255,255,255,0.35);
@@ -2129,6 +2158,7 @@
                   <input type="email" class="prog-email-input" id="prog-email-input" placeholder="Enter a different email" autocomplete="email">
                   <button class="prog-email-submit" id="prog-email-submit">Update &rarr;</button>
                 </div>
+                <button class="prog-signout-link" id="prog-signout" type="button">Sign out</button>
               </div>
               <p class="prog-email-ok" id="prog-email-ok">&#10003; Updated!</p>
               <p class="email-typo-note" id="prog-email-typo-note"></p>
@@ -2229,6 +2259,9 @@
               <span id="hidden-roles-label">Hidden Roles (0)</span>
             </button>
             <div class="hidden-roles-list" id="hidden-roles-list"></div>
+          </div>
+          <div class="dash-signout-wrap">
+            <button class="dash-signout-btn" id="dash-signout" type="button">Sign Out</button>
           </div>
         </div>
       </div>
@@ -3641,7 +3674,27 @@
       setTimeout(() => { progEmailOk.style.display = 'none'; }, 2500);
 
       refreshDashboard();
+
+      // Same "new account created" moment as the signup form — only when the
+      // entered email created a fresh record, never when it loaded an existing one.
+      if (isNew) setTimeout(showWelcomeCard, 250);
     });
+
+    // ── sign out ───────────────────────────────────────────────
+    // Clears the loaded-account state the app tracks (rwu_email + record/journey
+    // keys, mirroring the reset patterns above) and reloads, which drops the user
+    // back to the default logged-out signup view via the returning-user check.
+    function signOut() {
+      gtag('event', 'sign_out');
+      ['rwu_email','rwu_step','rwu_applied','rwu_skipped','rwu_hidden','rwu_record_id','rwu_ref_code'].forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('rwu_flag_dismissed_') || k === 'rwu_nudge_dismissed').forEach(k => localStorage.removeItem(k));
+      atId = null;
+      location.reload();
+    }
+    const progSignoutBtn = document.getElementById('prog-signout');
+    const dashSignoutBtn = document.getElementById('dash-signout');
+    if (progSignoutBtn) progSignoutBtn.addEventListener('click', (e) => { e.stopPropagation(); signOut(); });
+    if (dashSignoutBtn) dashSignoutBtn.addEventListener('click', signOut);
 
     // ── skip / hide / apply-now ──────────────────────────────
     hsSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'handshake'});  skipStep('handshake');  goToDashboard(); });
