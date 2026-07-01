@@ -1502,22 +1502,9 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
-    /* Welcome card — new signups only */
-    .welcome-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(6,12,28,0.62);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-      padding: 24px;
-    }
-    .welcome-overlay.open { opacity: 1; pointer-events: auto; }
-    .welcome-confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    /* Welcome card — inline in the dashboard, shown only on new-account creation.
+       Confetti is a transparent, non-blocking burst layer (not a modal/overlay). */
+    .welcome-confetti { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 60; }
     .welcome-confetti i {
       position: absolute; top: -14px; width: 8px; height: 13px;
       opacity: 0; border-radius: 1px;
@@ -1527,40 +1514,44 @@
       0%   { opacity: 1; transform: translateY(0) rotateZ(0deg); }
       100% { opacity: 0; transform: translateY(106vh) rotateZ(600deg); }
     }
+    /* Matches the dashboard's glass-card language (translucent white on the blue
+       gradient, same radius / fonts / pill button). Sits at the top of the
+       #hs-progress dashboard screen and reads as a native section, not an overlay. */
     .welcome-card {
+      display: none;
       position: relative;
-      background: #fff;
-      color: #1a1a2e;
-      border-radius: 20px;
-      padding: 34px 30px 24px;
-      max-width: 460px;
+      flex-direction: column;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.26);
+      border-radius: 18px;
+      padding: 24px 26px 20px;
       width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 22px;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      box-shadow: 0 26px 70px rgba(0,0,0,0.34);
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: translateY(18px) scale(0.97);
+      color: #fff;
       opacity: 0;
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .welcome-overlay.open .welcome-card { transform: translateY(0) scale(1); opacity: 1; }
+    .welcome-card.show { opacity: 1; transform: translateY(0); }
     .welcome-close {
-      position: absolute; top: 12px; right: 14px;
-      background: none; border: none; font-size: 24px;
-      cursor: pointer; color: #b3b8c4; font-family: inherit;
-      line-height: 1; padding: 4px 8px;
+      position: absolute; top: 11px; right: 13px;
+      background: none; border: none; font-size: 22px;
+      cursor: pointer; color: rgba(255,255,255,0.55); font-family: inherit;
+      line-height: 1; padding: 4px 8px; transition: color 0.2s;
     }
-    .welcome-close:hover { color: #444; }
+    .welcome-close:hover { color: #fff; }
     .welcome-check {
-      width: 58px; height: 58px; border-radius: 50%;
-      background: linear-gradient(135deg, #0A57F0, #003BB5);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #fff;
       display: flex; align-items: center; justify-content: center;
       margin: 4px auto 0;
-      box-shadow: 0 10px 24px rgba(0,59,181,0.34);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.2);
       transform: scale(0);
       animation: welcomePop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.12s forwards;
     }
-    .welcome-check svg { width: 30px; height: 30px; }
+    .welcome-check svg { width: 27px; height: 27px; }
     .welcome-check svg path {
       stroke-dasharray: 32; stroke-dashoffset: 32;
       animation: welcomeDraw 0.4s ease 0.46s forwards;
@@ -1570,52 +1561,51 @@
     .welcome-eyebrow {
       text-align: center; font-size: 12px; font-weight: 800;
       letter-spacing: 1px; text-transform: uppercase;
-      color: #0A57F0; margin: 12px 0 2px;
+      color: rgba(255,255,255,0.9); margin: 12px 0 2px;
     }
     .welcome-heading {
-      text-align: center; font-size: 23px; font-weight: 800;
-      line-height: 1.25; margin: 2px 0 8px; color: #0d1526;
+      text-align: center; font-size: 22px; font-weight: 800;
+      line-height: 1.25; margin: 2px 0 8px; color: #fff;
     }
     .welcome-members {
       text-align: center; font-size: 13px; font-weight: 600;
-      color: #4a5568; background: #EEF3FF; border-radius: 100px;
+      color: #fff; background: rgba(255,255,255,0.18); border-radius: 100px;
       padding: 7px 14px; margin: 0 auto 16px; display: inline-flex;
       align-items: center; gap: 6px; width: auto;
     }
     .welcome-members-wrap { text-align: center; }
-    .welcome-members b { color: #003BB5; font-weight: 800; }
-    .welcome-card p { font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; color: #2a2f3a; }
-    .welcome-card a { color: #003BB5; font-weight: 700; text-decoration: none; }
-    .welcome-card a:hover { text-decoration: underline; }
-    .welcome-list-title { font-weight: 700; font-size: 14px; color: #0d1526; margin: 4px 0 8px; }
+    .welcome-members b { color: #fff; font-weight: 800; }
+    .welcome-card p { font-size: 14px; line-height: 1.6; margin: 0 0 12px; color: rgba(255,255,255,0.92); }
+    .welcome-card a { color: #fff; font-weight: 700; text-decoration: underline; }
+    .welcome-card a:hover { opacity: 0.85; }
+    .welcome-list-title { font-weight: 700; font-size: 14px; color: #fff; margin: 4px 0 8px; }
     .welcome-list { list-style: none; padding: 0; margin: 0 0 16px; }
     .welcome-list li {
       position: relative; padding: 4px 0 4px 26px;
-      font-size: 14px; line-height: 1.45; color: #2a2f3a;
+      font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.92);
     }
     .welcome-list li::before {
       content: ""; position: absolute; left: 0; top: 8px;
       width: 15px; height: 15px; border-radius: 50%;
-      background: #EEF3FF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003BB5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/9px no-repeat;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003BB5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/9px no-repeat;
     }
-    .welcome-closing { text-align: center; font-weight: 600; color: #0d1526; margin: 4px 0 16px; }
+    .welcome-closing { text-align: center; font-weight: 600; color: #fff; margin: 4px 0 16px; }
     .welcome-btn {
       display: block; width: 100%; box-sizing: border-box;
       padding: 14px; border-radius: 100px; border: none;
-      background: #003BB5; color: #fff; font-family: inherit;
+      background: #fff; color: #003BB5; font-family: inherit;
       font-size: 15px; font-weight: 700; cursor: pointer;
       transition: opacity 0.2s, transform 0.15s;
     }
     .welcome-btn:hover { opacity: 0.9; transform: scale(1.01); }
     .welcome-btn:active { transform: scale(1); }
-    /* Scoped tighter than `.welcome-card p` (which would otherwise win on
-       specificity and force this back to 14.5px body size). */
+    /* Still scoped tighter than `.welcome-card p` so the fine print stays 11px. */
     .welcome-card p.welcome-fineprint {
-      font-size: 11px; line-height: 1.4; color: #8b95a5;
+      font-size: 11px; line-height: 1.4; color: rgba(255,255,255,0.55);
       text-align: center; margin: 14px 2px 0;
     }
     @media (max-width: 480px) {
-      .welcome-card { padding: 30px 22px 22px; }
+      .welcome-card { padding: 22px 18px 18px; }
       .welcome-heading { font-size: 20px; }
     }
     /* Blog highlight cards */
@@ -2117,6 +2107,33 @@
 
         <!-- Step 5: Completion screen -->
         <div class="hs-progress" id="hs-progress">
+          <!-- One-time welcome card — inline, shown only on new-account creation -->
+          <div class="welcome-card" id="welcome-card">
+            <button class="welcome-close" id="welcome-close" aria-label="Dismiss">&times;</button>
+            <div class="welcome-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#003BB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <p class="welcome-eyebrow">You're in!</p>
+            <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union! 🎉</h2>
+            <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">You've joined a growing community of remote workers</span></div>
+
+            <p>You just joined a free community that helps everyday people — writers, marketers, teachers, healthcare and customer service pros, career changers, and more — find legitimate remote work. We'll guide you every step of the way.</p>
+
+            <p>The biggest opportunity we help members pursue right now is <a href="https://www.remoteworkunion.com/work">AI Training</a> roles: 100% remote, work-from-home, paying $50&ndash;$200/hr. No coding required — people from all backgrounds are getting hired to review and improve AI for major labs like OpenAI, Anthropic, Google, and Meta.</p>
+
+            <p class="welcome-list-title">Here's how we help you get started:</p>
+            <ul class="welcome-list">
+              <li>Optimize your resume for the AI training industry</li>
+              <li>Find and apply to trusted platforms like Handshake, Mercor, and micro1</li>
+              <li>Prepare for your interview</li>
+              <li>Launch your career in AI training</li>
+            </ul>
+
+            <p class="welcome-closing">Everything you need is waiting on your Dashboard.</p>
+            <button class="welcome-btn" id="welcome-btn">Go to Dashboard →</button>
+
+            <p class="welcome-fineprint">Remote Work Union is a free community and resource hub for remote workers. We are not a labor union, do not collect dues or bargain collectively, and are not affiliated with any labor organization or federation. "Union" reflects our community of members working toward shared goals.</p>
+          </div>
           <div class="prog-bar-wrap">
             <div class="prog-bar-labels"><span>Your Progress</span><span id="prog-pct">0% Complete</span></div>
             <div class="prog-bar-track"><div class="prog-bar-fill" id="prog-bar-fill"></div></div>
@@ -2331,36 +2348,8 @@
     </div>
   </div>
 
-  <!-- Welcome card — shown only on a brand-new signup -->
-  <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-heading">
-    <div class="welcome-confetti" id="welcome-confetti" aria-hidden="true"></div>
-    <div class="welcome-card">
-      <button class="welcome-close" id="welcome-close" aria-label="Close">&times;</button>
-      <div class="welcome-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      </div>
-      <p class="welcome-eyebrow">You're in!</p>
-      <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union! 🎉</h2>
-      <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">You've joined a growing community of remote workers</span></div>
-
-      <p>You just joined a free community that helps everyday people — writers, marketers, teachers, healthcare and customer service pros, career changers, and more — find legitimate remote work. We'll guide you every step of the way.</p>
-
-      <p>The biggest opportunity we help members pursue right now is <a href="https://www.remoteworkunion.com/work">AI Training</a> roles: 100% remote, work-from-home, paying $50&ndash;$200/hr. No coding required — people from all backgrounds are getting hired to review and improve AI for major labs like OpenAI, Anthropic, Google, and Meta.</p>
-
-      <p class="welcome-list-title">Here's how we help you get started:</p>
-      <ul class="welcome-list">
-        <li>Optimize your resume for the AI training industry</li>
-        <li>Find and apply to trusted platforms like Handshake, Mercor, and micro1</li>
-        <li>Prepare for your interview</li>
-        <li>Launch your career in AI training</li>
-      </ul>
-
-      <p class="welcome-closing">Everything you need is waiting on your Dashboard.</p>
-      <button class="welcome-btn" id="welcome-btn">Go to Dashboard →</button>
-
-      <p class="welcome-fineprint">Remote Work Union is a free community and resource hub for remote workers. We are not a labor union, do not collect dues or bargain collectively, and are not affiliated with any labor organization or federation. "Union" reflects our community of members working toward shared goals.</p>
-    </div>
-  </div>
+  <!-- Welcome confetti burst — fired when the inline welcome card appears -->
+  <div class="welcome-confetti" id="welcome-confetti" aria-hidden="true"></div>
 
   <!-- Referral modal -->
   <div class="modal-overlay" id="referral-modal" role="dialog" aria-modal="true" aria-labelledby="referral-modal-title">
@@ -3775,8 +3764,8 @@
       }
     });
 
-    // ── welcome card (new signups only) ───────────────────────
-    const welcomeOverlay = document.getElementById('welcome-overlay');
+    // ── welcome card (inline in dashboard, new accounts only) ──
+    const welcomeCard = document.getElementById('welcome-card');
     function fireWelcomeConfetti() {
       const wrap = document.getElementById('welcome-confetti');
       if (!wrap) return;
@@ -3795,7 +3784,7 @@
       }
     }
     function showWelcomeCard() {
-      if (!welcomeOverlay) return;
+      if (!welcomeCard) return;
       // Weave in the live member count when we have it — the newest signup is
       // effectively the latest member. Falls back to a warm generic line.
       const memEl = document.getElementById('welcome-members');
@@ -3803,18 +3792,22 @@
         memEl.innerHTML = "You're member <b>#" + _rwuCount.toLocaleString() +
           "</b> of a community that's growing every day";
       }
-      welcomeOverlay.classList.add('open');
+      // Reveal inline at the top of the dashboard, then fade/slide in.
+      welcomeCard.style.display = 'flex';
+      requestAnimationFrame(() => requestAnimationFrame(() => welcomeCard.classList.add('show')));
+      welcomeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       fireWelcomeConfetti();
     }
     function closeWelcomeCard() {
-      if (welcomeOverlay) welcomeOverlay.classList.remove('open');
+      if (!welcomeCard || welcomeCard.style.display === 'none') return;
+      welcomeCard.classList.remove('show');
+      setTimeout(() => { welcomeCard.style.display = 'none'; }, 450);
+      const conf = document.getElementById('welcome-confetti');
+      if (conf) conf.innerHTML = '';
     }
-    if (welcomeOverlay) {
+    if (welcomeCard) {
       document.getElementById('welcome-close').addEventListener('click', closeWelcomeCard);
       document.getElementById('welcome-btn').addEventListener('click', closeWelcomeCard);
-      welcomeOverlay.addEventListener('click', (e) => {
-        if (e.target === welcomeOverlay) closeWelcomeCard();
-      });
     }
 
     // ── resume nudge dismiss + mobile tooltip ─────────────────
