@@ -1473,6 +1473,120 @@
       margin-bottom: 12px;
       color: #003BB5;
     }
+    /* Welcome card — new signups only */
+    .welcome-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6,12,28,0.62);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 24px;
+    }
+    .welcome-overlay.open { opacity: 1; pointer-events: auto; }
+    .welcome-confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .welcome-confetti i {
+      position: absolute; top: -14px; width: 8px; height: 13px;
+      opacity: 0; border-radius: 1px;
+      animation: welcomeConfetti linear forwards;
+    }
+    @keyframes welcomeConfetti {
+      0%   { opacity: 1; transform: translateY(0) rotateZ(0deg); }
+      100% { opacity: 0; transform: translateY(106vh) rotateZ(600deg); }
+    }
+    .welcome-card {
+      position: relative;
+      background: #fff;
+      color: #1a1a2e;
+      border-radius: 20px;
+      padding: 34px 30px 24px;
+      max-width: 460px;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.34);
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(18px) scale(0.97);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+    }
+    .welcome-overlay.open .welcome-card { transform: translateY(0) scale(1); opacity: 1; }
+    .welcome-close {
+      position: absolute; top: 12px; right: 14px;
+      background: none; border: none; font-size: 24px;
+      cursor: pointer; color: #b3b8c4; font-family: inherit;
+      line-height: 1; padding: 4px 8px;
+    }
+    .welcome-close:hover { color: #444; }
+    .welcome-check {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: linear-gradient(135deg, #0A57F0, #003BB5);
+      display: flex; align-items: center; justify-content: center;
+      margin: 4px auto 0;
+      box-shadow: 0 10px 24px rgba(0,59,181,0.34);
+      transform: scale(0);
+      animation: welcomePop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.12s forwards;
+    }
+    .welcome-check svg { width: 30px; height: 30px; }
+    .welcome-check svg path {
+      stroke-dasharray: 32; stroke-dashoffset: 32;
+      animation: welcomeDraw 0.4s ease 0.46s forwards;
+    }
+    @keyframes welcomePop { to { transform: scale(1); } }
+    @keyframes welcomeDraw { to { stroke-dashoffset: 0; } }
+    .welcome-eyebrow {
+      text-align: center; font-size: 12px; font-weight: 800;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #0A57F0; margin: 12px 0 2px;
+    }
+    .welcome-heading {
+      text-align: center; font-size: 23px; font-weight: 800;
+      line-height: 1.25; margin: 2px 0 8px; color: #0d1526;
+    }
+    .welcome-members {
+      text-align: center; font-size: 13px; font-weight: 600;
+      color: #4a5568; background: #EEF3FF; border-radius: 100px;
+      padding: 7px 14px; margin: 0 auto 16px; display: inline-flex;
+      align-items: center; gap: 6px; width: auto;
+    }
+    .welcome-members-wrap { text-align: center; }
+    .welcome-members b { color: #003BB5; font-weight: 800; }
+    .welcome-card p { font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; color: #2a2f3a; }
+    .welcome-card a { color: #003BB5; font-weight: 700; text-decoration: none; }
+    .welcome-card a:hover { text-decoration: underline; }
+    .welcome-list-title { font-weight: 700; font-size: 14px; color: #0d1526; margin: 4px 0 8px; }
+    .welcome-list { list-style: none; padding: 0; margin: 0 0 16px; }
+    .welcome-list li {
+      position: relative; padding: 4px 0 4px 26px;
+      font-size: 14px; line-height: 1.45; color: #2a2f3a;
+    }
+    .welcome-list li::before {
+      content: ""; position: absolute; left: 0; top: 8px;
+      width: 15px; height: 15px; border-radius: 50%;
+      background: #EEF3FF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003BB5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/9px no-repeat;
+    }
+    .welcome-closing { text-align: center; font-weight: 600; color: #0d1526; margin: 4px 0 16px; }
+    .welcome-btn {
+      display: block; width: 100%; box-sizing: border-box;
+      padding: 14px; border-radius: 100px; border: none;
+      background: #003BB5; color: #fff; font-family: inherit;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .welcome-btn:hover { opacity: 0.9; transform: scale(1.01); }
+    .welcome-btn:active { transform: scale(1); }
+    .welcome-fineprint {
+      font-size: 10.5px; line-height: 1.5; color: #9098a6;
+      text-align: center; margin: 14px 2px 0;
+    }
+    @media (max-width: 480px) {
+      .welcome-card { padding: 30px 22px 22px; }
+      .welcome-heading { font-size: 20px; }
+    }
     /* Blog highlight cards */
     .blog-highlight {
       width: 100%;
@@ -2179,6 +2293,37 @@
       <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
       <p class="modal-title" id="modal-title-text">About Remote Work Union</p>
       <p>Remote Work Union is an independent newsletter and resource platform for remote workers. We are not a certified or registered labor union, do not provide collective bargaining services, and are not affiliated with any official union organization. We do not offer legal, financial, or employment advice. Our goal is to help remote and independent workers find opportunities and resources. All content is informational only.</p>
+    </div>
+  </div>
+
+  <!-- Welcome card — shown only on a brand-new signup -->
+  <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-heading">
+    <div class="welcome-confetti" id="welcome-confetti" aria-hidden="true"></div>
+    <div class="welcome-card">
+      <button class="welcome-close" id="welcome-close" aria-label="Close">&times;</button>
+      <div class="welcome-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <p class="welcome-eyebrow">You're in!</p>
+      <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union! 🎉</h2>
+      <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">You've joined a growing community of remote workers</span></div>
+
+      <p>You just joined a free community that helps everyday people — writers, marketers, teachers, healthcare and customer service pros, career changers, and more — find legitimate remote work. We'll guide you every step of the way.</p>
+
+      <p>The biggest opportunity we help members pursue right now is <a href="https://www.remoteworkunion.com/work">AI Training</a> roles: 100% remote, work-from-home, paying $50&ndash;$200/hr. No coding required — people from all backgrounds are getting hired to review and improve AI for major labs like OpenAI, Anthropic, Google, and Meta.</p>
+
+      <p class="welcome-list-title">Here's how we help you get started:</p>
+      <ul class="welcome-list">
+        <li>Optimize your resume for the AI training industry</li>
+        <li>Find and apply to trusted platforms like Handshake, Mercor, and micro1</li>
+        <li>Prepare for your interview</li>
+        <li>Launch your career in AI training</li>
+      </ul>
+
+      <p class="welcome-closing">Everything you need is waiting on your Dashboard.</p>
+      <button class="welcome-btn" id="welcome-btn">Go to Dashboard →</button>
+
+      <p class="welcome-fineprint">Remote Work Union is a free community and resource hub for remote workers. We are not a labor union, do not collect dues or bargain collectively, and are not affiliated with any labor organization or federation. "Union" reflects our community of members working toward shared goals.</p>
     </div>
   </div>
 
@@ -3213,6 +3358,8 @@
               hsCard.classList.add('animate');
               hsProgress.classList.add('animate');
               setTimeout(refreshDashboard, 50);
+              // New signups only — never returning users restored from Airtable.
+              if (isNew) setTimeout(showWelcomeCard, 350);
             }));
           }, 300);
         }, 1000);
@@ -3569,8 +3716,51 @@
         disclaimerModal.classList.remove('open');
         const refModal = document.getElementById('referral-modal');
         if (refModal) refModal.classList.remove('open');
+        closeWelcomeCard();
       }
     });
+
+    // ── welcome card (new signups only) ───────────────────────
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    function fireWelcomeConfetti() {
+      const wrap = document.getElementById('welcome-confetti');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const colors = ['#003BB5', '#0A57F0', '#4C8DFF', '#FFC93C', '#22C55E', '#FF6B00'];
+      for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('i');
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.background = colors[i % colors.length];
+        piece.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+        piece.style.animationDelay = (Math.random() * 0.5) + 's';
+        const w = 6 + Math.random() * 5;
+        piece.style.width = w + 'px';
+        piece.style.height = (w + 4) + 'px';
+        wrap.appendChild(piece);
+      }
+    }
+    function showWelcomeCard() {
+      if (!welcomeOverlay) return;
+      // Weave in the live member count when we have it — the newest signup is
+      // effectively the latest member. Falls back to a warm generic line.
+      const memEl = document.getElementById('welcome-members');
+      if (memEl && _rwuCount > 0) {
+        memEl.innerHTML = "You're member <b>#" + _rwuCount.toLocaleString() +
+          "</b> of a community that's growing every day";
+      }
+      welcomeOverlay.classList.add('open');
+      fireWelcomeConfetti();
+    }
+    function closeWelcomeCard() {
+      if (welcomeOverlay) welcomeOverlay.classList.remove('open');
+    }
+    if (welcomeOverlay) {
+      document.getElementById('welcome-close').addEventListener('click', closeWelcomeCard);
+      document.getElementById('welcome-btn').addEventListener('click', closeWelcomeCard);
+      welcomeOverlay.addEventListener('click', (e) => {
+        if (e.target === welcomeOverlay) closeWelcomeCard();
+      });
+    }
 
     // ── resume nudge dismiss + mobile tooltip ─────────────────
     const nudgeDismissBtn = document.getElementById('resume-nudge-dismiss');
