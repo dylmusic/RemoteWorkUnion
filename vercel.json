@@ -10,6 +10,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "faq.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "og.png",
       "use": "@vercel/static"
     },
@@ -46,6 +50,10 @@
     {
       "src": "/work",
       "dest": "/work.html"
+    },
+    {
+      "src": "/faq",
+      "dest": "/faq.html"
     },
     {
       "src": "/blog",
