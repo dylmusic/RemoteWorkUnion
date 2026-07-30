@@ -1524,6 +1524,7 @@
       display: none;
       position: relative;
       flex-direction: column;
+      text-align: left;
       background: rgba(255,255,255,0.13);
       border: 1px solid rgba(255,255,255,0.24);
       border-radius: 20px;
@@ -1574,25 +1575,25 @@
       display: inline-block; text-align: center; box-sizing: border-box;
       max-width: 100%; font-size: 13px; font-weight: 600; line-height: 1.4;
       color: #fff; background: rgba(255,255,255,0.18); border-radius: 100px;
-      padding: 8px 16px; margin: 0 auto 16px;
+      padding: 8px 16px; margin: 0 auto 14px;
     }
     .welcome-members-wrap { text-align: center; }
     .welcome-members b { color: #fff; font-weight: 800; }
-    .welcome-card p { font-size: 14px; line-height: 1.6; margin: 0 0 12px; color: rgba(255,255,255,0.92); }
+    .welcome-card p { font-size: 14px; line-height: 1.55; margin: 0 0 10px; color: rgba(255,255,255,0.92); }
     .welcome-card a { color: #fff; font-weight: 700; text-decoration: underline; }
     .welcome-card a:hover { opacity: 0.85; }
-    .welcome-list-title { font-weight: 700; font-size: 14px; color: #fff; margin: 4px 0 8px; }
-    .welcome-list { list-style: none; padding: 0; margin: 0 0 16px; }
+    .welcome-list-title { font-weight: 700; font-size: 14px; color: #fff; margin: 2px 0 6px; }
+    .welcome-list { list-style: none; padding: 0; margin: 0 0 12px; }
     .welcome-list li {
-      position: relative; padding: 4px 0 4px 26px;
-      font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.92);
+      position: relative; padding: 3px 0 3px 26px;
+      font-size: 14px; line-height: 1.4; color: rgba(255,255,255,0.92);
     }
     .welcome-list li::before {
-      content: ""; position: absolute; left: 0; top: 8px;
+      content: ""; position: absolute; left: 0; top: 7px;
       width: 15px; height: 15px; border-radius: 50%;
       background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003BB5' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/9px no-repeat;
     }
-    .welcome-closing { text-align: center; font-weight: 600; color: #fff; margin: 4px 0 16px; }
+    .welcome-closing { text-align: center; font-weight: 600; color: #fff; margin: 6px 0 14px; }
     .welcome-btn {
       display: block; width: 100%; box-sizing: border-box;
       padding: 14px; border-radius: 100px; border: none;
@@ -1602,8 +1603,6 @@
     }
     .welcome-btn:hover { opacity: 0.9; transform: scale(1.01); }
     .welcome-btn:active { transform: scale(1); }
-    /* Second half of the member line — breaks to its own line on mobile. */
-    .welcome-members .wm-line2 { display: inline; }
     /* Still scoped tighter than `.welcome-card p` so the fine print stays 11px. */
     .welcome-card p.welcome-fineprint {
       font-size: 11px; line-height: 1.4; color: rgba(255,255,255,0.55);
@@ -1618,7 +1617,6 @@
         display: block; width: 100%; font-size: 13.5px; line-height: 1.45;
         padding: 10px 14px;
       }
-      .welcome-members .wm-line2 { display: block; }
       .welcome-card p { font-size: 15px; line-height: 1.5; }
       .welcome-list-title { font-size: 14.5px; }
       .welcome-list li { font-size: 14.5px; }
@@ -1897,12 +1895,12 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#003BB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
         <p class="welcome-eyebrow">You're in!</p>
-        <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union! 🎉</h2>
-        <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">You've joined a growing community of remote workers</span></div>
+        <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union!</h2>
+        <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">🎉 You've joined a growing community of remote workers</span></div>
 
         <p>You just joined a free community that helps everyday people across every field — business, marketing, sales, servers, bartenders, retail associates, finance, customer service, social media, creative and writing, teaching, plus technical, legal, and medical professionals — find legitimate remote work. We'll guide you every step of the way.</p>
 
-        <p>The biggest opportunity we help members pursue right now is <a href="https://www.remoteworkunion.com/work">AI Training</a> roles: 100% remote, work-from-home, paying $50&ndash;$200/hr. No coding required — people from all backgrounds are getting hired to review and improve AI for major labs like OpenAI, Anthropic, Google, and Meta.</p>
+        <p>The biggest opportunity we help members pursue right now is <a href="https://www.remoteworkunion.com/work">AI Training</a> roles: 100% remote, work-from-home, paying $50&ndash;$200/hr. No coding required — people from all backgrounds are getting hired to review and improve AI for major labs like OpenAI, Anthropic, Google, and Meta. <a href="https://www.remoteworkunion.com/work">Read more.</a></p>
 
         <p class="welcome-list-title">Here's how we help you get started:</p>
         <ul class="welcome-list">
@@ -3814,8 +3812,7 @@
       // effectively the latest member. Falls back to a warm generic line.
       const memEl = document.getElementById('welcome-members');
       if (memEl && _rwuCount > 0) {
-        memEl.innerHTML = "You're member <b>#" + _rwuCount.toLocaleString() +
-          "</b> <span class=\"wm-line2\">of a community that's growing every day</span>";
+        memEl.innerHTML = "🎉 You're member <b>#" + _rwuCount.toLocaleString() + "</b>";
       }
       // Reveal inline at the top of the dashboard, then fade/slide in.
       // No auto-scroll — leave the scroll position where it is; the card is tall
