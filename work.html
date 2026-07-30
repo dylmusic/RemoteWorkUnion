@@ -134,6 +134,7 @@
       line-height: 1.12;
       letter-spacing: -1.5px;
       margin-bottom: 20px;
+      text-wrap: balance;
     }
     .hero-sub {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
@@ -466,13 +467,17 @@
     @media (max-width: 640px) {
       .nav-logo { display: none; }
       .industry-grid { grid-template-columns: repeat(2, 1fr); }
+      section { margin-bottom: 40px; }
+      .keyword-cloud-section { margin-bottom: 40px; }
+      .section-header { margin-bottom: 20px; }
+      .hero-sub { margin-bottom: 16px; }
     }
     @media (max-width: 520px) {
       .work-type-grid { grid-template-columns: 1fr; }
       .platform-grid { grid-template-columns: 1fr; }
       .pay-grid { grid-template-columns: 1fr; }
       .industry-grid { grid-template-columns: repeat(2, 1fr); }
-      .hero { padding: 48px 0 40px; }
+      .hero { padding: 48px 0 16px; }
       .keyword-cloud-wrap {
         height: 200px;
         border-radius: 16px;
@@ -517,7 +522,7 @@
         <span class="hero-badge-dot"></span>
         Remote Work &amp; AI Training
       </div>
-      <h1>Normal People Are Getting<br/>Paid to Improve AI</h1>
+      <h1>Normal People Are Getting Paid to Improve AI</h1>
       <p class="hero-sub">Millions of remote workers are earning money by teaching AI how to think, write, and reason — no office, no commute, no degree required.</p>
       <div class="hero-pay-badge">
         $50–$200/hr <span>depending on expertise</span>
