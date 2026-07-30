@@ -1524,7 +1524,6 @@
       display: none;
       position: relative;
       flex-direction: column;
-      text-align: left;
       background: rgba(255,255,255,0.13);
       border: 1px solid rgba(255,255,255,0.24);
       border-radius: 20px;
@@ -1576,6 +1575,7 @@
       max-width: 100%; font-size: 13px; font-weight: 600; line-height: 1.4;
       color: #fff; background: rgba(255,255,255,0.18); border-radius: 100px;
       padding: 8px 16px; margin: 0 auto 14px;
+      position: relative; cursor: pointer;
     }
     .welcome-members-wrap { text-align: center; }
     .welcome-members b { color: #fff; font-weight: 800; }
@@ -1895,8 +1895,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#003BB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
         <p class="welcome-eyebrow">You're in!</p>
-        <h2 class="welcome-heading" id="welcome-heading">Welcome to Remote Work Union!</h2>
-        <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members">🎉 You've joined a growing community of remote workers</span></div>
+        <h2 class="welcome-heading" id="welcome-heading">Welcome to<br/>Remote Work Union!</h2>
+        <div class="welcome-members-wrap"><span class="welcome-members" id="welcome-members"><span id="welcome-members-text">🎉 You've joined a growing community of remote workers</span><div class="member-count-popup" id="welcome-count-popup"><div class="mcp-total" id="welcome-mcp-total">—</div><div class="mcp-label">members</div><div class="mcp-today" id="welcome-mcp-today">↑ — joined today</div></div></span></div>
 
         <p>You just joined a free community that helps everyday people across every field — business, marketing, sales, servers, bartenders, retail associates, finance, customer service, social media, creative and writing, teaching, plus technical, legal, and medical professionals — find legitimate remote work. We'll guide you every step of the way.</p>
 
@@ -3810,7 +3810,7 @@
       if (!welcomeCard) return;
       // Weave in the live member count when we have it — the newest signup is
       // effectively the latest member. Falls back to a warm generic line.
-      const memEl = document.getElementById('welcome-members');
+      const memEl = document.getElementById('welcome-members-text');
       if (memEl && _rwuCount > 0) {
         memEl.innerHTML = "🎉 You're member <b>#" + _rwuCount.toLocaleString() + "</b>";
       }
@@ -3940,10 +3940,14 @@
         : `Join ${_rwuCount.toLocaleString()} Remote Workers`;
     }
     function _rwuUpdatePopup() {
-      const totEl = document.getElementById('mcp-total');
-      const todEl = document.getElementById('mcp-today');
-      if (totEl) totEl.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
-      if (todEl) todEl.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
+      // .mcp-total/.mcp-today are duplicated (nav badge + welcome-card pill) --
+      // update every instance on the page, not just one hardcoded id.
+      document.querySelectorAll('.mcp-total').forEach((el) => {
+        el.textContent = _rwuCount > 0 ? _rwuCount.toLocaleString() : '—';
+      });
+      document.querySelectorAll('.mcp-today').forEach((el) => {
+        el.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
+      });
     }
     async function _rwuFetchCount() {
       try {
@@ -3971,10 +3975,10 @@
     } catch (_) {}
     _rwuFetchCount();
 
-    // ── member count popup ─────────────────────────────────────
-    (function() {
-      const badge  = document.getElementById('member-count-badge');
-      const popup  = document.getElementById('member-count-popup');
+    // ── member count popup(s) — nav badge + welcome-card pill share this ──
+    function _rwuWireCountPopup(badgeId, popupId) {
+      const badge = document.getElementById(badgeId);
+      const popup = document.getElementById(popupId);
       if (!badge || !popup) return;
 
       let dismissTimer = null;
@@ -3998,7 +4002,9 @@
       });
 
       document.addEventListener('click', closePopup);
-    })();
+    }
+    _rwuWireCountPopup('member-count-badge', 'member-count-popup');
+    _rwuWireCountPopup('welcome-members', 'welcome-count-popup');
   </script>
 
   <div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">
