@@ -1509,6 +1509,8 @@
       position: absolute; top: -14px; width: 8px; height: 13px;
       opacity: 0; border-radius: 1px;
       animation: welcomeConfetti linear forwards;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
     }
     @keyframes welcomeConfetti {
       0%   { opacity: 1; transform: translateY(0) rotateZ(0deg); }
@@ -3786,7 +3788,14 @@
       if (!wrap) return;
       wrap.innerHTML = '';
       const colors = ['#003BB5', '#0A57F0', '#4C8DFF', '#FFC93C', '#22C55E', '#FF6B00'];
-      for (let i = 0; i < 60; i++) {
+      // Fewer pieces on narrow/low-power devices, and batched into one
+      // DocumentFragment insert instead of 60 separate appendChild calls --
+      // the per-call DOM mutation was landing in the same frame as the
+      // welcome card's own show-transition, which is what read as a stutter/
+      // freeze right as the card appeared.
+      const count = window.innerWidth < 640 ? 32 : 60;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
         const piece = document.createElement('i');
         piece.style.left = Math.random() * 100 + '%';
         piece.style.background = colors[i % colors.length];
@@ -3795,8 +3804,9 @@
         const w = 6 + Math.random() * 5;
         piece.style.width = w + 'px';
         piece.style.height = (w + 4) + 'px';
-        wrap.appendChild(piece);
+        frag.appendChild(piece);
       }
+      wrap.appendChild(frag);
     }
     function showWelcomeCard() {
       if (!welcomeCard) return;
