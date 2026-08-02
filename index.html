@@ -860,6 +860,20 @@
       50% { box-shadow: 0 0 0 5px rgba(96,165,250,0); }
     }
 
+    /* Resume Optimizer view */
+    #rs-apply {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #rs-apply.show { display: flex; }
+    #rs-apply.animate { opacity: 1; transform: translateY(0); }
+    #rs-apply.fade-out { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
     /* Outlier view */
     #ot-apply {
       display: none;
@@ -1916,11 +1930,53 @@
         <p class="welcome-fineprint">Remote Work Union is a free community and resource hub for remote workers. We are not a labor union, do not collect dues or bargain collectively, and are not affiliated with any labor organization or federation. "Union" reflects our community of members working toward shared goals.</p>
       </div>
       <div class="hs-card" id="hs-card">
+        <!-- Step 1: Resume Optimizer -->
+        <div id="rs-apply">
+          <button class="dash-btn" id="rs-dash-btn">⊞ Dashboard</button>
+          <div class="skipped-banner" id="rs-skipped-banner">⚠ You skipped this opportunity</div>
+          <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot current"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+          </div>
+          <p class="hs-tag">📝 Recommended First Step</p>
+          <p class="hs-headline">Optimize Your Resume</p>
+          <p class="hs-subline">Get your resume ready before you apply</p>
+          <div class="card-process" id="rs-process">
+            <button class="card-process-toggle" onclick="document.getElementById('rs-process').classList.toggle('open')">
+              <span class="card-process-chevron"></span> View Process
+            </button>
+            <div class="card-process-body">
+              <p class="card-process-time">⏱ 5 minutes &middot; Just paste in your resume</p>
+              <ol class="card-process-steps">
+                <li><span class="step-num">1</span><span>Open our free Resume Optimizer prompt</span></li>
+                <li><span class="step-num">2</span><span>Paste it into ChatGPT or Claude along with your current resume</span></li>
+                <li><span class="step-num">3</span><span>Download your new resume as a Word doc and PDF</span></li>
+              </ol>
+            </div>
+          </div>
+          <a class="hs-cta" id="rs-cta" href="/blog/remote-work-resume-guide" target="_blank" rel="noopener noreferrer">Go To Resume Optimizer &rarr;</a>
+          <button class="hs-confirm-btn" id="rs-confirm">✅ I finished optimizing my resume &mdash; confirm!</button>
+          <button class="hs-cb-btn" id="rs-already">
+            <span class="hs-cb" id="rs-cb">
+              <svg class="hs-cb-check" viewBox="0 0 10 8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,4 3.8,7 9,1"/>
+              </svg>
+            </span>
+            I&rsquo;ve already optimized my resume
+          </button>
+          <button class="undo-link" id="rs-undo">↩ I did not do this yet</button>
+          <button class="card-action-link" id="rs-skip">⏭ Skip this for now</button>
+          <button class="card-action-link" id="rs-hide">✕ Not for me</button>
+        </div>
         <!-- Step 2: Handshake -->
         <div class="hs-apply" id="hs-apply">
           <button class="dash-btn" id="hs-dash-btn">⊞ Dashboard</button>
           <div class="skipped-banner" id="hs-skipped-banner">⚠ You skipped this opportunity</div>
           <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
             <span class="step-dot done"></span>
             <span class="step-dot current"></span>
             <span class="step-dot"></span>
@@ -1992,6 +2048,7 @@
             <div class="step-dots" aria-hidden="true">
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
               <span class="step-dot current"></span>
               <span class="step-dot"></span>
             </div>
@@ -2010,6 +2067,7 @@
             <div class="step-dots" aria-hidden="true">
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
               <span class="step-dot current"></span>
               <span class="step-dot"></span>
             </div>
@@ -2026,6 +2084,7 @@
           <!-- Regular Mercor content -->
           <div id="mc-main">
             <div class="step-dots" aria-hidden="true">
+              <span class="step-dot done"></span>
               <span class="step-dot done"></span>
               <span class="step-dot done"></span>
               <span class="step-dot current"></span>
@@ -2070,6 +2129,7 @@
           <button class="dash-btn" id="m1-dash-btn">⊞ Dashboard</button>
           <div class="skipped-banner" id="m1-skipped-banner">⚠ You skipped this opportunity</div>
           <div class="step-dots" aria-hidden="true">
+            <span class="step-dot done"></span>
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -2198,21 +2258,28 @@
               <p class="email-typo-note" id="prog-email-typo-note"></p>
               <p class="prog-nudge" id="prog-newsletter-nudge">Sign up to unlock your full member profile</p>
             </li>
-            <li class="prog-item anim-in" id="prog-hs">
+            <li class="prog-item anim-in" id="prog-rs">
+              <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
+              Optimize Your Resume
+              <span class="prog-skipped-badge">⚠ Skipped</span>
+              <span class="prog-item-arrow">→</span>
+              <button class="prog-next-btn" id="prog-rs-next">Next &rarr;</button>
+            </li>
+            <li class="prog-item anim-in" id="prog-hs" style="animation-delay:0.4s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Handshake
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-hs-next">Next &rarr;</button>
             </li>
-            <li class="prog-item anim-in" id="prog-mc" style="animation-delay:0.45s">
+            <li class="prog-item anim-in" id="prog-mc" style="animation-delay:0.55s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to Mercor
               <span class="prog-skipped-badge">⚠ Skipped</span>
               <span class="prog-item-arrow">→</span>
               <button class="prog-next-btn" id="prog-mc-next">Next &rarr;</button>
             </li>
-            <li class="prog-item anim-in" id="prog-m1" style="animation-delay:0.6s">
+            <li class="prog-item anim-in" id="prog-m1" style="animation-delay:0.7s">
               <span class="prog-icon"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 4,7.5 10,1"/></svg></span>
               Apply to micro1
               <span class="prog-skipped-badge">⚠ Skipped</span>
@@ -2728,6 +2795,10 @@
     const input       = document.getElementById('email');
     const success     = document.getElementById('success');
     const hsCard      = document.getElementById('hs-card');
+    const rsApply     = document.getElementById('rs-apply');
+    const rsCb        = document.getElementById('rs-cb');
+    const rsCta       = document.getElementById('rs-cta');
+    const rsAlready   = document.getElementById('rs-already');
     const hsApply     = document.getElementById('hs-apply');
     const hsCb        = document.getElementById('hs-cb');
     const hsCta       = document.getElementById('hs-cta');
@@ -2752,6 +2823,7 @@
     const disclaimerLink  = document.getElementById('disclaimer-link');
     const disclaimerModal = document.getElementById('disclaimer-modal');
     const modalClose      = document.getElementById('modal-close');
+    const rsDashBtn      = document.getElementById('rs-dash-btn');
     const hsDashBtn      = document.getElementById('hs-dash-btn');
     const otDashBtn      = document.getElementById('ot-dash-btn');
     const mcDashBtn      = document.getElementById('mc-dash-btn');
@@ -2759,11 +2831,14 @@
     const rhDashBtn      = document.getElementById('rh-dash-btn');
     const progBarFill    = document.getElementById('prog-bar-fill');
     const progPct        = document.getElementById('prog-pct');
+    const progRs         = document.getElementById('prog-rs');
     const progHs         = document.getElementById('prog-hs');
     const progOt         = document.getElementById('prog-ot');
     const progMc         = document.getElementById('prog-mc');
     const progM1         = document.getElementById('prog-m1');
     const progRh         = document.getElementById('prog-rh');
+    const rsSkip         = document.getElementById('rs-skip');
+    const rsHide         = document.getElementById('rs-hide');
     const hsSkip         = document.getElementById('hs-skip');
     const hsHide         = document.getElementById('hs-hide');
     const otSkip         = document.getElementById('ot-skip');
@@ -2776,16 +2851,19 @@
     const rhHide         = document.getElementById('rh-hide');
     const applyNowBtn    = document.getElementById('apply-now');
     const learnMoreLink  = document.querySelector('.learn-more-link');
+    const rsConfirm      = document.getElementById('rs-confirm');
     const hsConfirm      = document.getElementById('hs-confirm');
     const otConfirm      = document.getElementById('ot-confirm');
     const mcConfirm      = document.getElementById('mc-confirm');
     const m1Confirm      = document.getElementById('m1-confirm');
     const rhConfirm      = document.getElementById('rh-confirm');
+    const rsUndo         = document.getElementById('rs-undo');
     const hsUndo         = document.getElementById('hs-undo');
     const otUndo         = document.getElementById('ot-undo');
     const mcUndo         = document.getElementById('mc-undo');
     const m1Undo         = document.getElementById('m1-undo');
     const rhUndo         = document.getElementById('rh-undo');
+    const rsSkippedBanner = document.getElementById('rs-skipped-banner');
     const hsSkippedBanner = document.getElementById('hs-skipped-banner');
     const otSkippedBanner = document.getElementById('ot-skipped-banner');
     const mcSkippedBanner = document.getElementById('mc-skipped-banner');
@@ -2799,6 +2877,7 @@
     const progNudge              = document.getElementById('prog-newsletter-nudge');
     const progNewsletterArrow    = document.getElementById('prog-newsletter-arrow');
     const progNewsletterNext     = document.getElementById('prog-newsletter-next');
+    const progRsNext             = document.getElementById('prog-rs-next');
     const progHsNext             = document.getElementById('prog-hs-next');
     const progOtNext             = document.getElementById('prog-ot-next');
     const progMcNext             = document.getElementById('prog-mc-next');
@@ -2831,6 +2910,10 @@
         el.classList.add('animate');
         document.getElementById('member-count-badge').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }));
+    }
+
+    function showHandshake() {
+      fadeOut(rsApply, () => showView(hsApply));
     }
 
     function showMercor() {
@@ -2914,7 +2997,7 @@
 
     function updateDashBtns() {
       const label = fromDash ? '← Back to Dashboard' : '⊞ Dashboard';
-      [hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
+      [rsDashBtn, hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => { b.textContent = label; });
     }
 
 
@@ -2924,6 +3007,7 @@
       const skipped = getSkipped();
       const applied = getApplied();
       const stepMap = [
+        { key: 'resume' },
         { key: 'handshake' },
         { key: 'mercor' },
         { key: 'micro1' },
@@ -2985,6 +3069,7 @@
         progNudge.classList.add('show');
       }
       const items = [
+        { el: progRs, key: 'resume',     minStep: 1 },
         { el: progHs, key: 'handshake',  minStep: 2 },
         { el: progMc, key: 'mercor',     minStep: 3 },
         { el: progM1, key: 'micro1',     minStep: 6 },
@@ -3072,6 +3157,8 @@
       const candidates = [
         { nextBtn: progNewsletterNext, arrow: progNewsletterArrow,
           isIncomplete: !email || step < 1 },
+        { nextBtn: progRsNext, arrow: progRs.querySelector('.prog-item-arrow'),
+          isIncomplete: !hidden.includes('resume') && !skipped.includes('resume') && !applied.includes('resume') },
         { nextBtn: progHsNext, arrow: progHs.querySelector('.prog-item-arrow'),
           isIncomplete: !hidden.includes('handshake') && !skipped.includes('handshake') && !applied.includes('handshake') },
         { nextBtn: progMcNext, arrow: progMc.querySelector('.prog-item-arrow'),
@@ -3094,7 +3181,7 @@
 
     function refreshHiddenRoles() {
       const hidden = getHidden();
-      const roleNames = { handshake: 'Handshake', outlier: 'Outlier AI', mercor: 'Mercor', micro1: 'micro1', rentahuman: 'RentAHuman AI' };
+      const roleNames = { resume: 'Resume Optimizer', handshake: 'Handshake', outlier: 'Outlier AI', mercor: 'Mercor', micro1: 'micro1', rentahuman: 'RentAHuman AI' };
       if (hidden.length === 0) {
         hiddenRolesSection.classList.remove('visible', 'open');
         return;
@@ -3113,7 +3200,17 @@
     function refreshCardState(el) {
       const applied = getApplied();
       const skipped = getSkipped();
-      if (el === hsApply) {
+      if (el === rsApply) {
+        const isSkipped = skipped.includes('resume');
+        const isApplied = applied.includes('resume');
+        rsCb.classList.toggle('checked', isApplied);
+        rsUndo.classList.toggle('show', isApplied || isSkipped);
+        rsUndo.textContent = isSkipped ? '↩ I did not do this yet — Reset this step' : '↩ I did not do this yet';
+        rsSkip.classList.toggle('selected', isSkipped);
+        rsSkippedBanner.classList.toggle('show', isSkipped);
+        rsCta.style.removeProperty('display');
+        rsConfirm.classList.remove('show');
+      } else if (el === hsApply) {
         const isSkipped = skipped.includes('handshake');
         const isApplied = applied.includes('handshake');
         hsCb.classList.toggle('checked', isApplied);
@@ -3261,7 +3358,7 @@
     }
 
     function hideAllCards() {
-      [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => {
+      [rsApply, hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => {
         el.classList.remove('show', 'animate', 'fade-out');
         el.style.display = 'none';
       });
@@ -3274,7 +3371,7 @@
       updateDashBtns();
       progBarFill.style.width = '0%';
       hsCard.classList.remove('glow');
-      const allCards = [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser];
+      const allCards = [rsApply, hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser];
       const visible = allCards.find(el =>
         el.style.display !== 'none' &&
         !el.classList.contains('fade-out') &&
@@ -3314,7 +3411,7 @@
 
       form.style.display = 'none';
       // hide all cards — only the dashboard shows on return
-      [hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
+      [rsApply, hsApply, otApply, mcApply, m1Apply, rhApply, rgTeaser].forEach(el => { el.style.display = 'none'; });
       hsCard.classList.add('show', 'animate');
       hsProgress.classList.add('show', 'animate');
 
@@ -3403,6 +3500,29 @@
           }, 300);
         }, 1000);
       }, 300);
+    });
+
+    // ── Resume Optimizer card ──────────────────────────────────
+    rsCta.addEventListener('click', () => {
+      gtag('event', 'referral_click', { platform: 'resume' });
+      rsCta.style.display = 'none';
+      rsConfirm.classList.add('show');
+    });
+
+    rsConfirm.addEventListener('click', () => {
+      gtag('event', 'referral_confirmed', { platform: 'resume' });
+      unskipStep('resume');
+      addApplied('resume');
+      atPatch({ 'Resume Optimizer Step': true });
+      setTimeout(fromDash ? goToDashboard : showHandshake, 600);
+    });
+
+    rsAlready.addEventListener('click', () => {
+      gtag('event', 'step_already_applied', { platform: 'resume' });
+      unskipStep('resume');
+      addApplied('resume');
+      checkAnimate(fromDash ? goToDashboard : showHandshake, rsCb, rsUndo);
+      atPatch({ 'Resume Optimizer Step': true });
     });
 
     // ── Handshake card ────────────────────────────────────────
@@ -3531,6 +3651,22 @@
     });
 
     // ── undo checkbox ─────────────────────────────────────────
+    rsUndo.addEventListener('click', () => {
+      gtag('event', 'step_reset', { platform: 'resume' });
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      rsCb.classList.remove('checked');
+      rsUndo.classList.remove('show');
+      rsUndo.textContent = '↩ I did not do this yet';
+      hsCard.classList.remove('glow');
+      rsSkip.classList.remove('selected');
+      rsSkippedBanner.classList.remove('show');
+      removeApplied('resume');
+      unskipStep('resume');
+      unhideStep('resume');
+      atPatch({ 'Resume Optimizer Step': false });
+      if (fromDash) goToDashboard();
+    });
+
     hsUndo.addEventListener('click', () => {
       gtag('event', 'step_reset', { platform: 'handshake' });
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
@@ -3703,6 +3839,8 @@
     if (dashSignoutBtn) dashSignoutBtn.addEventListener('click', signOut);
 
     // ── skip / hide / apply-now ──────────────────────────────
+    rsSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'resume'});      skipStep('resume');     goToDashboard(); });
+    rsHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'resume'});      hideStep('resume');     goToDashboard(); });
     hsSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'handshake'});  skipStep('handshake');  goToDashboard(); });
     hsHide.addEventListener('click', () => { gtag('event','step_hidden', {platform:'handshake'});  hideStep('handshake');  goToDashboard(); });
     otSkip.addEventListener('click', () => { gtag('event','step_skipped',{platform:'outlier'});    skipStep('outlier');    goToDashboard(); });
@@ -3739,7 +3877,7 @@
     });
 
         // ── dashboard nav ─────────────────────────────────────────
-    [hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
+    [rsDashBtn, hsDashBtn, otDashBtn, mcDashBtn, m1DashBtn, rhDashBtn].forEach(b => b.addEventListener('click', () => { gtag('event','back_to_dashboard'); goToDashboard(); }));
     if (progResumeGuide) {
       progResumeGuide.addEventListener('click', (e) => {
         if (!localStorage.getItem('rwu_email')) return;
@@ -3749,12 +3887,14 @@
       });
     }
     rgDashBtn.addEventListener('click', goToDashboard);
+    progRs.addEventListener('click', () => goToCard(rsApply));
     progHs.addEventListener('click', () => goToCard(hsApply));
     progOt.addEventListener('click', () => goToCard(otApply));
     progMc.addEventListener('click', () => goToCard(mcApply));
     progM1.addEventListener('click', () => goToCard(m1Apply));
     progRh.addEventListener('click', () => goToCard(rhApply));
     progNewsletterNext.addEventListener('click', (e) => { e.stopPropagation(); goToForm(); });
+    progRsNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(rsApply); });
     progHsNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(hsApply); });
     progOtNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(otApply); });
     progMcNext.addEventListener('click', (e) => { e.stopPropagation(); goToCard(mcApply); });
