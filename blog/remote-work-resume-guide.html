@@ -1389,13 +1389,14 @@
 
   <script>
     // ── Prompt text ───────────────────────────────────────────────
-    const OPTIMIZER_PROMPT = `You are an expert resume writer. Your job is to take my real background and turn it into a polished, ATS-friendly resume positioned for remote AI training and AI evaluation work on platforms like Handshake AI, Mercor, and micro1 — even if I have never worked in AI or tech before. That is the target; you do not need to ask me about it.
+    const OPTIMIZER_PROMPT = `You are an expert resume writer. Your job is to take my real resume and background and turn it into a polished, ATS-friendly resume positioned for remote AI training and AI evaluation work on platforms like Handshake AI, Mercor, and micro1 — even if I have never worked in AI or tech before. That is the fixed target; you do not need to ask me about it.
 
-I do not know anything about AI training, remote work platforms, or which roles to apply for, so do not ask me about any of that. Never ask me what type of remote work I want or which platforms I am targeting — the target is always remote AI training and evaluation work on Handshake AI, Mercor, and micro1. YOU decide how my real background connects to that work. My job is only to tell you about myself.
+I do not know anything about AI training, remote work platforms, or which roles to apply for, so never ask me about any of that. YOU decide how my real background connects to this work. My job is only to give you my resume and answer simple questions about myself.
 
-First, ask me to paste or upload my current resume (or tell you about my work history if I do not have one).
+Step 1 — Get my resume first, before anything else:
+Check whether I already pasted or attached my resume along with this prompt. If I did, use it and go straight to Step 2. If I did NOT, stop here and ask me to paste or upload my current resume (or describe my work history if I don't have one) — then wait for it before doing anything else.
 
-Then ask me these questions about myself, one at a time, waiting for my answer before asking the next. Keep every question short and simple — most should be yes/no or a one-line answer:
+Step 2 — Once you have my resume, ask me these questions about myself, one at a time, waiting for my answer before asking the next. Keep every question short and simple — most should be yes/no or a one-line answer:
 
 1. What is your full first and last name?
 2. What is your most recent (or current) job title, and what industry is it in?
@@ -1405,16 +1406,16 @@ Then ask me these questions about myself, one at a time, waiting for my answer b
 
 Do not ask anything beyond these 5 questions.
 
-After I answer all 5 questions and share my resume, without asking me anything further:
+Step 3 — Once I have answered all 5 questions, without asking me anything further:
 
 1. Write a Professional Summary (2 to 3 sentences) that connects my real background to remote AI training and evaluation work, in plain, honest language. Do not invent experience, titles, or skills I did not give you.
 2. Build a Skills section that translates my real-world skills into terms these platforms look for (judgment, attention to detail, written communication, subject-matter expertise, etc.) — only using what I actually told you.
 3. Rewrite my work experience bullet points, each starting with a strong action verb, keeping every detail honest and specific to what I gave you. Do not fabricate metrics.
 4. Produce the complete, clean, ATS-friendly resume: standard section headers only (Summary, Skills, Experience, Education), no tables, columns, graphics, or special characters, one page if I have under 5 years of experience, two pages maximum otherwise.
 
-Finally, generate the finished resume as two downloadable files — a Word document (.docx) and a PDF (.pdf) — both named exactly "[First Name] [Last Name] - Remote Work Resume" using the name I gave you in question 1. Give me both files to download automatically, without me having to ask.
+Step 4 — Generate the finished resume as two downloadable files, a Word document (.docx) and a PDF (.pdf), both named exactly "[First Name] [Last Name] - Remote Work Resume" using the name I gave you in question 1. Give me both files to download automatically, without me having to ask.
 
-Start now by asking me to paste or upload my current resume.`;
+Start now with Step 1: check whether my resume is already here, and if it's not, ask me for it.`;
 
     // ── Accordion ─────────────────────────────────────────────────
     const promptToggle = document.getElementById('prompt-toggle');
