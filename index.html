@@ -1519,20 +1519,19 @@
     /* Welcome card — inline in the dashboard, shown only on new-account creation.
        Confetti is a transparent, non-blocking burst layer (not a modal/overlay). */
     .welcome-confetti {
-      position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      /* No `overflow: hidden` here on purpose -- combined with `position: fixed`
-         it's a known iOS Safari bug where the element stops tracking the
-         viewport during an active scroll (reads as "frozen" partway down the
-         page, scrolling along with the content) and only snaps back to its
-         correct fixed position once the scroll gesture ends (reads as
-         "reappearing" lower down). The few px of pieces spawning slightly
-         above the viewport (top: -14px) are imperceptible left unclipped.
-         Also promoted to its own compositor layer, not just the pieces
-         inside it, so it isn't left waiting on a synchronous main-thread
-         repaint mid-scroll either. */
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      will-change: transform;
+      /* Deliberately NOT `position: fixed`. Two attempts at fixing this while
+         still fixed (compositor-layer promotion, then dropping the
+         overflow:hidden+fixed combo) both failed the same way in the field --
+         iOS Safari has a long-standing compositor bug where a fixed element
+         stops tracking the viewport during an active scroll (the card is
+         tall, so the user is scrolling to see it during the whole ~4s the
+         confetti plays) and only catches up once the scroll gesture ends,
+         which reads as the burst freezing/teleporting mid-page. Using
+         `position: absolute` instead (top set from the live scroll offset in
+         fireWelcomeConfetti(), below) makes it a normal document-flow
+         element that scrolls with the page like everything else -- there is
+         no viewport-tracking left for the browser to get wrong. */
+      position: absolute; left: 0; right: 0; pointer-events: none; z-index: 60;
     }
     .welcome-confetti i {
       position: absolute; top: -14px; width: 8px; height: 13px;
@@ -3941,6 +3940,12 @@
       const wrap = document.getElementById('welcome-confetti');
       if (!wrap) return;
       wrap.innerHTML = '';
+      // Anchor to the current scroll offset once, at fire time -- this is a
+      // normal position:absolute element (see .welcome-confetti CSS), not
+      // fixed, so it never needs to re-track the viewport while the user
+      // scrolls to see the card underneath it.
+      wrap.style.top = window.scrollY + 'px';
+      wrap.style.height = '130vh';
       const colors = ['#003BB5', '#0A57F0', '#4C8DFF', '#FFC93C', '#22C55E', '#FF6B00'];
       // Fewer pieces on narrow/low-power devices, and batched into one
       // DocumentFragment insert instead of 60 separate appendChild calls --
