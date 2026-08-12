@@ -1519,13 +1519,17 @@
     /* Welcome card — inline in the dashboard, shown only on new-account creation.
        Confetti is a transparent, non-blocking burst layer (not a modal/overlay). */
     .welcome-confetti {
-      position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 60;
-      /* Promote to its own compositor layer, not just the pieces inside it --
-         without this, iOS Safari defers repainting a `position: fixed` element
-         while the page is actively scrolling (which happens here, since the
-         user scrolls down to see the tall welcome card right as this fires),
-         which reads as the whole burst freezing partway down the page until
-         the scroll gesture ends. */
+      position: fixed; inset: 0; pointer-events: none; z-index: 60;
+      /* No `overflow: hidden` here on purpose -- combined with `position: fixed`
+         it's a known iOS Safari bug where the element stops tracking the
+         viewport during an active scroll (reads as "frozen" partway down the
+         page, scrolling along with the content) and only snaps back to its
+         correct fixed position once the scroll gesture ends (reads as
+         "reappearing" lower down). The few px of pieces spawning slightly
+         above the viewport (top: -14px) are imperceptible left unclipped.
+         Also promoted to its own compositor layer, not just the pieces
+         inside it, so it isn't left waiting on a synchronous main-thread
+         repaint mid-scroll either. */
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
       will-change: transform;
