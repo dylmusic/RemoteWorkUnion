@@ -4110,8 +4110,14 @@
         el.textContent = '↑ ' + (_rwuCount > 0 ? _rwuTodayCount : '—') + ' joined today';
       });
     }
-    async function _rwuFetchCount() {
+    async function _rwuFetchCount(force) {
       try {
+        if (!force) {
+          const cached = JSON.parse(localStorage.getItem('rwu_count_cache') || 'null');
+          if (cached && typeof cached.cachedAt === 'number' && Date.now() - cached.cachedAt < 10 * 60 * 1000) {
+            return;
+          }
+        }
         const r = await fetch('/api/airtable?count=true&today=1', { headers: { 'x-rwu-secret': 'RWU2026SECRET' } });
         if (!r.ok) return;
         const d = await r.json();
