@@ -2,6 +2,11 @@ const BASE_ID = 'appRMEXhqhENAGzHW';
 const TABLE_NAME = 'Newsletter Subscribers';
 const AT_URL = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
 
+// In-memory per-instance cache so a burst of concurrent requests (e.g. an
+// email campaign) shares one Airtable scan instead of one scan per request.
+let _countCache = { count: null, todayCount: null, cachedAt: 0 };
+const COUNT_CACHE_TTL_MS = 60 * 1000;
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -27,6 +32,13 @@ module.exports = async (req, res) => {
 
     if (isCount) {
       try {
+        const now = Date.now();
+        if (_countCache.count !== null && now - _countCache.cachedAt < COUNT_CACHE_TTL_MS) {
+          const cached = { count: _countCache.count };
+          if (_countCache.todayCount !== null) cached.todayCount = _countCache.todayCount;
+          return res.status(200).json(cached);
+        }
+
         const todayParam = (req.query && req.query.today) || '';
         const totalPromise = (async () => {
           let total = 0;
@@ -63,6 +75,11 @@ module.exports = async (req, res) => {
         }
         const [total, todayCount] = await Promise.all([totalPromise, todayPromise]);
         console.log('[airtable] count:', total, '| today:', todayCount);
+        _countCache = {
+          count: total,
+          todayCount: todayCount !== null ? todayCount : _countCache.todayCount,
+          cachedAt: now,
+        };
         const result = { count: total };
         if (todayCount !== null) result.todayCount = todayCount;
         return res.status(200).json(result);
