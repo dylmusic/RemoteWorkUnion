@@ -320,12 +320,14 @@
       color: #fff;
       font-size: 0.8rem;
       font-weight: 600;
+      font-family: inherit;
       padding: 8px 18px;
       border-radius: 100px;
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
       transition: background 0.2s, box-shadow 0.2s, filter 0.2s;
       animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
@@ -1796,6 +1798,70 @@
       transition: color 0.15s;
     }
     .referral-modal-close:hover { color: #fff; }
+    /* Social follow modal */
+    .social-modal-card {
+      position: relative;
+      background: linear-gradient(160deg, rgba(0,20,60,0.97) 0%, rgba(0,10,40,0.98) 100%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      max-width: 360px;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .social-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+      margin: 0 0 22px;
+    }
+    .social-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      font-family: inherit;
+      line-height: 1;
+      padding: 4px 8px;
+      transition: color 0.15s;
+    }
+    .social-modal-close:hover { color: #fff; }
+    .social-icons-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+    .social-icon-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 84px;
+      padding: 16px 8px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      transition: background 0.2s, box-shadow 0.2s, color 0.2s, transform 0.15s;
+    }
+    .social-icon-btn:hover {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
     .invite-link-row { display: flex; align-items: center; gap: 8px; }
     .invite-link-pill {
       flex: 1;
@@ -1845,7 +1911,7 @@
     "name": "Remote Work Union",
     "url": "https://www.remoteworkunion.com",
     "logo": "https://www.remoteworkunion.com/RemoteWorkUnion.PNG",
-    "sameAs": ["https://x.com/RemoteWorkUnion"],
+    "sameAs": ["https://x.com/RemoteWorkUnion", "https://www.threads.com/@remoteworkunion", "https://www.linkedin.com/company/131814005"],
     "description": "Remote Work Union is a free platform helping remote workers find jobs — including work from home opportunities — apply to AI training companies like Handshake AI, Mercor, micro1, and Outlier AI, and access data annotation and prompt writing opportunities.",
     "founder": {
       "@type": "Person",
@@ -1887,10 +1953,9 @@
 
     <div class="spacer-sm"></div>
 
-    <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="x-badge" aria-label="Follow @RemoteWorkUnion on X">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      Follow @RemoteWorkUnion
-    </a>
+    <button type="button" class="x-badge social-follow-trigger" aria-haspopup="dialog" aria-label="Follow Remote Work Union">
+      Follow Us
+    </button>
 
     <div class="spacer-lg"></div>
 
@@ -2381,7 +2446,7 @@
             <span>We&rsquo;re always adding new resources and opportunities for remote workers. Check back soon!</span>
           </div>
           <p class="prog-thanks">Thanks for being an early member of Remote Work Union. 🙌</p>
-          <p class="prog-follow">Follow <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer">@RemoteWorkUnion on X</a> for real-time updates</p>
+          <p class="prog-follow">Follow <a href="#" class="social-follow-trigger">Remote Work Union</a> for real-time updates</p>
           <div class="hidden-roles-section" id="hidden-roles-section">
             <button class="hidden-roles-toggle" id="hidden-roles-toggle">
               <span class="hidden-roles-chevron">&#9658;</span>
@@ -2439,7 +2504,7 @@
 
     <!-- 10. Footer -->
     <footer>
-      <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer">@RemoteWorkUnion on X</a>
+      <a href="#" class="social-follow-trigger">Follow Remote Work Union</a>
     </footer>
 
   </div>
@@ -2456,6 +2521,28 @@
       <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
       <p class="modal-title" id="modal-title-text">About Remote Work Union</p>
       <p>Remote Work Union is an independent newsletter and resource platform for remote workers. We are not a certified or registered labor union, do not provide collective bargaining services, and are not affiliated with any official union organization. We do not offer legal, financial, or employment advice. Our goal is to help remote and independent workers find opportunities and resources. All content is informational only.</p>
+    </div>
+  </div>
+
+  <!-- Social follow modal -->
+  <div class="modal-overlay" id="social-modal" role="dialog" aria-modal="true" aria-labelledby="social-modal-title">
+    <div class="social-modal-card">
+      <button class="social-modal-close" id="social-modal-close" aria-label="Close">&times;</button>
+      <p class="social-modal-title" id="social-modal-title">Follow Remote Work Union</p>
+      <div class="social-icons-row">
+        <a href="https://x.com/RemoteWorkUnion" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Follow on X">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span>X</span>
+        </a>
+        <a href="https://www.threads.com/@remoteworkunion" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Follow on Threads">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg>
+          <span>Threads</span>
+        </a>
+        <a href="https://www.linkedin.com/company/131814005" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Follow on LinkedIn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -3940,9 +4027,24 @@
     disclaimerModal.addEventListener('click', (e) => {
       if (e.target === disclaimerModal) disclaimerModal.classList.remove('open');
     });
+
+    // ── social follow modal ──────────────────────────────────
+    const socialModal = document.getElementById('social-modal');
+    const socialModalClose = document.getElementById('social-modal-close');
+    document.querySelectorAll('.social-follow-trigger').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        socialModal.classList.add('open');
+      });
+    });
+    socialModalClose.addEventListener('click', () => socialModal.classList.remove('open'));
+    socialModal.addEventListener('click', (e) => {
+      if (e.target === socialModal) socialModal.classList.remove('open');
+    });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         disclaimerModal.classList.remove('open');
+        socialModal.classList.remove('open');
         const refModal = document.getElementById('referral-modal');
         if (refModal) refModal.classList.remove('open');
         closeWelcomeCard();
