@@ -2632,13 +2632,13 @@
         color: 'orange'
       },
       {
-        id: 'mercor-english-jun8',
+        id: 'micro1-generalist-sep5',
         countries: [
           'united states','united kingdom','canada','australia','ireland','new zealand',
           'us','gb','ca','au','ie','nz'
         ],
-        message: 'Native English Speakers — Earn $70/hr',
-        short: 'Earn $70/hr',
+        message: 'Now Hiring: Generalist $50-$90/hr',
+        short: 'Earn $50-$90/hr',
         color: 'orange'
       }
     ];
@@ -2679,10 +2679,9 @@
             trackResourceClick('Africa Voice Research Flag');
             mcApply.classList.add('africa-mode');
             goToCard(mcApply);
-          } else if (match.id === 'mercor-english-jun8') {
-            trackResourceClick('English Generalist Flag — ' + new Date().toISOString());
-            mcApply.classList.add('english-mode');
-            goToCard(mcApply);
+          } else if (match.id === 'micro1-generalist-sep5') {
+            trackResourceClick('micro1 Generalist $50-90 Flag — ' + new Date().toISOString());
+            window.open('https://jobs.micro1.ai/post/8b1146d2-f854-4461-83e0-4c4bbde847e7?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral', '_blank', 'noopener');
           }
         };
         dismissBtn.addEventListener('click', (e) => {
