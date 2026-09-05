@@ -925,6 +925,22 @@
     #english-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
     #mc-apply.english-mode #mc-main { display: none; }
     #mc-apply.english-mode #english-intro { display: flex; }
+    #micro1-jobs-intro { display: none; flex-direction: column; align-items: center; width: 100%; }
+    #m1-apply.micro1-jobs-mode #m1-main { display: none; }
+    #m1-apply.micro1-jobs-mode #micro1-jobs-intro { display: flex; }
+    .micro1-role-card {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      text-align: center;
+    }
+    .micro1-role-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .micro1-role-desc { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .micro1-role-card .hs-cta { margin-top: 10px; padding: 10px 20px; font-size: 13px; }
 
     /* micro1 view */
     #m1-apply {
@@ -2221,6 +2237,31 @@
         <div id="m1-apply">
           <button class="dash-btn" id="m1-dash-btn">⊞ Dashboard</button>
           <div class="skipped-banner" id="m1-skipped-banner">⚠ You skipped this opportunity</div>
+          <!-- Generalist / Video Annotation Specialist flag intro — shown when flag CTA triggers this card -->
+          <div id="micro1-jobs-intro">
+            <div class="step-dots" aria-hidden="true">
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot done"></span>
+              <span class="step-dot current"></span>
+            </div>
+            <p class="hs-tag">&#10003; Now Hiring</p>
+            <p class="flag-intro-subtitle">2 Open Roles on micro1<br>Earn $50&ndash;$90/hr</p>
+            <p class="hs-headline">Pick a Role to Apply</p>
+            <div class="micro1-role-card">
+              <p class="micro1-role-title">Generalist</p>
+              <p class="micro1-role-desc">Broad AI evaluation &amp; research tasks</p>
+              <a class="hs-cta" href="https://jobs.micro1.ai/post/8b1146d2-f854-4461-83e0-4c4bbde847e7?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral" target="_blank" rel="noopener noreferrer">Apply to Generalist &rarr;</a>
+            </div>
+            <div class="micro1-role-card">
+              <p class="micro1-role-title">Video Annotation Specialist</p>
+              <p class="micro1-role-desc">Label &amp; review video data for AI training</p>
+              <a class="hs-cta" href="https://jobs.micro1.ai/post/7dbb09e4-d2d9-4138-ba02-f8a1bc6a71a5?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral" target="_blank" rel="noopener noreferrer">Apply to Video Annotation &rarr;</a>
+            </div>
+            <button class="undo-link" id="micro1-jobs-intro-back">↩ See regular micro1 info</button>
+          </div>
+          <div id="m1-main">
           <div class="step-dots" aria-hidden="true">
             <span class="step-dot done"></span>
             <span class="step-dot done"></span>
@@ -2260,6 +2301,7 @@
           <button class="undo-link" id="m1-undo">↩ I did not apply yet</button>
           <button class="card-action-link" id="m1-skip">⏭ Skip this opportunity for now</button>
           <button class="card-action-link" id="m1-hide">✕ Not for me</button>
+          </div>
         </div>
         <!-- Step 5: RentAHuman AI -->
         <div id="rh-apply">
@@ -2680,8 +2722,9 @@
             mcApply.classList.add('africa-mode');
             goToCard(mcApply);
           } else if (match.id === 'micro1-generalist-sep5') {
-            trackResourceClick('micro1 Generalist $50-90 Flag — ' + new Date().toISOString());
-            window.open('https://jobs.micro1.ai/post/8b1146d2-f854-4461-83e0-4c4bbde847e7?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral', '_blank', 'noopener');
+            trackResourceClick('micro1 Generalist/Video Annotation Flag — ' + new Date().toISOString());
+            m1Apply.classList.add('micro1-jobs-mode');
+            goToCard(m1Apply);
           }
         };
         dismissBtn.addEventListener('click', (e) => {
@@ -3483,6 +3526,7 @@
     function goToDashboard() {
       mcApply.classList.remove('africa-mode');
       mcApply.classList.remove('english-mode');
+      m1Apply.classList.remove('micro1-jobs-mode');
       fromDash = false;
       updateDashBtns();
       progBarFill.style.width = '0%';
@@ -4153,6 +4197,13 @@
     if (englishIntroCta) {
       englishIntroCta.addEventListener('click', () => {
         mcApply.classList.remove('english-mode');
+      });
+    }
+
+    const micro1JobsIntroBack = document.getElementById('micro1-jobs-intro-back');
+    if (micro1JobsIntroBack) {
+      micro1JobsIntroBack.addEventListener('click', () => {
+        m1Apply.classList.remove('micro1-jobs-mode');
       });
     }
 
