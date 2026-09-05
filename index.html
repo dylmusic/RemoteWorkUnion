@@ -2941,6 +2941,7 @@
             const country = await tryGetCountry();
             if (country !== 'Unknown') {
               toUpdate['Country'] = country;
+              rwuUserCountry = country;
               localStorage.setItem('rwu_country_last_checked', String(Date.now()));
             }
           }
