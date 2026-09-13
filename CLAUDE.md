@@ -113,6 +113,8 @@ Standing rules for a blog content review/update pass. Apply consistently across 
 
 **Outlier-specific articles:** Articles whose premise is specifically about Outlier AI (e.g. "Is Outlier AI Legit?", "Outlier AI Review", three-way platform comparisons) should keep their Outlier-focused framing intact — these rules don't mean rewriting their core premise.
 
+**Core-platform claims on `work.html` / `faq.html`:** the FAQ answers state the core path is **micro1 and Mercor** (both the visible `.faq-answer-inner` copy and the FAQPage JSON-LD — keep the two in sync). Handshake AI is listed there as a bonus platform alongside Outlier AI and RentAHuman.
+
 **Consistency check:** Any article review pass should check alignment with the current FAQ (`work.html`), the resume guide (`blog/remote-work-resume-guide.html`), and `work.html`'s "Top Platforms to Apply" section, since these are the canonical sources of current positioning.
 
 ---
@@ -134,34 +136,38 @@ Every article has `<div id="rwu-ref-share"></div>` (just above `<span class="art
 
 ## Dashboard (`index.html`)
 
-### Main flow — 5 tracked steps
-**Join → Resume Optimizer → Handshake → Mercor → micro1.** These five drive the progress bar. **Outlier AI and RentAHuman are bonus cards** in the "More Opportunities" dropdown — not part of the journey.
+### Main flow — 4 tracked steps
+**Join → Resume Optimizer → micro1 → Mercor.** These four drive the progress bar. **Handshake, Outlier AI, and RentAHuman are bonus cards** in the "More Opportunities" dropdown — not part of the journey.
 
-DOM order inside `#hs-card`: `#rs-apply` (Resume Optimizer) → `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
+**micro1 comes before Mercor** — Mercor caps referrals at 50 per 30 days, so micro1 gets the earlier slot.
 
-`rwu_step` numbering: newsletter `1`, handshake `2`, mercor `3`, outlier `4`, rentahuman `5`, micro1 `6`. The Resume Optimizer step does **not** set `rwu_step` — it is tracked only by the `resume` key in `rwu_applied` and the Airtable boolean **`Resume Optimizer Step`**.
+**Handshake is de-prioritized, not removed.** Our referral account was banned, so it is out of the journey and the progress bar — but the card, its copy, and its referral link (`#hs-cta`) are all still live and reachable from the More Opportunities dropdown, so the link still counts if the ban is lifted. Nothing Handshake was scrubbed from the site; its keyword presence on `index.html`, `work.html`, `faq.html`, and the blog is intact. To promote it back into the journey: add `{ key: 'handshake' }` to `stepMap`, move `#prog-hs` back above the More Opportunities toggle, restore it to the `updateNextButton` candidates and the `items` array in `refreshDashboard()`, and rebuild the step dots as a 5-dot journey.
+
+DOM order inside `#hs-card` (unchanged): `#rs-apply` (Resume Optimizer) → `#hs-apply` (Handshake, bonus) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard). Dashboard row order differs from DOM order: Join → Resume → micro1 → Mercor, then the More Opportunities toggle, then `#prog-hs` → `#prog-ot` → `#prog-rh`.
+
+`rwu_step` numbering is unchanged and no longer reflects journey order: newsletter `1`, handshake `2`, mercor `3`, outlier `4`, rentahuman `5`, micro1 `6`. The Resume Optimizer step does **not** set `rwu_step` — it is tracked only by the `resume` key in `rwu_applied` and the Airtable boolean **`Resume Optimizer Step`**.
 
 ### Resume Optimizer card (`#rs-apply`)
 First card in the journey. "📝 Recommended First Step" tag, headline "Optimize Resume", "View Process" toggle (`#rs-process`), CTA (`#rs-cta`) → `/blog/remote-work-resume-guide`, and the same confirm / already-done / undo / skip / hide controls as the platform cards. Confirm and already-done both `addApplied('resume')` and `atPatch({ 'Resume Optimizer Step': true })`.
 
-### Step-dot indicators (5-dot journey)
-- Resume Optimizer (`#rs-apply`): 1 filled (`done`), animation on dot 2 (`current`), 3 empty.
-- Handshake: 2 filled, animation on dot 3, 2 empty.
-- Mercor — all 3 dot sets (`#mc-main`, `#africa-intro`, `#english-intro`): 3 filled, animation on dot 4, 1 empty.
-- micro1 — both dot sets (`#m1-main`, `#micro1-jobs-intro`): 4 filled, animation on dot 5.
-- Outlier & RentAHuman (bonus): unchanged 2-dot setup.
+### Step-dot indicators (4-dot journey)
+- Resume Optimizer (`#rs-apply`): 1 filled (`done`), animation on dot 2 (`current`), 2 empty.
+- micro1 — both dot sets (`#m1-main`, `#micro1-jobs-intro`): 2 filled, animation on dot 3, 1 empty.
+- Mercor — all 3 dot sets (`#mc-main`, `#africa-intro`, `#english-intro`): 3 filled, animation on dot 4.
+- Handshake, Outlier & RentAHuman (bonus): 2-dot setup.
 
 ### micro1 card (`#m1-apply`)
-Modeled exactly on Mercor's `#mc-main`. Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), same already-applied / undo / skip / hide controls. **Brand token "micro1" is always lowercase.** Referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Uses `rwu_step` `6`; applied state under key `micro1` in `rwu_applied`; persisted to Airtable boolean field **`micro1 Applied`** (mirrors `Mercor Applied`). The card also carries a flag intro slide, `#micro1-jobs-intro`, toggled by the `micro1-jobs-mode` class — see the flag banners section.
+Third step in the journey, ahead of Mercor. Modeled exactly on Mercor's `#mc-main`. Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), same already-applied / undo / skip / hide controls. **Brand token "micro1" is always lowercase.** Referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Uses `rwu_step` `6`; applied state under key `micro1` in `rwu_applied`; persisted to Airtable boolean field **`micro1 Applied`** (mirrors `Mercor Applied`). The card also carries a flag intro slide, `#micro1-jobs-intro`, toggled by the `micro1-jobs-mode` class — see the flag banners section.
 
 ### Progress / 100% logic
-`updateProgressBar()` uses `stepMap = [resume, handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (20% each when none skipped/hidden). **100% requires Join + Resume Optimizer + Handshake + Mercor + micro1.** Skipped/hidden steps are excluded from the denominator. At `pct === 100` the completion message (`#prog-complete-msg`), the resume nudge (`#resume-nudge`, unless `rwu_nudge_dismissed`), and the recommended-reading grid (`#prog-rec`) all show. `updateProgressBar()` ends by calling `evaluateAndShowFlag()`.
+`updateProgressBar()` uses `stepMap = [resume, micro1, mercor]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). **100% requires Join + Resume Optimizer + micro1 + Mercor.** Applying to a bonus platform (Handshake/Outlier/RentAHuman) never moves the bar. Skipped/hidden steps are excluded from the denominator. At `pct === 100` the completion message (`#prog-complete-msg`), the resume nudge (`#resume-nudge`, unless `rwu_nudge_dismissed`), and the recommended-reading grid (`#prog-rec`) all show. `updateProgressBar()` ends by calling `evaluateAndShowFlag()`.
 
 ### Flow routing
-- Resume confirm/already → `showHandshake` (non-dash) or `goToDashboard` (from dashboard).
-- Mercor confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard).
-- micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`.
-- `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard.
+- Resume confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard).
+- micro1 confirm/already → `showMercor` (non-dash) or `goToDashboard`.
+- Mercor confirm/already → `showProgress` (non-dash) or `goToDashboard`.
+- Bonus cards (Handshake, RentAHuman) pass their own element: `showProgress(hsApply)` / `showProgress(rhApply)`.
+- `showmicro1(fromEl)` / `showMercor(fromEl)` default to `rsApply` / `m1Apply`; `showProgress(fromEl)` defaults to `mcApply`.
 - Flag banners route into the **Mercor** card intro slide (`africa-mode`) or the **micro1** card intro slide (`micro1-jobs-mode`).
 
 ### localStorage keys
