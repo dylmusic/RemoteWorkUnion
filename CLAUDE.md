@@ -134,30 +134,35 @@ Every article has `<div id="rwu-ref-share"></div>` (just above `<span class="art
 
 ## Dashboard (`index.html`)
 
-### Main flow — 4 tracked steps
-**Join → Handshake → Mercor → micro1.** These four drive the progress bar. **Outlier AI and RentAHuman are bonus cards** in the "More Opportunities" dropdown — not part of the journey.
+### Main flow — 5 tracked steps
+**Join → Resume Optimizer → Handshake → Mercor → micro1.** These five drive the progress bar. **Outlier AI and RentAHuman are bonus cards** in the "More Opportunities" dropdown — not part of the journey.
 
-DOM order inside `#hs-card`: `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
+DOM order inside `#hs-card`: `#rs-apply` (Resume Optimizer) → `#hs-apply` (Handshake) → `#ot-apply` (Outlier, bonus) → `#mc-apply` (Mercor) → `#m1-apply` (micro1) → `#rh-apply` (RentAHuman, bonus) → `#rg-teaser` → `#hs-progress` (dashboard).
 
-`rwu_step` numbering: newsletter `1`, handshake `2`, mercor `3`, outlier `4`, rentahuman `5`, micro1 `6`.
+`rwu_step` numbering: newsletter `1`, handshake `2`, mercor `3`, outlier `4`, rentahuman `5`, micro1 `6`. The Resume Optimizer step does **not** set `rwu_step` — it is tracked only by the `resume` key in `rwu_applied` and the Airtable boolean **`Resume Optimizer Step`**.
 
-### Step-dot indicators (4-dot journey)
-- Handshake: 1 filled (`done`), animation on dot 2 (`current`), 2 empty.
-- Mercor — all 3 dot sets (`#mc-main`, `#africa-intro`, `#english-intro`): 2 filled, animation on dot 3, 1 empty.
-- micro1 (`#m1-apply`): 3 filled, animation on dot 4.
+### Resume Optimizer card (`#rs-apply`)
+First card in the journey. "📝 Recommended First Step" tag, headline "Optimize Resume", "View Process" toggle (`#rs-process`), CTA (`#rs-cta`) → `/blog/remote-work-resume-guide`, and the same confirm / already-done / undo / skip / hide controls as the platform cards. Confirm and already-done both `addApplied('resume')` and `atPatch({ 'Resume Optimizer Step': true })`.
+
+### Step-dot indicators (5-dot journey)
+- Resume Optimizer (`#rs-apply`): 1 filled (`done`), animation on dot 2 (`current`), 3 empty.
+- Handshake: 2 filled, animation on dot 3, 2 empty.
+- Mercor — all 3 dot sets (`#mc-main`, `#africa-intro`, `#english-intro`): 3 filled, animation on dot 4, 1 empty.
+- micro1 — both dot sets (`#m1-main`, `#micro1-jobs-intro`): 4 filled, animation on dot 5.
 - Outlier & RentAHuman (bonus): unchanged 2-dot setup.
 
 ### micro1 card (`#m1-apply`)
-Modeled exactly on Mercor's `#mc-main` (no flag intro slides). Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), same already-applied / undo / skip / hide controls. **Brand token "micro1" is always lowercase.** Referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Uses `rwu_step` `6`; applied state under key `micro1` in `rwu_applied`; persisted to Airtable boolean field **`micro1 Applied`** (mirrors `Mercor Applied`).
+Modeled exactly on Mercor's `#mc-main`. Title "Apply to micro1 AI", "✓ Now Hiring" tag, Earn $50–$200/hr, "View Process" toggle (`#m1-process`), same already-applied / undo / skip / hide controls. **Brand token "micro1" is always lowercase.** Referral CTA → `https://refer.micro1.ai/referral/jobs?referralCode=31448f90-0533-4e10-a122-5be8bae5855d&utm_source=referral&utm_medium=share&utm_campaign=job_referral`. Uses `rwu_step` `6`; applied state under key `micro1` in `rwu_applied`; persisted to Airtable boolean field **`micro1 Applied`** (mirrors `Mercor Applied`). The card also carries a flag intro slide, `#micro1-jobs-intro`, toggled by the `micro1-jobs-mode` class — see the flag banners section.
 
 ### Progress / 100% logic
-`updateProgressBar()` uses `stepMap = [handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (25% each when none skipped/hidden). **100% requires Join + Handshake + Mercor + micro1.** Skipped/hidden steps are excluded from the denominator. The resume-optimizer nudge fires at `pct === 100`.
+`updateProgressBar()` uses `stepMap = [resume, handshake, mercor, micro1]`; `total = active.length + 1` (the +1 is the newsletter). Each active main step is worth a proportional share (20% each when none skipped/hidden). **100% requires Join + Resume Optimizer + Handshake + Mercor + micro1.** Skipped/hidden steps are excluded from the denominator. At `pct === 100` the completion message (`#prog-complete-msg`), the resume nudge (`#resume-nudge`, unless `rwu_nudge_dismissed`), and the recommended-reading grid (`#prog-rec`) all show. `updateProgressBar()` ends by calling `evaluateAndShowFlag()`.
 
 ### Flow routing
+- Resume confirm/already → `showHandshake` (non-dash) or `goToDashboard` (from dashboard).
 - Mercor confirm/already → `showmicro1` (non-dash) or `goToDashboard` (from dashboard).
 - micro1 confirm/already → `showProgress` (non-dash) or `goToDashboard`.
 - `showProgress(fromEl)` fades `fromEl || m1Apply` into the dashboard.
-- Flag banners (Africa/English) route into the **Mercor** card intro slides only — micro1 has no flag.
+- Flag banners route into the **Mercor** card intro slide (`africa-mode`) or the **micro1** card intro slide (`micro1-jobs-mode`).
 
 ### localStorage keys
 `rwu_email`, `rwu_step`, `rwu_applied` (comma-joined keys), `rwu_skipped`, `rwu_hidden`, `rwu_record_id`, `rwu_ref_code`, `rwu_ref`, `rwu_flag_dismissed_[id]`.
@@ -188,16 +193,16 @@ Modeled exactly on Mercor's `#mc-main` (no flag intro slides). Title "Apply to m
 
 ## Dashboard flag banners (targeted geo push)
 
-Hardcoded in `index.html` as the `DASHBOARD_FLAGS` array (no Airtable table). On each dashboard render, `evaluateAndShowFlag()` (called from `updateProgressBar()`) matches `rwuUserCountry` (from the Airtable `Country` field via `atFetch`) against each flag's `countries` with `.toLowerCase()`. First non-dismissed match renders a banner above the progress list (`#active-flag-banner`) with an "Apply Now →" button and ✕ dismiss. Clicking the banner or button triggers the flag action; dismiss sets `localStorage.rwu_flag_dismissed_[id]` (persistent).
+Hardcoded in `index.html` as the `DASHBOARD_FLAGS` array (no Airtable table). On each dashboard render, `evaluateAndShowFlag()` (called at the end of `updateProgressBar()`) matches `rwuUserCountry` (from the Airtable `Country` field via `atFetch`; the geo recheck assigns to `rwuUserCountry` in place so the same load uses the fresh value) against each flag's `countries` with `.toLowerCase()`. **Every** non-dismissed match renders — banners stack inside `#flag-banners-container`, above the progress list — each with an "Apply Now →" button and a ✕ dismiss. Clicking the banner or button triggers that flag's action; dismiss sets `localStorage.rwu_flag_dismissed_[id]` (persistent) and removes just that banner. `_activeFlagMatch` still holds only `matches[0]`.
 
-Flag object: `id` (unique slug + dismiss key), `countries` (**lowercase** full names *and* ISO codes, e.g. `['nigeria','ng']`), `message`, `color` (`'orange'` default / `'blue'` / `'green'`).
+Flag object: `id` (unique slug + dismiss key), `countries` (**lowercase** full names *and* ISO codes, e.g. `['nigeria','ng']`), `message` (full banner text), `short` (narrow-screen text; falls back to `message`), `color` (`'orange'` default / `'blue'` / `'green'`).
 
 ### Add a simple flag (banner only)
 1. Add an object to `DASHBOARD_FLAGS`:
    ```js
-   { id: 'platform-country-jul8', countries: ['india','in'], message: 'India: New roles on Handshake AI →', color: 'orange' }
+   { id: 'platform-country-jul8', countries: ['india','in'], message: 'India: New roles on Handshake AI →', short: 'New Handshake roles', color: 'orange' }
    ```
-2. Wire its click handler in the flag banner block (pattern: search `openAfricaSlide`), e.g. `const openFlagAction = () => goToCard(hsApply);`
+2. Add an `else if (match.id === '…')` branch to `openAction()` inside `evaluateAndShowFlag()` (pattern: search `micro1-generalist-sep5`), e.g. `goToCard(hsApply);`
 3. Deploy.
 
 ### Add a flag with a custom intro slide (Africa/Mercor pattern)
@@ -224,7 +229,10 @@ The Africa flag embeds `#africa-intro` inside `#mc-apply`, toggled by an `africa
 ### Current active flags
 | id | Target | Description |
 |----|--------|-------------|
-| `mercor-africa-jun8` | Nigeria & 50+ African countries | Africa intro slide inside the Mercor card — Voice AI Research $10–$20/hr. Uses `africa-mode` on `#mc-apply` / `#africa-intro`. |
+| `mercor-africa-jun8` | Nigeria & 50+ African countries | "Nigeria & Africa: Earn $20/hr" → Africa intro slide inside the Mercor card. Uses `africa-mode` on `#mc-apply` / `#africa-intro`. |
+| `micro1-generalist-sep5` | US, UK, Canada, Australia, Ireland, New Zealand | "Now Hiring: Generalist $50-$90/hr" → two-role intro slide inside the micro1 card (Generalist + Video Annotation Specialist, each a direct `jobs.micro1.ai` post link with the referral code). Uses `micro1-jobs-mode` on `#m1-apply` / `#micro1-jobs-intro`; `#micro1-jobs-intro-back` returns to `#m1-main`. |
+
+The English-speaker Mercor flag (`english-mode` / `#english-intro`) is retired — the markup and the `goToDashboard()` cleanup line still exist, but no flag object references it.
 
 ---
 
